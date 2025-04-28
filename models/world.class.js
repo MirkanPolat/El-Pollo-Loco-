@@ -21,7 +21,7 @@ class World {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); 
 
     this.addObjectsToMap(this.backgroundObjects);
-    this.addtoMap(this.character);
+    this.addToMap(this.character);
     this.addObjectsToMap(this.clouds);
     this.addObjectsToMap(this.enemies);
 
@@ -33,11 +33,11 @@ class World {
 
   addObjectsToMap(objects) {
     objects.forEach((object) => {
-      this.addtoMap(object);
+      this.addToMap(object);
     });
   }
 
-  addtoMap(movableObject) {
+  addToMap(movableObject) {
     this.ctx.drawImage(
       movableObject.img,
       movableObject.x,

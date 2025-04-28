@@ -6,17 +6,17 @@ class MovableObject {
   img;
   imageCache = {};
   curretImage = 0;
+  speed = 0.17; 
 
   loadImage(path) {
-    // Load a single image
     this.img = new Image();
     this.img.src = path;
   }
-  loadImages(arr) {
-    // Load multiple images
+
+  loadImages(arr) { 
     arr.forEach((path) => {
-      let img = new Image();
-      img.src = path;
+      let img = new Image(); // create a empty image 
+      img.src = path; // set one image path
       this.imageCache[path] = img;
     });
   }
@@ -24,5 +24,10 @@ class MovableObject {
   moveRight() {
     console.log("Moving right");
   }
-  moveLeft() {}
+ 
+  moveLeft(){
+    setInterval(() => {
+        this.x -= this.speed;
+    }, 1000 / 60);
+}
 }

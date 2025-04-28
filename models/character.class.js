@@ -23,12 +23,13 @@ class Character extends MovableObject {
     animate(){
 
         setInterval(() => {
-        let i = this.curretImage % this.IMAGES_WALKING.length;
+        let i = this.curretImage % this.IMAGES_WALKING.length; // get the current image index
         let path = this.IMAGES_WALKING[i];
-        this.img = this.imageCache[path];
+        this.img = this.imageCache[path]; // set the current image
         this.curretImage++;
     }, 100);
     }
     jump(){
     }
+    
 }
