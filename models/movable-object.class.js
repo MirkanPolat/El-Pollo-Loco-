@@ -6,7 +6,7 @@ class MovableObject {
   img;
   imageCache = {};
   curretImage = 0;
-  speed = 0.17; 
+  speed = 0.17;
   otherDirection = false;
 
   loadImage(path) {
@@ -14,9 +14,9 @@ class MovableObject {
     this.img.src = path;
   }
 
-  loadImages(arr) { 
+  loadImages(arr) {
     arr.forEach((path) => {
-      let img = new Image(); // create a empty image 
+      let img = new Image(); // create a empty image
       img.src = path; // set one image path
       this.imageCache[path] = img;
     });
@@ -25,10 +25,17 @@ class MovableObject {
   moveRight() {
     console.log("Moving right");
   }
- 
-  moveLeft(){
+
+  moveLeft() {
     setInterval(() => {
-        this.x -= this.speed;
+      this.x -= this.speed;
     }, 1000 / 60);
-}
+  }
+
+  PlayAnimation(images) {
+    let i = this.curretImage % this.IMAGES_WALKING.length;
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.curretImage++;
+  }
 }
