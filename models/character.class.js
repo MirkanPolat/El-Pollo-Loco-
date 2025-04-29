@@ -31,12 +31,13 @@ class Character extends MovableObject {
         this.x -= this.speed;
         this.otherDirection = true;
       }
+      this.world.camera_x = -this.x;
     }, 1000 / 60); // Adjust the interval time as needed
 
     setInterval(() => {
       if (
         (this.world && this.world.keyboard.RIGHT) || this.world.keyboard.LEFT) {
-        this.x += this.speed;
+
 
         let i = this.curretImage % this.IMAGES_WALKING.length;
         let path = this.IMAGES_WALKING[i];
