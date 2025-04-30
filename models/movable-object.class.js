@@ -23,6 +23,7 @@ class MovableObject {
   isAboveGround() {
     return this.y < 150
   }
+  
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
