@@ -42,21 +42,25 @@ class World {
 
   addToMap(movableObject) {
     if (movableObject.otherDirection) {
-      this.ctx.save(); // save the current state of the canvas
-      this.ctx.translate(movableObject.width, 0); // move the origin to the right
-      this.ctx.scale(-1, 1); // flip the canvas horizontally
-      movableObject.x = movableObject.x * -1; // flip the x position
+      this.flipImage(movableObject);
     }
-    this.ctx.drawImage(
-      movableObject.img,
-      movableObject.x,
-      movableObject.y,
-      movableObject.width,
-      movableObject.height
-    );
+    movableObject.draw(this.ctx);
+    movableObject.drawFrame(this.ctx);
+
     if (movableObject.otherDirection) {
-      this.ctx.restore();
-      movableObject.x = movableObject.x * -1;
+      this.flipImageBack(movableObject);
     }
+  }
+
+  flipImage(movableObject) {
+    this.ctx.save(); // save the current state of the canvas
+    this.ctx.translate(movableObject.width, 0); // move the origin to the right
+    this.ctx.scale(-1, 1); // flip the canvas horizontally
+    movableObject.x = movableObject.x * -1; // flip the x position
+  }
+
+  flipImageBack(movableObject) {
+    this.ctx.restore();
+    movableObject.x = movableObject.x * -1;
   }
 }
