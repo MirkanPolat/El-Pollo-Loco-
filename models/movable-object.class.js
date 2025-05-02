@@ -13,17 +13,17 @@ class MovableObject {
 
   applyGravity() {
     setInterval(() => {
-      if(this.isAboveGround()) {
-      this.y -= this.speedY;
-      this.speedY -= this.acceleration;
+      if (this.isAboveGround() || this.speedY > 0) {
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration;
       }
     }, 1000 / 60);
   }
 
   isAboveGround() {
-    return this.y < 150
+    return this.y < 150;
   }
-  
+
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
@@ -38,13 +38,15 @@ class MovableObject {
   }
 
   moveRight() {
-    console.log("Moving right");
+    this.x += this.speed;
   }
 
   moveLeft() {
-    setInterval(() => {
-      this.x -= this.speed;
-    }, 1000 / 60);
+    this.x -= this.speed;
+  }
+
+  jump() {
+    this.speedY = 25;
   }
 
   PlayAnimation(images) {
