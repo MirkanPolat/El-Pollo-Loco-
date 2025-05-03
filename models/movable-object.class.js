@@ -10,6 +10,7 @@ class MovableObject {
   otherDirection = false;
   speedY = 0;
   acceleration = 2.0;
+  energy = 100;
 
   applyGravity() {
     setInterval(() => {
@@ -34,17 +35,25 @@ class MovableObject {
   }
 
   drawFrame(ctx) {
-    if(this instanceof Chicken || this instanceof Character) {
+    if (this instanceof Chicken || this instanceof Character) {
       ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    
-    ctx.beginPath();
-    ctx.lineWidth = "5";
-    ctx.strokeStyle = "blue";
-    ctx.rect(this.x, this.y, this.width, this.height);
-    ctx.stroke();
-  }
-}
 
+      ctx.beginPath();
+      ctx.lineWidth = "5";
+      ctx.strokeStyle = "blue";
+      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.stroke();
+    }
+  }
+
+  isColliding(MovableObject) {
+    return (
+      this.x + this.width > MovableObject.x &&
+      this.y + this.height > MovableObject.y &&
+      this.x < MovableObject.x &&
+      this.y < MovableObject.y + MovableObject.height
+    );
+  }
 
   loadImages(arr) {
     arr.forEach((path) => {
