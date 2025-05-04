@@ -1,7 +1,14 @@
 body {
+    margin: 0;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+    background-image: url('./img/5_background/backround_img.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 canvas {
     background-color: black;
