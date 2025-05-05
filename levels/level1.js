@@ -1,3 +1,5 @@
+const bottleMinX = 500;
+const bottleMaxX = 1200;
 const level1 = new Level([
     new Chicken(),
     new Chicken(),
@@ -34,9 +36,9 @@ const level1 = new Level([
     new BackgroundObject("./img/5_background/layers/1_first_layer/2.png", 719*3),
   ],
 [
-    new BottleObject(Math.random() * 3000 + 500, 360),
-    new BottleObject(Math.random() * 3000 + 500, 360),
-    new BottleObject(Math.random() * 3000 + 500, 360),
-    new BottleObject(Math.random() * 3000 + 500, 360),
-    new BottleObject(Math.random() * 3000 + 500, 360)
+    new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
+    new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
+    new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
+    new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
+    new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360)
 ]);

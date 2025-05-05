@@ -28,7 +28,7 @@ class World {
      this.checkCollisions();
      this.checkThrowObjects();
      this.checkBottleCollisions();
-    }, 200);
+    }, 50);
   }
   
   checkThrowObjects() {
@@ -37,6 +37,7 @@ class World {
       this.throwableObjects.push(bottle);
       this.character.bottles--;
       this.bottleStatusbar.setPercentage(this.character.bottles * 20);
+      this.keyboard.D = false; // verhindert mehrfaches Auslösen pro Tastendruck
     }
   }
 
