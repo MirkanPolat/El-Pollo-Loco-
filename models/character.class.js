@@ -43,6 +43,14 @@ class Character extends MovableObject {
 
   speed = 10;
 
+    offset = {
+    top: 100,
+    bottom: 10,
+    left: 15,
+    right: 15
+  };
+  
+
   constructor() {
     super().loadImage("./img/2_character_pepe/2_walk/W-21.png");
     this.loadImages(this.IMAGES_WALKING);

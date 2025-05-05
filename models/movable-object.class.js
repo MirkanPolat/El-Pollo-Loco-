@@ -22,15 +22,26 @@ class MovableObject extends DrawableObject {
       return this.y < 150;
     }
   }
-
-  isColliding(MovableObject) {
+  isColliding(mo) {
+    this.getCollisionFrame();
+    mo.getCollisionFrame();
+  
     return (
-      this.x + this.width > MovableObject.x &&
-      this.y + this.height > MovableObject.y &&
-      this.x < MovableObject.x &&
-      this.y < MovableObject.y + MovableObject.height
+      this.rX + this.rW > mo.rX &&
+      this.rY + this.rH > mo.rY &&
+      this.rX < mo.rX + mo.rW &&
+      this.rY < mo.rY + mo.rH
     );
   }
+  
+
+  getCollisionFrame() {
+    this.rX = this.x + this.offset.left;
+    this.rY = this.y + this.offset.top;
+    this.rW = this.width - this.offset.left - this.offset.right;
+    this.rH = this.height - this.offset.top - this.offset.bottom;
+  }
+  
 
   hit() {
     this.energy -= 5;
