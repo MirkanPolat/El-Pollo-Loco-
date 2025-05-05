@@ -49,7 +49,6 @@ class Character extends MovableObject {
     left: 15,
     right: 15
   };
-  
 
   constructor() {
     super().loadImage("./img/2_character_pepe/2_walk/W-21.png");
@@ -58,6 +57,8 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
     this.applyGravity();
+    this.bottles = 0;
+    this.maxBottles = 5;
 
     this.animate();
   }
@@ -96,5 +97,12 @@ class Character extends MovableObject {
         }
       }
     }, 50);
+  }
+
+  collectBottle() {
+    if (this.bottles < this.maxBottles) {
+      this.bottles++;
+      this.world.bottleStatusBar.setPercentage(this.bottles * 20);
+    }
   }
 }

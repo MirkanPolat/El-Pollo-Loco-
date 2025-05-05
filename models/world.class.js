@@ -7,6 +7,7 @@ class World {
   camera_x = 0;
   statusBar = new StatusBar();
   throwableObjects = [];
+  bottleStatusbar = new BottleStatusBar();
   
 
   constructor(canvas, keyboard) {
@@ -26,13 +27,16 @@ class World {
     setInterval(() => {
      this.checkCollisions();
      this.checkThrowObjects();
+     this.checkBottleCollisions();
     }, 200);
   }
   
   checkThrowObjects() {
-    if (this.keyboard.D) {
+    if (this.keyboard.D && this.character.bottles > 0) {
       let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
       this.throwableObjects.push(bottle);
+      this.character.bottles--;
+      this.bottleStatusbar.setPercentage(this.character.bottles * 20);
     }
   }
 
@@ -52,9 +56,11 @@ class World {
     this.addObjectsToMap(this.level.backgroundObjects);
     this.ctx.translate(-this.camera_x, 0); // Reset the canvas position
     this.addToMap(this.statusBar)
+    this.addToMap(this.bottleStatusbar);
     this.ctx.translate(this.camera_x, 0); // Move the canvas to the left by camera_x
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.clouds);
+    this.addObjectsToMap(this.level.bottles);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0); // Reset the canvas position
@@ -83,6 +89,17 @@ class World {
     }
   }
 
+  checkBottleCollisions() {
+    for (let i = this.level.bottles.length - 1; i >= 0; i--) {
+      let bottle = this.level.bottles[i];
+      if (this.character.isColliding(bottle) && this.character.bottles < 5) {
+        this.character.bottles++;
+        this.bottleStatusbar.setPercentage(this.character.bottles * 20);
+        this.level.bottles.splice(i, 1);
+        break;
+      }
+    }
+  }
   flipImage(movableObject) {
     this.ctx.save(); // save the current state of the canvas
     this.ctx.translate(movableObject.width, 0); // move the origin to the right
