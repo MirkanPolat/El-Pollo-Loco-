@@ -28,7 +28,8 @@ class World {
      this.checkCollisions();
      this.checkThrowObjects();
      this.checkBottleCollisions();
-    }, 50);
+     this.checkForDeadChickens();
+    }, 20);
   }
   
   checkThrowObjects() {
@@ -42,10 +43,22 @@ class World {
   }
 
   checkCollisions() {
-    this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy)) {
-       this.character.hit();
-       this.statusBar.setPercentage(this.character.energy);
+    this.level.enemies.forEach((enemy, i) => {
+      if (this.character.isColliding(enemy) && !this.character.isHurt()) {
+          if ((this.character.y + this.character.height < enemy.y + enemy.height / 2 && this.character.speedY < 0) && !enemy.isDead()) {
+              // VON OBEN: Chicken stirbt
+              enemy.die();
+              
+              // Character springt nach dem Treffen des Chickens wieder leicht hoch
+              this.character.speedY = 20;
+              
+              // WICHTIG: Timeout hier entfernen, damit nicht doppelt gelöscht wird
+              // Das Löschen erfolgt jetzt ausschließlich über checkForDeadChickens()
+          } else {
+              // NORMALER TREFFER: Spieler bekommt Schaden
+              this.character.hit();
+              this.statusBar.setPercentage(this.character.energy);
+          }
       }
     });
   }
@@ -101,6 +114,18 @@ class World {
       }
     }
   }
+
+  checkForDeadChickens() {
+    for (let i = 0; i < this.level.enemies.length; i++) {
+      let enemy = this.level.enemies[i];
+      
+      if (enemy.toDelete) {
+        this.level.enemies.splice(i, 1);  // Chicken aus dem Array entfernen
+        i--;  // Index anpassen, da ein Element entfernt wurde
+      }
+    }
+  }
+
   flipImage(movableObject) {
     this.ctx.save(); // save the current state of the canvas
     this.ctx.translate(movableObject.width, 0); // move the origin to the right
