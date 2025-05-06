@@ -7,10 +7,16 @@ class MovableObject extends DrawableObject {
   lastHit = 0;
 
   applyGravity() {
-    setInterval(() => {
+    this.gravityInterval = setInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
+
+        if (this instanceof ThrowableObject && this.y >= 340) {
+          this.speed = 0;
+          this.animateSplash();
+          clearInterval(this.gravityInterval);
+        }
       }
     }, 1000 / 60);
   }
@@ -79,5 +85,21 @@ class MovableObject extends DrawableObject {
     let path = images[i];
     this.img = this.imageCache[path];
     this.curretImage++;
+  }
+
+  animateRotation() {
+    this.rotationInterval = setInterval(() => {
+      this.PlayAnimation(this.bottleRotationImages);
+    }, 100);
+  }
+
+  animateSplash() {
+    this.speedY = 0;
+    this.speed = 0;
+    clearInterval(this.rotationInterval);
+    this.playAnimation(this.bottleSplashImages);
+    setTimeout(() => {
+      // Optional: Objekt entfernen oder Splash abschließen
+    }, 500);
   }
 }
