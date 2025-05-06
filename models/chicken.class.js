@@ -35,9 +35,7 @@ class Chicken extends MovableObject {
 
   die() {
     // Zuerst das Chicken stoppen
-    this.speed = 0;
-    this.energy = 0;
-    
+   
     // Totes Bild anzeigen
     this.loadImage(this.IMAGES_DEAD[0]);
     
@@ -46,5 +44,10 @@ class Chicken extends MovableObject {
       // Markieren, dass dieses Chicken gelöscht werden soll
       this.toDelete = true;
     }, 200);
+  }
+
+  isDead() {
+    // Ein Chicken gilt als tot, wenn es bereits zum Löschen markiert ist
+    return this.toDelete === true;
   }
 }

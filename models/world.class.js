@@ -43,22 +43,21 @@ class World {
   }
 
   checkCollisions() {
-    this.level.enemies.forEach((enemy, i) => {
-      if (this.character.isColliding(enemy) && !this.character.isHurt()) {
-          if ((this.character.y + this.character.height < enemy.y + enemy.height / 2 && this.character.speedY < 0) && !enemy.isDead()) {
-              // VON OBEN: Chicken stirbt
-              enemy.die();
-              
-              // Character springt nach dem Treffen des Chickens wieder leicht hoch
-              this.character.speedY = 20;
-              
-              // WICHTIG: Timeout hier entfernen, damit nicht doppelt gelöscht wird
-              // Das Löschen erfolgt jetzt ausschließlich über checkForDeadChickens()
-          } else {
-              // NORMALER TREFFER: Spieler bekommt Schaden
-              this.character.hit();
-              this.statusBar.setPercentage(this.character.energy);
-          }
+    this.level.enemies.forEach((enemy) => {
+      if (this.character.isColliding(enemy) && !enemy.isDead()) {
+        // Bessere Bedingung: Nur Position prüfen, nicht Geschwindigkeit
+        if (this.character.y + this.character.height < enemy.y + enemy.height / 3) {
+          // VON OBEN: Chicken stirbt
+          enemy.die();
+          
+          // Character springt nach dem Treffen des Chickens wieder leicht hoch
+          this.character.speedY = 15;
+        } else if (!this.character.isHurt()) {
+          // NORMALER TREFFER: Spieler bekommt Schaden
+          // Nur Schaden nehmen, wenn nicht bereits verletzt
+          this.character.hit();
+          this.statusBar.setPercentage(this.character.energy);
+        }
       }
     });
   }
