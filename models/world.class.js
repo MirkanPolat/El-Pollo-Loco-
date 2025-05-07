@@ -31,7 +31,7 @@ class World {
      this.checkBottleCollisions();
      this.checkCoinCollisions();
      this.checkForDeadChickens();
-    }, 20);
+    }, 10);
   }
   
   checkThrowObjects() {
@@ -46,16 +46,16 @@ class World {
 
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy) && !enemy.isDead()) {
-        // Prüfe Position UND negative Fallgeschwindigkeit (nach unten fallend)
-        if (this.character.y + this.character.height < enemy.y + enemy.height / 3 && this.character.speedY < 0) {
+      if (this.character.isColliding(enemy) && !enemy.isDead() && this.character.speedY < 0) {
+        // Prüfe Position und negative Fallgeschwindigkeit, nach unten fallend
+        if (this.character.y + this.character.height < enemy.y + enemy.height / 3) {
           // VON OBEN: Chicken stirbt
           enemy.die();
           
           // Character springt nach dem Treffen des Chickens wieder leicht hoch
-          this.character.speedY = 20;
+          this.character.speedY = 30;
         } else if (!this.character.isHurt()) {
-          // NORMALER TREFFER: Spieler bekommt Schaden
+          // Spieler bekommt Schaden
           // Nur Schaden nehmen, wenn nicht bereits verletzt
           this.character.hit();
           this.statusBar.setPercentage(this.character.energy);
@@ -115,7 +115,7 @@ class World {
         if (bottle.isColliding(enemy) && !enemy.isDead()) {
           console.log('Flasche trifft Chicken!');
           
-          // Prüfen, ob die die() Methode existiert
+          // Prüfen, ob die() Methode existiert
           if (enemy.die && typeof enemy.die === 'function') {
             enemy.die();
           } else if (enemy instanceof Endboss) {
@@ -174,10 +174,12 @@ class World {
     for (let i = this.level.coins.length - 1; i >= 0; i--) {
       let coin = this.level.coins[i];
       if (this.character.isColliding(coin)) {
-        this.character.coins++;
-        // Maximale Anzahl an Münzen (z.B. 5) = 100%
-        this.coinStatusbar.setPercentage(this.character.coins * 20); // Bei 5 Münzen = 100%
-        this.level.coins.splice(i, 1);
+        // Hier eine Prüfung hinzufügen
+        if (this.character.coins < this.character.maxCoins) {
+          this.character.coins++;
+          this.coinStatusbar.setPercentage(this.character.coins * 20);
+          this.level.coins.splice(i, 1);
+        }
         break;
       }
     }
