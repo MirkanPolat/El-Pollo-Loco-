@@ -9,9 +9,11 @@ const level1 = new Level([
     new Chicken(),
     new Chicken(),
     new Chicken(),
+    new Chicken(),
     new Endboss(),
 ],
 [
+    new Cloud(),
     new Cloud(),
     new Cloud(),
     new Cloud(),
@@ -52,4 +54,15 @@ const level1 = new Level([
     new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
     new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
     new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360)
-]);
+],
+[
+    new Coin(),
+    new Coin(),
+    new Coin(),
+    new Coin(),
+    new Coin(),
+    new Coin(),
+    new Coin(),
+    new Coin(),
+]
+);

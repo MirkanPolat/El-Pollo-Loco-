@@ -2,6 +2,8 @@ class Character extends MovableObject {
   width = 130;
   height = 280;
   y = 80; // 155 ground
+  coins = 0;
+  maxCoins = 5;
   IMAGES_WALKING = [
     "./img/2_character_pepe/2_walk/W-21.png",
     "./img/2_character_pepe/2_walk/W-22.png",
@@ -59,6 +61,7 @@ class Character extends MovableObject {
     this.applyGravity();
     this.bottles = 0;
     this.maxBottles = 5;
+    this.coins = 0;
 
     this.animate();
   }

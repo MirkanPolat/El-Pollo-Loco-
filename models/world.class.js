@@ -8,6 +8,7 @@ class World {
   statusBar = new StatusBar();
   throwableObjects = [];
   bottleStatusbar = new BottleStatusBar();
+  coinStatusbar = new CoinStatusBar();
   
 
   constructor(canvas, keyboard) {
@@ -28,6 +29,7 @@ class World {
      this.checkCollisions();
      this.checkThrowObjects();
      this.checkBottleCollisions();
+     this.checkCoinCollisions();
      this.checkForDeadChickens();
     }, 20);
   }
@@ -70,10 +72,12 @@ class World {
     this.ctx.translate(-this.camera_x, 0); // Reset the canvas position
     this.addToMap(this.statusBar)
     this.addToMap(this.bottleStatusbar);
+    this.addToMap(this.coinStatusbar);
     this.ctx.translate(this.camera_x, 0); // Move the canvas to the left by camera_x
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.level.bottles);
+    this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0); // Reset the canvas position
@@ -157,5 +161,18 @@ class World {
   flipImageBack(movableObject) {
     this.ctx.restore();
     movableObject.x = movableObject.x * -1;
+  }
+
+  checkCoinCollisions() {
+    for (let i = this.level.coins.length - 1; i >= 0; i--) {
+      let coin = this.level.coins[i];
+      if (this.character.isColliding(coin)) {
+        this.character.coins++;
+        // Maximale Anzahl an Münzen (z.B. 5) = 100%
+        this.coinStatusbar.setPercentage(this.character.coins * 20); // Bei 5 Münzen = 100%
+        this.level.coins.splice(i, 1);
+        break;
+      }
+    }
   }
 }
