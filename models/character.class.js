@@ -13,6 +13,38 @@ class Character extends MovableObject {
     "./img/2_character_pepe/2_walk/W-26.png",
   ];
 
+  // Idle-Animation Bilder
+  IMAGES_IDLE = [
+    "./img/2_character_pepe/1_idle/idle/I-1.png",
+    "./img/2_character_pepe/1_idle/idle/I-2.png",
+    "./img/2_character_pepe/1_idle/idle/I-3.png",
+    "./img/2_character_pepe/1_idle/idle/I-4.png",
+    "./img/2_character_pepe/1_idle/idle/I-5.png",
+    "./img/2_character_pepe/1_idle/idle/I-6.png",
+    "./img/2_character_pepe/1_idle/idle/I-7.png",
+    "./img/2_character_pepe/1_idle/idle/I-8.png",
+    "./img/2_character_pepe/1_idle/idle/I-9.png",
+    "./img/2_character_pepe/1_idle/idle/I-10.png",
+  ];
+
+  // Schlaf-Animation Bilder
+  IMAGES_SLEEPING = [
+    "./img/2_character_pepe/1_idle/long_idle/I-11.png",
+    "./img/2_character_pepe/1_idle/long_idle/I-12.png",
+    "./img/2_character_pepe/1_idle/long_idle/I-13.png",
+    "./img/2_character_pepe/1_idle/long_idle/I-14.png",
+    "./img/2_character_pepe/1_idle/long_idle/I-15.png",
+    "./img/2_character_pepe/1_idle/long_idle/I-16.png",
+    "./img/2_character_pepe/1_idle/long_idle/I-17.png",
+    "./img/2_character_pepe/1_idle/long_idle/I-18.png",
+    "./img/2_character_pepe/1_idle/long_idle/I-19.png",
+    "./img/2_character_pepe/1_idle/long_idle/I-20.png",
+  ];
+
+  // Inaktivitäts-Timer
+  lastActivity = new Date().getTime();
+  SLEEP_TIMEOUT = 10000; // 15 Sekunden bis zur Schlaf-Animation
+
   IMAGES_JUMPING = [
     "./img/2_character_pepe/3_jump/J-31.png",
     "./img/2_character_pepe/3_jump/J-32.png",
@@ -42,10 +74,8 @@ class Character extends MovableObject {
   ];
 
   world;
-
   speed = 10;
-
-    offset = {
+  offset = {
     top: 100,
     bottom: 10,
     left: 15,
@@ -58,6 +88,8 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
+    this.loadImages(this.IMAGES_IDLE);
+    this.loadImages(this.IMAGES_SLEEPING);
     this.applyGravity();
     this.bottles = 0;
     this.maxBottles = 5;
@@ -66,24 +98,34 @@ class Character extends MovableObject {
     this.animate();
   }
 
+  // Methode zum Zurücksetzen des Inaktivitätstimers
+  resetIdleTimer() {
+    this.lastActivity = new Date().getTime();
+  }
+
   animate() {
+    // Bewegungs-Steuerung
     setInterval(() => {
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.moveRight();
         this.otherDirection = false;
+        this.resetIdleTimer();
       }
       if (this.world.keyboard.LEFT && this.x > 0) {
         this.moveLeft();
         this.otherDirection = true;
+        this.resetIdleTimer();
       }
 
       if (this.world.keyboard.SPACE && !this.isAboveGround()) {
         this.jump();
+        this.resetIdleTimer();
       }
 
       this.world.camera_x = -this.x + 100;
     }, 1000 / 60);
 
+    // Animations-Steuerung
     setInterval(() => {
       if (this.isDead()) {
         this.PlayAnimation(this.IMAGES_DEAD);
@@ -92,11 +134,21 @@ class Character extends MovableObject {
       } else if (this.isAboveGround()) {
         this.PlayAnimation(this.IMAGES_JUMPING);
       } else {
-        if (
-          (this.world && this.world.keyboard.RIGHT) ||
-          this.world.keyboard.LEFT
-        ) {
+        // Prüfe Bewegung und Inaktivität
+        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+          // Lauf-Animation
           this.PlayAnimation(this.IMAGES_WALKING);
+        } else {
+          // Character steht still
+          let timeSinceLastActivity = new Date().getTime() - this.lastActivity;
+          
+          if (timeSinceLastActivity > this.SLEEP_TIMEOUT) {
+            // Nach 15 Sekunden Inaktivität: Schlaf-Animation
+            this.PlayAnimation(this.IMAGES_SLEEPING);
+          } else {
+            // Sofortige Idle-Animation, wenn keine Tasten gedrückt sind
+            this.PlayAnimation(this.IMAGES_IDLE);
+          }
         }
       }
     }, 50);
@@ -108,6 +160,7 @@ class Character extends MovableObject {
       this.world.bottleStatusBar.setPercentage(this.bottles * 20);
     }
   }
+  
   collectCoin() {
     if (this.coins < this.maxCoins) {
       this.coins++;
