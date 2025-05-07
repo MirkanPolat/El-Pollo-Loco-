@@ -114,8 +114,15 @@ class World {
         // Wenn die Flasche ein Chicken trifft und das Chicken noch nicht tot ist
         if (bottle.isColliding(enemy) && !enemy.isDead()) {
           console.log('Flasche trifft Chicken!');
-          // Chicken töten
-          enemy.die();
+          
+          // Prüfen, ob die die() Methode existiert
+          if (enemy.die && typeof enemy.die === 'function') {
+            enemy.die();
+          } else if (enemy instanceof Endboss) {
+            // Spezielle Behandlung für den Endboss, falls vorhanden
+            enemy.hit();  // oder eine andere passende Methode
+          }
+          
           setTimeout(() => {
             bottle.speed = 0;
             bottle.speedY = 0;

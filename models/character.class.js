@@ -108,4 +108,10 @@ class Character extends MovableObject {
       this.world.bottleStatusBar.setPercentage(this.bottles * 20);
     }
   }
+  collectCoin() {
+    if (this.coins < this.maxCoins) {
+      this.coins++;
+      this.world.coinStatusbar.setPercentage(this.coins * 20);
+    }
+  }
 }
