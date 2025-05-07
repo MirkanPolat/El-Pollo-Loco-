@@ -51,7 +51,7 @@ class World {
           enemy.die();
           
           // Character springt nach dem Treffen des Chickens wieder leicht hoch
-          this.character.speedY = 15;
+          this.character.speedY = 20;
         } else if (!this.character.isHurt()) {
           // NORMALER TREFFER: Spieler bekommt Schaden
           // Nur Schaden nehmen, wenn nicht bereits verletzt
@@ -112,9 +112,15 @@ class World {
           console.log('Flasche trifft Chicken!');
           // Chicken töten
           enemy.die();
-          
-          // Optional: Die Flasche entfernen oder zerbrechen lassen
-          this.throwableObjects.splice(bottleIndex, 1);
+          setTimeout(() => {
+            bottle.speed = 0;
+            bottle.speedY = 0;
+            clearInterval(bottle.throwInterval);
+            bottle.animateSplash();
+          }, 350);
+          setTimeout(() => {
+            this.throwableObjects.splice(bottleIndex, 1);
+          }, 300);
         }
       });
     });
