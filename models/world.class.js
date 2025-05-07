@@ -45,8 +45,8 @@ class World {
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy) && !enemy.isDead()) {
-        // Bessere Bedingung: Nur Position prüfen, nicht Geschwindigkeit
-        if (this.character.y + this.character.height < enemy.y + enemy.height / 3) {
+        // Prüfe Position UND negative Fallgeschwindigkeit (nach unten fallend)
+        if (this.character.y + this.character.height < enemy.y + enemy.height / 3 && this.character.speedY < 0) {
           // VON OBEN: Chicken stirbt
           enemy.die();
           
@@ -103,6 +103,22 @@ class World {
   }
 
   checkBottleCollisions() {
+    // Für jede geworfene Flasche prüfen
+    this.throwableObjects.forEach((bottle, bottleIndex) => {
+      // Für jedes Chicken prüfen
+      this.level.enemies.forEach((enemy) => {
+        // Wenn die Flasche ein Chicken trifft und das Chicken noch nicht tot ist
+        if (bottle.isColliding(enemy) && !enemy.isDead()) {
+          console.log('Flasche trifft Chicken!');
+          // Chicken töten
+          enemy.die();
+          
+          // Optional: Die Flasche entfernen oder zerbrechen lassen
+          this.throwableObjects.splice(bottleIndex, 1);
+        }
+      });
+    });
+
     for (let i = this.level.bottles.length - 1; i >= 0; i--) {
       let bottle = this.level.bottles[i];
       if (this.character.isColliding(bottle) && this.character.bottles < 5) {
