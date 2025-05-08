@@ -93,7 +93,7 @@ class MovableObject extends DrawableObject {
     this.speedY = 0;
     this.speed = 0;
     clearInterval(this.rotationInterval);
-    this.playAnimation(this.bottleSplashImages);
+    this.PlayAnimation(this.bottleSplashImages);
     setTimeout(() => {
       // Optional: Objekt entfernen oder Splash abschließen
     }, 500);
