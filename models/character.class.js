@@ -79,7 +79,7 @@ class Character extends MovableObject {
     top: 100,
     bottom: 10,
     left: 15,
-    right: 15
+    right: 15,
   };
 
   constructor() {
@@ -104,11 +104,10 @@ class Character extends MovableObject {
   }
 
   animate() {
-    // Bewegungs-Steuerung
     setInterval(() => {
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.moveRight();
-        this.otherDirection = false;
+        this.otherDirection = false; // Wenn nach rechts bewegt wird, dann nicht spiegeln
         this.resetIdleTimer();
       }
       if (this.world.keyboard.LEFT && this.x > 0) {
@@ -141,7 +140,7 @@ class Character extends MovableObject {
         } else {
           // Character steht still
           let timeSinceLastActivity = new Date().getTime() - this.lastActivity;
-          
+
           if (timeSinceLastActivity > this.SLEEP_TIMEOUT) {
             // Nach 15 Sekunden Inaktivität: Schlaf-Animation
             this.PlayAnimation(this.IMAGES_SLEEPING);
@@ -160,7 +159,7 @@ class Character extends MovableObject {
       this.world.bottleStatusBar.setPercentage(this.bottles * 20);
     }
   }
-  
+
   collectCoin() {
     if (this.coins < this.maxCoins) {
       this.coins++;
