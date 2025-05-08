@@ -8,6 +8,15 @@ class ThrowableObject extends MovableObject {
     this.height = 100;
     this.width = 100;
     this.hasSplashed = false;
+    
+    // Präzisere Kollisionsbox für die geworfene Flasche
+    this.offset = {
+      top: 30,    // Verkleinert den Kollisionsbereich oben
+      bottom: 30, // Verkleinert den Kollisionsbereich unten
+      left: 30,   // Verkleinert den Kollisionsbereich links
+      right: 30   // Verkleinert den Kollisionsbereich rechts
+    };
+    
     this.bottleRotationImages = [
       "./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
       "./img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png",

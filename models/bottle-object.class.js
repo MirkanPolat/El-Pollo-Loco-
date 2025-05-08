@@ -1,4 +1,12 @@
 class BottleObject extends MovableObject {
+
+  offset = {
+    top: 10,
+    bottom: 5,
+    left: 10,
+    right: 8
+  };
+
     constructor(x, y) {
         super();
       

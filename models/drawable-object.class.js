@@ -17,7 +17,7 @@ class DrawableObject {
   }
 
   drawFrame(ctx) {
-    if (this instanceof Chicken || this instanceof Character || this instanceof Coin || this instanceof Endboss) {
+    if (this instanceof Chicken || this instanceof Character || this instanceof Coin || this instanceof BottleObject || this instanceof ThrowableObject || this instanceof Endboss) {
       // Blauer Rahmen (zeigt Bildgröße)
       ctx.beginPath();
       ctx.lineWidth = 2;
