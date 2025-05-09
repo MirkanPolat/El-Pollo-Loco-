@@ -69,37 +69,114 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
+        this.attacks = ['normalAttack', 'jumpAttack', 'chargeAttack'];
+        this.currentAttack = 'normalAttack';
         this.x = 2500;
         this.animate();
+    }
+
+    // Neue Methode für die Endboss-Klasse
+    determinePhase() {
+        if (this.energy > 70) {
+            return 'phase1'; // 100%-70% Gesundheit - leichte Angriffe
+        } else if (this.energy > 30) {
+            return 'phase2'; // 70%-30% Gesundheit - schnellere Angriffe
+        } else {
+            return 'phase3'; // Unter 30% - wütender Boss, stärkere Angriffe
+        }
     }
 
     // Neues Bewegungsmuster für den Endboss
     updateBossActions() {
         try {
-            // Boss-Kampflogik implementieren
             const timePassed = new Date().getTime() - this.lastAction;
+            const currentPhase = this.determinePhase();
             
-            // Wenn der Boss verletzt ist, bewegt er sich zurück
-            if (this.isHurt()) {
-                this.moveLeft();
+            // Phase-spezifische Werte einstellen
+            if (currentPhase === 'phase1') {
+                this.attackCooldown = 4000;
+                this.attackDuration = 2000;
+                this.speed = 10;
+            } else if (currentPhase === 'phase2') {
+                this.attackCooldown = 3000;
+                this.attackDuration = 2500;
+                this.speed = 12;
+            } else { // phase3
+                this.attackCooldown = 2000;
+                this.attackDuration = 3000;
+                this.speed = 15;
             }
-            // Wenn der Boss im Angriffsmodus ist
-            else if (this.isAttacking) {
+            
+            if (this.isHurt()) {
+                this.moveRight();
+            } else if (this.isAttacking) {
                 this.moveLeft();
                 
-                // Angriff beenden nach gewisser Zeit
-                if (timePassed > 2000) {
+                if (timePassed > this.attackDuration) {
                     this.isAttacking = false;
                     this.lastAction = new Date().getTime();
                 }
-            }
-            // Normales Verhalten
-            else if (timePassed > 4000) {
+            } else if (timePassed > this.attackCooldown) {
                 this.isAttacking = true;
                 this.lastAction = new Date().getTime();
+                this.selectAttackType();
+                this.performAttack();
             }
         } catch (error) {
             console.error('Fehler in updateBossActions:', error);
+        }
+    }
+
+    // Zufälligen Angriffstyp wählen
+    selectAttackType() {
+        const phase = this.determinePhase();
+        
+        if (phase === 'phase3') {
+            // In Phase 3 alle Angriffe möglich
+            const randomIndex = Math.floor(Math.random() * this.attacks.length);
+            this.currentAttack = this.attacks[randomIndex];
+        } else if (phase === 'phase2') {
+            // In Phase 2 nur normal und charge
+            const randomIndex = Math.floor(Math.random() * 2);
+            this.currentAttack = this.attacks[randomIndex];
+        } else {
+            // In Phase 1 nur normale Angriffe
+            this.currentAttack = 'normalAttack';
+        }
+        
+        console.log('Boss führt aus: ' + this.currentAttack);
+    }
+
+    performAttack() {
+        switch(this.currentAttack) {
+            case 'jumpAttack':
+                this.speedY = 30;
+                // Speichere die ursprüngliche Y-Position vor dem Sprung
+                this.groundPosition = this.y;
+                
+                // Modifizierte Gravitationslogik mit Ground-Check
+                let jumpInterval = setInterval(() => {
+                    // Anwendung der Gravitation
+                    this.y -= this.speedY;
+                    this.speedY -= this.acceleration;
+                    
+                    // Überprüfung, ob der Boss zurück am Boden ist
+                    if (this.y > this.groundPosition) {
+                        // Boss ist unter die Startposition gefallen, korrigiere Position
+                        this.y = this.groundPosition;
+                        this.speedY = 0;
+                        clearInterval(jumpInterval);
+                    }
+                }, 1000/60);
+                break;
+            case 'chargeAttack':
+                this.speed = 20;
+                setTimeout(() => this.speed = 10, 1000);
+                break;
+            case 'normalAttack':
+            default:
+                // Standard-Angriff
+                break;
         }
     }
 
