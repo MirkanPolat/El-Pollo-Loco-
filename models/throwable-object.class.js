@@ -8,6 +8,7 @@ class ThrowableObject extends MovableObject {
     this.height = 100;
     this.width = 100;
     this.hasSplashed = false;
+    this.hasCollided = false; // Neue Eigenschaft: Verhindert Mehrfachkollisionen
     
     // Präzisere Kollisionsbox für die geworfene Flasche
     this.offset = {

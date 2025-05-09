@@ -9,7 +9,7 @@ class World {
   throwableObjects = [];
   bottleStatusbar = new BottleStatusBar();
   coinStatusbar = new CoinStatusBar();
-  
+  bossStatusbar = new BossStatusBar(); // Neue Zeile
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -31,7 +31,7 @@ class World {
      this.checkBottleCollisions();
      this.checkCoinCollisions();
      this.checkForDeadChickens();
-    }, 10);
+    }, 16);
   }
   
   checkThrowObjects() {
@@ -46,17 +46,35 @@ class World {
 
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy) && !enemy.isDead() && this.character.speedY < 0) {
-        // Prüfe Position und negative Fallgeschwindigkeit, nach unten fallend
-        if (this.character.y + this.character.height < enemy.y + enemy.height / 3) {
+      if (this.character.isColliding(enemy) && !enemy.isDead()) {
+        // Debug-Info
+        console.log('Kollision erkannt!', 
+                   'Character Y:', this.character.y, 
+                   'Character Height:', this.character.height, 
+                   'Enemy Y:', enemy.y, 
+                   'Enemy Height:', enemy.height,
+                   'SpeedY:', this.character.speedY);
+                   
+        // Verbesserte Bedingung für Aufsprung von oben
+        const characterBottom = this.character.y + this.character.height;
+        const enemyTop = enemy.y + enemy.offset.top;
+        const jumpingDown = this.character.speedY <= 0;
+        
+        if (characterBottom < enemyTop + 30 && jumpingDown) {
+          console.log('Chicken getötet durch Sprung!');
           // VON OBEN: Chicken stirbt
           enemy.die();
           
           // Character springt nach dem Treffen des Chickens wieder leicht hoch
-          this.character.speedY = 30;
-        } else if (!this.character.isHurt()) {
+          this.character.speedY = 25;
+          
+          // Verhindere weitere Kollisionserkennung für kurze Zeit
+          this.character.lastEnemyCollision = new Date().getTime();
+        } else if (!this.character.isHurt() && 
+                  (new Date().getTime() - this.character.lastEnemyCollision > 500)) {
           // Spieler bekommt Schaden
-          // Nur Schaden nehmen, wenn nicht bereits verletzt
+          // Nur Schaden nehmen, wenn nicht bereits verletzt und keine kürzliche Kollision
+          console.log('Character bekommt Schaden!');
           this.character.hit();
           this.statusBar.setPercentage(this.character.energy);
         }
@@ -70,9 +88,21 @@ class World {
     this.ctx.translate(this.camera_x, 0); // Move the canvas to the left by camera_x
     this.addObjectsToMap(this.level.backgroundObjects);
     this.ctx.translate(-this.camera_x, 0); // Reset the canvas position
-    this.addToMap(this.statusBar)
+    this.addToMap(this.statusBar);
     this.addToMap(this.bottleStatusbar);
     this.addToMap(this.coinStatusbar);
+    
+    // Boss-Statusleiste aktualisieren und anzeigen
+    if (this.bossStatusVisible()) {
+      // HIER IST DIE ÄNDERUNG: Aktualisiere die Statusleiste in jedem Frame
+      const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
+      if (endboss) {
+        const percentage = endboss.energy / endboss.maxEnergy * 100;
+        this.bossStatusbar.setPercentage(percentage);
+      }
+      this.addToMap(this.bossStatusbar);
+    }
+    
     this.ctx.translate(this.camera_x, 0); // Move the canvas to the left by camera_x
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.clouds);
@@ -86,6 +116,21 @@ class World {
     requestAnimationFrame(function () {
       self.draw();
     });
+  }
+
+  bossStatusVisible() {
+    try {
+        // Endboss finden
+        const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
+        if (endboss) {
+            // Statusleiste anzeigen, wenn der Character nahe genug ist
+            return this.character.x > 2000 || (endboss.hadFirstContact === true);
+        }
+        return false;
+    } catch (error) {
+        console.error("Fehler in bossStatusVisible:", error);
+        return false; // Im Fehlerfall lieber keine Statusleiste anzeigen
+    }
   }
 
   addObjectsToMap(objects) {
@@ -109,33 +154,53 @@ class World {
   checkBottleCollisions() {
     // Für jede geworfene Flasche prüfen
     this.throwableObjects.forEach((bottle, bottleIndex) => {
-      // Für jedes Chicken prüfen
-      this.level.enemies.forEach((enemy) => {
-        // Wenn die Flasche ein Chicken trifft und das Chicken noch nicht tot ist
-        if (bottle.isColliding(enemy) && !enemy.isDead()) {
-          console.log('Flasche trifft Chicken!');
-          
-          // Prüfen, ob die() Methode existiert
-          if (enemy.die && typeof enemy.die === 'function') {
-            enemy.die();
-          } else if (enemy instanceof Endboss) {
-            // Spezielle Behandlung für den Endboss, falls vorhanden
-            enemy.hit();  // oder eine andere passende Methode
-          }
-          
-          setTimeout(() => {
-            bottle.speed = 0;
-            bottle.speedY = 0;
-            clearInterval(bottle.throwInterval);
-            bottle.animateSplash();
-          }, 350);
-          setTimeout(() => {
-            this.throwableObjects.splice(bottleIndex, 1);
-          }, 300);
-        }
-      });
-    });
+        // Wenn die Flasche bereits kollidiert ist, nichts tun
+        if (bottle.hasCollided) return;
+        
+        // Für jedes Chicken/Enemy prüfen
+        this.level.enemies.forEach((enemy) => {
+            try {
+                // Wenn die Flasche ein Chicken/Enemy trifft und es noch nicht tot ist
+                if (bottle && enemy && bottle.isColliding(enemy) && !enemy.isDead() && !bottle.hasCollided) {
+                    // Markiere die Flasche als kollidiert, damit sie nicht mehrmals Schaden verursacht
+                    bottle.hasCollided = true;
+                    console.log('Flasche trifft Gegner!');
+                    
+                    if (enemy instanceof Endboss && typeof enemy.hit === 'function') {
+                        console.log('→ ENDBOSS HIT BEFORE:', enemy.energy);
+                        enemy.hit();  
+                        console.log('→ ENDBOSS HIT AFTER:', enemy.energy);
 
+                        if (this.bossStatusbar) {
+                            const percentage = enemy.energy / enemy.maxEnergy * 100;
+                            console.log('→ STATUSBAR SET TO:', percentage);
+                            this.bossStatusbar.setPercentage(percentage);
+                        }
+                    } else if (enemy.die && typeof enemy.die === 'function') {
+                        enemy.die();
+                    }
+                    
+                    // Stoppe die Flaschenbewegung und starte Splash-Animation
+                    bottle.speed = 0;
+                    setTimeout(() => {
+                        if (bottle.animateSplash && typeof bottle.animateSplash === 'function') {
+                            bottle.animateSplash();
+                        }
+                        
+                        setTimeout(() => {
+                            const index = this.throwableObjects.indexOf(bottle);
+                            if (index > -1) {
+                                this.throwableObjects.splice(index, 1);
+                            }
+                        }, 300);
+                    }, 100);
+                }
+            } catch (error) {
+                console.error("Fehler bei Flaschen-Kollision:", error);
+            }
+        });
+    });
+    
     for (let i = this.level.bottles.length - 1; i >= 0; i--) {
       let bottle = this.level.bottles[i];
       if (this.character.isColliding(bottle) && this.character.bottles < 5) {

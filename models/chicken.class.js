@@ -43,7 +43,7 @@ class Chicken extends MovableObject {
     setTimeout(() => {
       // Markieren, dass dieses Chicken gelöscht werden soll
       this.toDelete = true;
-    }, 200);
+    }, 350);
   }
 
   isDead() {

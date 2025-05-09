@@ -53,7 +53,15 @@ const level1 = new Level([
     new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
     new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
     new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
-    new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360)
+    new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
+    new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
+    new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
+    new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
+    new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
+    new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
+    new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
+    new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
+    new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360),
 ],
 [
     new Coin(),
