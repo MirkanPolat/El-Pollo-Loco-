@@ -74,6 +74,7 @@ class MovableObject extends DrawableObject {
 
   jump() {
     this.speedY = 25;
+    AudioHub.playOne(AudioHub.CHARACTER_JUMP);
   }
 
   PlayAnimation(images) {

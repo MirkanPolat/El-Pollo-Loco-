@@ -19,7 +19,7 @@ class AudioHub {
     static BOSS_DEAD = AudioHub.createSound('./assets/sounds/boss_dead.mp3', AudioHub.VOLUME.BOSS);
     
     // Charakter-Sounds
-    static CHARACTER_JUMP = AudioHub.createSound('./assets/sounds/character_jump.mp3', AudioHub.VOLUME.CHARACTER);
+    static CHARACTER_JUMP = AudioHub.createSound('./audio/jump.mp3', AudioHub.VOLUME.CHARACTER);
     static CHARACTER_HURT = AudioHub.createSound('./assets/sounds/character_hurt.mp3', AudioHub.VOLUME.CHARACTER);
     // Optional: Spezielle Konfiguration
     static CHARACTER_WALKING = AudioHub.createSound('./audio/walking.mp3', AudioHub.VOLUME.CHARACTER * 0.7);
