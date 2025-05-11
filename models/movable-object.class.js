@@ -51,6 +51,11 @@ class MovableObject extends DrawableObject {
       this.energy = 0;
     } else {
       this.lastHit = new Date().getTime();
+      
+      // Sound nur abspielen, wenn es der Character ist, der getroffen wird
+      if (this instanceof Character) {
+        AudioHub.playOne(AudioHub.CHARACTER_HURT);
+      }
     }
   }
 
