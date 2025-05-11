@@ -244,6 +244,7 @@ class World {
           this.character.coins++;
           this.coinStatusbar.setPercentage(this.character.coins * 20);
           this.level.coins.splice(i, 1);
+          AudioHub.playOne(AudioHub.COLLECT_COIN);
         }
         break;
       }

@@ -106,9 +106,13 @@ class Character extends MovableObject {
 
   animate() {
     setInterval(() => {
+      // Walking sound direkt hier einfügen
+      const isWalking = (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround();
+      AudioHub.playWalkingSound(AudioHub.CHARACTER_WALKING, isWalking);
+
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.moveRight();
-        this.otherDirection = false; // Wenn nach rechts bewegt wird, dann nicht spiegeln
+        this.otherDirection = false;
         this.resetIdleTimer();
       }
       if (this.world.keyboard.LEFT && this.x > 0) {

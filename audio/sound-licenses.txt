@@ -3,3 +3,14 @@ Quelle: https://mixkit.co/free-sound-effects/coin/
 Lizenz: Mixkit License – frei für kommerzielle & nicht-kommerzielle Nutzung, keine Namensnennung erforderlich  
 Status: Heruntergeladen
 
+walking_leaves.mp3 – "Walking in leaves 1" von EpicAllay  
+Quelle: https://freesound.org/people/EpicAllay/sounds/615083/  
+Direktlink (Audio): [https://cdn.freesound.org/previews/615/615083_13313218-lq.mp3]  
+Lizenz: Creative Commons 0 (CC0) – frei für kommerzielle & nicht-kommerzielle Nutzung, keine Namensnennung erforderlich  
+Status: Eingebunden über Direktlink, lokal gespeichert im Ordner /audio/
+
+character_jump.mp3 – "VOC_Male_Jump_05" von pekena_larva  
+Quelle: https://freesound.org/people/pekena_larva/sounds/667297/  
+Direktlink (Audio): https://cdn.freesound.org/previews/667/667297_5086589-lq.mp3  
+Lizenz: Creative Commons Attribution 4.0 – Nutzung erlaubt, Namensnennung erforderlich („Sound by pekena_larva on freesound.org“)  
+Status: Eingebunden über Direktlink, lokal gespeichert im Ordner /audio/

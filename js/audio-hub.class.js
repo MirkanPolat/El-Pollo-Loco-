@@ -2,7 +2,7 @@ class AudioHub {
     // Lautstärke-Voreinstellungen
     static VOLUME = {
         BACKGROUND: 0.3,   // Hintergrundmusik leiser
-        EFFECTS: 0.7,      // Effekte lauter
+        EFFECTS: 0.4,      // Effekte lauter
         CHARACTER: 0.6,    // Charakter-Sounds mittel
         BOSS: 0.8          // Boss-Sounds etwas lauter
     };
@@ -21,9 +21,11 @@ class AudioHub {
     // Charakter-Sounds
     static CHARACTER_JUMP = AudioHub.createSound('./assets/sounds/character_jump.mp3', AudioHub.VOLUME.CHARACTER);
     static CHARACTER_HURT = AudioHub.createSound('./assets/sounds/character_hurt.mp3', AudioHub.VOLUME.CHARACTER);
+    // Optional: Spezielle Konfiguration
+    static CHARACTER_WALKING = AudioHub.createSound('./audio/walking.mp3', AudioHub.VOLUME.CHARACTER * 0.7);
     
     // Effekt-Sounds
-    static COLLECT_COIN = AudioHub.createSound('./assets/sounds/coin.mp3', AudioHub.VOLUME.EFFECTS);
+    static COLLECT_COIN = AudioHub.createSound('./audio/coin.mp3', AudioHub.VOLUME.EFFECTS);
     static COLLECT_BOTTLE = AudioHub.createSound('./assets/sounds/bottle_collect.mp3', AudioHub.VOLUME.EFFECTS);
     static THROW_BOTTLE = AudioHub.createSound('./assets/sounds/bottle_throw.mp3', AudioHub.VOLUME.EFFECTS);
     static BOTTLE_SHATTER = AudioHub.createSound('./assets/sounds/bottle_break.mp3', AudioHub.VOLUME.EFFECTS);
@@ -33,7 +35,7 @@ class AudioHub {
         AudioHub.BACKGROUND_MUSIC,
         AudioHub.BOSS_ALERT, AudioHub.BOSS_ATTACK, AudioHub.BOSS_JUMP,
         AudioHub.BOSS_CHARGE, AudioHub.BOSS_HURT, AudioHub.BOSS_DEAD,
-        AudioHub.CHARACTER_JUMP, AudioHub.CHARACTER_HURT,
+        AudioHub.CHARACTER_JUMP, AudioHub.CHARACTER_HURT, AudioHub.CHARACTER_WALKING,
         AudioHub.COLLECT_COIN, AudioHub.COLLECT_BOTTLE, 
         AudioHub.THROW_BOTTLE, AudioHub.BOTTLE_SHATTER
     ];
@@ -55,6 +57,9 @@ class AudioHub {
      * @param {Audio} sound - Das abzuspielende Audio-Objekt
      */
     static playOne(sound) {
+        // Zuerst den Sound stoppen, falls er bereits läuft
+        this.stopOne(sound);
+        
         let checkInterval = setInterval(() => {
             // Überprüft, ob die Audiodatei vollständig geladen ist
             if (sound.readyState == 4) {
@@ -90,4 +95,22 @@ class AudioHub {
             sound.currentTime = 0; // Setzt Wiedergabeposition zurück
         });
     }
+
+/**
+ * Spielt einen Walking-Sound in einer Schleife, wenn der Charakter läuft
+ * @param {Audio} sound - Der abzuspielende Sound
+ * @param {boolean} isWalking - Ist der Charakter in Bewegung?
+ */
+static playWalkingSound(sound, isWalking) {
+    if (isWalking) {
+        // Wenn Sound nicht läuft oder fast zu Ende ist, neu starten
+        if (sound.paused || sound.currentTime > sound.duration - 0.1) {
+            sound.currentTime = 0;
+            sound.play();
+        }
+    } else {
+        // Wenn nicht läuft, Sound stoppen
+        this.stopOne(sound);
+    }
+}
 }
