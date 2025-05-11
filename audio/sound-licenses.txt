@@ -48,3 +48,14 @@ Quelle: https://freesound.org/people/Rudmer_Rotteveel/sounds/316920/
 Direktlink (Audio): https://cdn.freesound.org/previews/316/316920_4921277-lq.mp3  
 Lizenz: Creative Commons 0 (CC0) – frei für kommerzielle & nicht-kommerzielle Nutzung, keine Namensnennung erforderlich  
 Status: Eingebunden über Direktlink, lokal gespeichert im Ordner /audio/
+
+endboss_hurt.mp3 – "Chicken Scream - Harsh" von Henlord  
+Quelle: https://freesound.org/people/Henlord/sounds/413824/  
+Direktlink (Audio): https://cdn.freesound.org/previews/413/413824_512123-lq.mp3  
+Lizenz: Creative Commons 0 (CC0) – frei für kommerzielle & nicht-kommerzielle Nutzung, keine Namensnennung erforderlich  
+Status: Eingebunden über Direktlink, lokal gespeichert im Ordner /audio/
+
+endboss_attack.mp3 – "Impact of a strong punch"  
+Quelle: https://mixkit.co/free-sound-effects/hit/  
+Lizenz: Mixkit License – frei für kommerzielle & nicht-kommerzielle Nutzung, keine Namensnennung erforderlich  
+Status: Heruntergeladen und gespeichert im Ordner /audio/

@@ -79,6 +79,11 @@ class World {
           console.log('Character bekommt Schaden!');
           this.character.hit();
           this.statusBar.setPercentage(this.character.energy);
+          
+          // NEUER CODE: Endboss-Attack-Sound abspielen
+          if (enemy instanceof Endboss) {
+            AudioHub.playOne(AudioHub.BOSS_ATTACK);
+          }
         }
       }
     });
@@ -174,8 +179,7 @@ class World {
                     
                     if (enemy instanceof Endboss && typeof enemy.hit === 'function') {
                         console.log('→ ENDBOSS HIT BEFORE:', enemy.energy);
-                        enemy.hit();  
-                        AudioHub.playOne(AudioHub.BOSS_HIT);
+                        enemy.hit();
                         console.log('→ ENDBOSS HIT AFTER:', enemy.energy);
 
                         if (this.bossStatusbar) {

@@ -4,18 +4,17 @@ class AudioHub {
         BACKGROUND: 0.3,   // Hintergrundmusik leiser
         EFFECTS: 0.4,      // Effekte lauter
         CHARACTER: 0.6,    // Charakter-Sounds mittel
-        BOSS: 0.8          // Boss-Sounds etwas lauter
+        BOSS: 0.7         // Boss-Sounds etwas lauter
     };
-    
+    //
     // Hintergrundmusik
     static BACKGROUND_MUSIC = AudioHub.createSound('./assets/sounds/background_music.mp3', AudioHub.VOLUME.BACKGROUND);
     
     // Endboss-Sounds
     static BOSS_ALERT = AudioHub.createSound('./assets/sounds/boss_alert.mp3', AudioHub.VOLUME.BOSS);
-    static BOSS_ATTACK = AudioHub.createSound('./assets/sounds/boss_attack.mp3', AudioHub.VOLUME.BOSS);
+    static BOSS_ATTACK = AudioHub.createSound('./audio/endboss-attack.mp3', AudioHub.VOLUME.BOSS);
     static BOSS_JUMP = AudioHub.createSound('./assets/sounds/boss_jump.mp3', AudioHub.VOLUME.BOSS);
-    static BOSS_CHARGE = AudioHub.createSound('./assets/sounds/boss_charge.mp3', AudioHub.VOLUME.BOSS);
-    static BOSS_HURT = AudioHub.createSound('./assets/sounds/boss_hurt.mp3', AudioHub.VOLUME.BOSS);
+    static BOSS_HURT = AudioHub.createSound('./audio/endboss-hurt.mp3', AudioHub.VOLUME.BOSS);
     static BOSS_DEAD = AudioHub.createSound('./audio/endboss-dead.mp3', AudioHub.VOLUME.BOSS);
     
     // Charakter-Sounds
@@ -35,7 +34,7 @@ class AudioHub {
     static allSounds = [
         AudioHub.BACKGROUND_MUSIC,
         AudioHub.BOSS_ALERT, AudioHub.BOSS_ATTACK, AudioHub.BOSS_JUMP,
-        AudioHub.BOSS_CHARGE, AudioHub.BOSS_HURT, AudioHub.BOSS_DEAD,
+        AudioHub.BOSS_HURT, AudioHub.BOSS_DEAD,
         AudioHub.CHARACTER_JUMP, AudioHub.CHARACTER_HURT, AudioHub.CHARACTER_WALKING,AudioHub.CHARACTER_SLEEPING,
         AudioHub.COLLECT_COIN, AudioHub.COLLECT_BOTTLE, AudioHub.HIT_ENEMY,
         AudioHub.THROW_BOTTLE, AudioHub.BOTTLE_SHATTER
