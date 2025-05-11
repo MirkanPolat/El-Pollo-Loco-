@@ -28,7 +28,8 @@ class AudioHub {
     static COLLECT_COIN = AudioHub.createSound('./audio/coin.mp3', AudioHub.VOLUME.EFFECTS);
     static COLLECT_BOTTLE = AudioHub.createSound('./audio/collect-bottle.mp3', AudioHub.VOLUME.EFFECTS);
     static THROW_BOTTLE = AudioHub.createSound('./audio/throw-bottle.mp3', AudioHub.VOLUME.EFFECTS);
-    static BOTTLE_SHATTER = AudioHub.createSound('./assets/sounds/bottle_break.mp3', AudioHub.VOLUME.EFFECTS);
+    static BOTTLE_SHATTER = AudioHub.createSound('./audio/bottle-shatter.mp3', AudioHub.VOLUME.EFFECTS);
+    static HIT_ENEMY = AudioHub.createSound('./audio/hit-enemy.mp3', AudioHub.VOLUME.EFFECTS);
     
     // Sammlung aller Sounds (ohne Unterhaltungssounds)
     static allSounds = [
@@ -36,7 +37,7 @@ class AudioHub {
         AudioHub.BOSS_ALERT, AudioHub.BOSS_ATTACK, AudioHub.BOSS_JUMP,
         AudioHub.BOSS_CHARGE, AudioHub.BOSS_HURT, AudioHub.BOSS_DEAD,
         AudioHub.CHARACTER_JUMP, AudioHub.CHARACTER_HURT, AudioHub.CHARACTER_WALKING,
-        AudioHub.COLLECT_COIN, AudioHub.COLLECT_BOTTLE, 
+        AudioHub.COLLECT_COIN, AudioHub.COLLECT_BOTTLE, AudioHub.HIT_ENEMY,
         AudioHub.THROW_BOTTLE, AudioHub.BOTTLE_SHATTER
     ];
     
@@ -63,6 +64,12 @@ class AudioHub {
         // Spezielle Anpassung nur für THROW_BOTTLE-Sound
         if (sound === AudioHub.THROW_BOTTLE) {
             sound.currentTime = 0.3; // Überspringe die ersten 0.3 Sekunden
+        }
+        if (sound === AudioHub.BOTTLE_SHATTER) {
+            sound.currentTime = 0.35;
+        }
+        if (sound === AudioHub.HIT_ENEMY) {
+            sound.currentTime = 14.5;
         }
         
         let checkInterval = setInterval(() => {

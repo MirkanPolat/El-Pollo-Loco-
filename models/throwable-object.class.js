@@ -46,6 +46,7 @@ class ThrowableObject extends MovableObject {
 
         if (this.y >= 340) {  // Wenn Flasche Boden berührt
             clearInterval(this.throwInterval);
+            AudioHub.playOne(AudioHub.BOTTLE_SHATTER);
             this.animateSplash();
         }
     }, 26);

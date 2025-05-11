@@ -65,6 +65,7 @@ class World {
           console.log('Chicken getötet durch Sprung!');
           // VON OBEN: Chicken stirbt
           enemy.die();
+          AudioHub.playOne(AudioHub.HIT_ENEMY);
           
           // Character springt nach dem Treffen des Chickens wieder leicht hoch
           this.character.speedY = 25;
@@ -166,6 +167,9 @@ class World {
                     // Markiere die Flasche als kollidiert, damit sie nicht mehrmals Schaden verursacht
                     bottle.hasCollided = true;
                     console.log('Flasche trifft Gegner!');
+                    
+                    // Sound für Treffer auf Gegner
+                    AudioHub.playOne(AudioHub.HIT_ENEMY);
                     
                     if (enemy instanceof Endboss && typeof enemy.hit === 'function') {
                         console.log('→ ENDBOSS HIT BEFORE:', enemy.energy);
