@@ -19,3 +19,8 @@ character_hurt.mp3 – "Ow exclamation of pain"
 Quelle: https://mixkit.co/free-sound-effects/hurt/  
 Lizenz: Mixkit License – frei für kommerzielle & nicht-kommerzielle Nutzung, keine Namensnennung erforderlich  
 Status: Heruntergeladen und gespeichert im Ordner /audio/
+
+collect_bottle.mp3 – "Wine bottles clinking"  
+Quelle: https://mixkit.co/free-sound-effects/discover/bottle/  
+Lizenz: Mixkit License – frei für kommerzielle & nicht-kommerzielle Nutzung, keine Namensnennung erforderlich  
+Status: Heruntergeladen und gespeichert im Ordner /audio/

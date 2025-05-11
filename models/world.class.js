@@ -40,6 +40,7 @@ class World {
       this.throwableObjects.push(bottle);
       this.character.bottles--;
       this.bottleStatusbar.setPercentage(this.character.bottles * 20);
+      AudioHub.playOne(AudioHub.THROW_BOTTLE);
       this.keyboard.D = false; // verhindert mehrfaches Auslösen pro Tastendruck
     }
   }
@@ -207,6 +208,7 @@ class World {
         this.character.bottles++;
         this.bottleStatusbar.setPercentage(this.character.bottles * 20);
         this.level.bottles.splice(i, 1);
+        AudioHub.playOne(AudioHub.COLLECT_BOTTLE);
         break;
       }
     }

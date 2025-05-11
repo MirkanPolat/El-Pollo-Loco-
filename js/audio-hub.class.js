@@ -26,8 +26,8 @@ class AudioHub {
     
     // Effekt-Sounds
     static COLLECT_COIN = AudioHub.createSound('./audio/coin.mp3', AudioHub.VOLUME.EFFECTS);
-    static COLLECT_BOTTLE = AudioHub.createSound('./assets/sounds/bottle_collect.mp3', AudioHub.VOLUME.EFFECTS);
-    static THROW_BOTTLE = AudioHub.createSound('./assets/sounds/bottle_throw.mp3', AudioHub.VOLUME.EFFECTS);
+    static COLLECT_BOTTLE = AudioHub.createSound('./audio/collect-bottle.mp3', AudioHub.VOLUME.EFFECTS);
+    static THROW_BOTTLE = AudioHub.createSound('./audio/throw-bottle.mp3', AudioHub.VOLUME.EFFECTS);
     static BOTTLE_SHATTER = AudioHub.createSound('./assets/sounds/bottle_break.mp3', AudioHub.VOLUME.EFFECTS);
     
     // Sammlung aller Sounds (ohne Unterhaltungssounds)
@@ -59,6 +59,11 @@ class AudioHub {
     static playOne(sound) {
         // Zuerst den Sound stoppen, falls er bereits läuft
         this.stopOne(sound);
+        
+        // Spezielle Anpassung nur für THROW_BOTTLE-Sound
+        if (sound === AudioHub.THROW_BOTTLE) {
+            sound.currentTime = 0.3; // Überspringe die ersten 0.3 Sekunden
+        }
         
         let checkInterval = setInterval(() => {
             // Überprüft, ob die Audiodatei vollständig geladen ist
