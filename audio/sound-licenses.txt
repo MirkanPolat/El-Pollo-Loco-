@@ -42,3 +42,9 @@ Quelle: https://freesound.org/people/sankalp/sounds/180337/
 Direktlink (Audio): https://cdn.freesound.org/previews/180/180337_1859932-lq.mp3  
 Lizenz: Creative Commons Attribution 4.0 – Nutzung erlaubt, Namensnennung erforderlich („Sound by sankalp on freesound.org“)  
 Status: Eingebunden über Direktlink, lokal gespeichert im Ordner /audio/
+
+chicken_alarm.mp3 – "Chicken Single Alarm Call" von Rudmer_Rotteveel  
+Quelle: https://freesound.org/people/Rudmer_Rotteveel/sounds/316920/  
+Direktlink (Audio): https://cdn.freesound.org/previews/316/316920_4921277-lq.mp3  
+Lizenz: Creative Commons 0 (CC0) – frei für kommerzielle & nicht-kommerzielle Nutzung, keine Namensnennung erforderlich  
+Status: Eingebunden über Direktlink, lokal gespeichert im Ordner /audio/

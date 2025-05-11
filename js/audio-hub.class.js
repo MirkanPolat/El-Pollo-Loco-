@@ -16,7 +16,7 @@ class AudioHub {
     static BOSS_JUMP = AudioHub.createSound('./assets/sounds/boss_jump.mp3', AudioHub.VOLUME.BOSS);
     static BOSS_CHARGE = AudioHub.createSound('./assets/sounds/boss_charge.mp3', AudioHub.VOLUME.BOSS);
     static BOSS_HURT = AudioHub.createSound('./assets/sounds/boss_hurt.mp3', AudioHub.VOLUME.BOSS);
-    static BOSS_DEAD = AudioHub.createSound('./assets/sounds/boss_dead.mp3', AudioHub.VOLUME.BOSS);
+    static BOSS_DEAD = AudioHub.createSound('./audio/endboss-dead.mp3', AudioHub.VOLUME.BOSS);
     
     // Charakter-Sounds
     static CHARACTER_JUMP = AudioHub.createSound('./audio/jump.mp3', AudioHub.VOLUME.CHARACTER);
@@ -24,7 +24,6 @@ class AudioHub {
     static CHARACTER_WALKING = AudioHub.createSound('./audio/walking.mp3', AudioHub.VOLUME.CHARACTER * 0.7);
     static CHARACTER_SLEEPING = AudioHub.createSound('./audio/character-sleeping.mp3', AudioHub.VOLUME.CHARACTER * 0.5);
 
-    
     // Effekt-Sounds
     static COLLECT_COIN = AudioHub.createSound('./audio/coin.mp3', AudioHub.VOLUME.EFFECTS);
     static COLLECT_BOTTLE = AudioHub.createSound('./audio/collect-bottle.mp3', AudioHub.VOLUME.EFFECTS);

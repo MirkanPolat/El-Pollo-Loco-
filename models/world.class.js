@@ -168,12 +168,14 @@ class World {
                     bottle.hasCollided = true;
                     console.log('Flasche trifft Gegner!');
                     
-                    // Sound für Treffer auf Gegner
-                    AudioHub.playOne(AudioHub.HIT_ENEMY);
+                    if (!(enemy instanceof Endboss)) {
+                        AudioHub.playOne(AudioHub.HIT_ENEMY);
+                    }
                     
                     if (enemy instanceof Endboss && typeof enemy.hit === 'function') {
                         console.log('→ ENDBOSS HIT BEFORE:', enemy.energy);
                         enemy.hit();  
+                        AudioHub.playOne(AudioHub.BOSS_HIT);
                         console.log('→ ENDBOSS HIT AFTER:', enemy.energy);
 
                         if (this.bossStatusbar) {

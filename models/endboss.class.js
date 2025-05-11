@@ -226,8 +226,14 @@ class Endboss extends MovableObject {
         // Immer nur 20 Energiepunkte abziehen (wie beim Character)
         this.energy -= 20;
         
-        if (this.energy < 0) {
+        if (this.energy <= 0) {
             this.energy = 0;
+            
+            // Boss-Death-Sound beim Tod abspielen (nur einmal)
+            if (!this.deathSoundPlayed) {
+                AudioHub.playOne(AudioHub.BOSS_DEAD);
+                this.deathSoundPlayed = true;
+            }
         } else {
             this.lastHit = new Date().getTime();
             
@@ -236,6 +242,9 @@ class Endboss extends MovableObject {
                 this.hadFirstContact = true;
                 this.lastAction = new Date().getTime();
             }
+            
+            // Boss-Hurt-Sound beim Treffer abspielen
+            AudioHub.playOne(AudioHub.BOSS_HURT);
         }
     }
 
