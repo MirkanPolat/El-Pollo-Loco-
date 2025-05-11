@@ -70,6 +70,23 @@ class AudioHub {
         if (sound === AudioHub.HIT_ENEMY) {
             sound.currentTime = 14.5;
         }
+        if (sound === AudioHub.BACKGROUND_MUSIC) {
+            sound.currentTime = 0.4; // Setzt die Wiedergabeposition auf den Anfang
+            
+            // Event-Listener entfernen, falls bereits vorhanden (verhindert Dopplung)
+            sound.removeEventListener('timeupdate', sound._timeUpdateHandler);
+            
+            // Event-Handler zum Abschneiden der letzten 10 Sekunden
+            sound._timeUpdateHandler = () => {
+                // Wenn wir die letzten 10 Sekunden erreicht haben, zurück zum Anfang springen
+                if (sound.currentTime >= sound.duration - 3) {
+                    sound.currentTime = 0.4; // Zurück zum Anfang mit dem gleichen Offset
+                }
+            };
+            
+            // Event-Listener hinzufügen
+            sound.addEventListener('timeupdate', sound._timeUpdateHandler);
+        }
         
         let checkInterval = setInterval(() => {
             // Überprüft, ob die Audiodatei vollständig geladen ist
