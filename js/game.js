@@ -5,7 +5,8 @@ let keyboard = new Keyboard();
 function init(){
     canvas = document.getElementById("canvas");
     world = new World(canvas, keyboard);
-
+    AudioHub.playBackgroundMusic();
+    
     console.log('MyCharacter', world.character);
 }
 

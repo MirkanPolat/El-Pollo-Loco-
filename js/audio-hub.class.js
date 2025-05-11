@@ -8,7 +8,7 @@ class AudioHub {
     };
     //
     // Hintergrundmusik
-    static BACKGROUND_MUSIC = AudioHub.createSound('./assets/sounds/background_music.mp3', AudioHub.VOLUME.BACKGROUND);
+    static BACKGROUND_MUSIC = AudioHub.createSound('./audio/latin-mexican-salsa-background-music.mp3', AudioHub.VOLUME.BACKGROUND);
     
     // Endboss-Sounds
     static BOSS_ALERT = AudioHub.createSound('./assets/sounds/boss_alert.mp3', AudioHub.VOLUME.BOSS);
@@ -107,21 +107,54 @@ class AudioHub {
         });
     }
 
-/**
- * Spielt einen Walking-Sound in einer Schleife, wenn der Charakter läuft
- * @param {Audio} sound - Der abzuspielende Sound
- * @param {boolean} isWalking - Ist der Charakter in Bewegung?
- */
-static playWalkingSound(sound, isWalking) {
-    if (isWalking) {
-        // Wenn Sound nicht läuft oder fast zu Ende ist, neu starten
-        if (sound.paused || sound.currentTime > sound.duration - 0.1) {
-            sound.currentTime = 0;
-            sound.play();
+    /**
+     * Spielt einen Walking-Sound in einer Schleife, wenn der Charakter läuft
+     * @param {Audio} sound - Der abzuspielende Sound
+     * @param {boolean} isWalking - Ist der Charakter in Bewegung?
+     */
+    static playWalkingSound(sound, isWalking) {
+        if (isWalking) {
+            // Wenn Sound nicht läuft oder fast zu Ende ist, neu starten
+            if (sound.paused || sound.currentTime > sound.duration - 0.1) {
+                sound.currentTime = 0;
+                sound.play();
+            }
+        } else {
+            // Wenn nicht läuft, Sound stoppen
+            this.stopOne(sound);
         }
-    } else {
-        // Wenn nicht läuft, Sound stoppen
-        this.stopOne(sound);
     }
-}
+
+    // Aktuelle Hintergrundmusik
+    static currentMusic;
+
+    /**
+     * Startet die Hintergrundmusik
+     */
+    static playBackgroundMusic() {
+        // Vorherige Musik stoppen (falls vorhanden)
+        if (AudioHub.currentMusic) {
+            AudioHub.stopOne(AudioHub.currentMusic);
+        }
+        
+        // Neue Musik starten
+        AudioHub.currentMusic = AudioHub.BACKGROUND_MUSIC;
+        AudioHub.currentMusic.loop = true;
+        AudioHub.playOne(AudioHub.currentMusic);
+    }
+
+    /**
+     * Wechselt zu einem anderen Hintergrund-Sound
+     * @param {Audio} newSound - Der neue abzuspielende Sound
+     * @param {boolean} loop - Ob der Sound in Schleife gespielt werden soll
+     */
+    static changeGameMusic(newSound, loop = true) {
+        if (AudioHub.currentMusic) {
+            AudioHub.stopOne(AudioHub.currentMusic);
+        }
+        
+        AudioHub.currentMusic = newSound;
+        AudioHub.currentMusic.loop = loop;
+        AudioHub.playOne(AudioHub.currentMusic);
+    }
 }

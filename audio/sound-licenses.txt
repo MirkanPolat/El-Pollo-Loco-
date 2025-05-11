@@ -59,3 +59,8 @@ endboss_attack.mp3 – "Impact of a strong punch"
 Quelle: https://mixkit.co/free-sound-effects/hit/  
 Lizenz: Mixkit License – frei für kommerzielle & nicht-kommerzielle Nutzung, keine Namensnennung erforderlich  
 Status: Heruntergeladen und gespeichert im Ordner /audio/
+
+latin_salsa.mp3 – "Latin Mexican Salsa Background Music" von HitsLab  
+Quelle: https://pixabay.com/music/world-latin-mexican-salsa-background-music-15363/  
+Lizenz: Pixabay License – frei für kommerzielle & nicht-kommerzielle Nutzung, keine Namensnennung erforderlich  
+Status: Heruntergeladen und gespeichert im Ordner /audio/
