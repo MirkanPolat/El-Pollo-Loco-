@@ -11,6 +11,12 @@ class MovableObject extends DrawableObject {
       if (this.isAboveGround() || this.speedY > 0) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
+        
+        // Bodenprüfung nach der Bewegung hinzufügen
+        if (this instanceof Character && !this.isAboveGround() && this.y > 150) {
+          this.y = 150; // Feste Bodenposition für Character
+          this.speedY = 0;
+        }
 
         if (this instanceof ThrowableObject && this.y >= 340) {
           this.speed = 0;

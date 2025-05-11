@@ -147,11 +147,19 @@ class Character extends MovableObject {
           let timeSinceLastActivity = new Date().getTime() - this.lastActivity;
 
           if (timeSinceLastActivity > this.SLEEP_TIMEOUT) {
-            // Nach 15 Sekunden Inaktivität: Schlaf-Animation
+            // Nach 10 Sekunden Inaktivität: Schlaf-Animation
             this.PlayAnimation(this.IMAGES_SLEEPING);
+
+            // Schlaf-Sound abspielen, wenn er nicht bereits läuft
+            if (AudioHub.CHARACTER_SLEEPING.paused) {
+              AudioHub.playOne(AudioHub.CHARACTER_SLEEPING);
+            }
           } else {
             // Sofortige Idle-Animation, wenn keine Tasten gedrückt sind
             this.PlayAnimation(this.IMAGES_IDLE);
+
+            // Schlaf-Sound stoppen, wenn der Character aufwacht
+            AudioHub.stopOne(AudioHub.CHARACTER_SLEEPING);
           }
         }
       }
