@@ -92,25 +92,36 @@ class Endboss extends MovableObject {
             const timePassed = new Date().getTime() - this.lastAction;
             const currentPhase = this.determinePhase();
             
-            // Phase-spezifische Werte einstellen
+            // Phase-spezifische Werte - AGGRESSIVER!
             if (currentPhase === 'phase1') {
-                this.attackCooldown = 4000;
-                this.attackDuration = 2000;
-                this.speed = 10;
+                this.attackCooldown = 3000;    // War 4000 - schnellere Angriffe
+                this.attackDuration = 2500;    // War 2000 - längere Angriffszeit
+                this.speed = 15;               // War 10 - schnellere Bewegung
             } else if (currentPhase === 'phase2') {
-                this.attackCooldown = 3000;
-                this.attackDuration = 2500;
-                this.speed = 12;
+                this.attackCooldown = 2000;    // War 3000 - noch schnellere Angriffe
+                this.attackDuration = 3000;    // War 2500 - längere Angriffszeit
+                this.speed = 20;               // War 12 - deutlich schnellere Bewegung
             } else { // phase3
-                this.attackCooldown = 2000;
-                this.attackDuration = 3000;
-                this.speed = 15;
+                this.attackCooldown = 1500;    // War 2000 - sehr schnelle Angriffe
+                this.attackDuration = 3500;    // War 3000 - längere Angriffszeit
+                this.speed = 25;               // War 15 - extrem schnelle Bewegung
+            }
+            
+            // Spieler verfolgen (füge diese Referenz in der world.js hinzu: this.endboss.character = this.character)
+            if (world && world.character && this.x > world.character.x + 150) {
+                this.moveLeft();  // Folge dem Spieler aggressiver
             }
             
             if (this.isHurt()) {
+                // Auch wenn verletzt, nur kurz zurückziehen, dann wieder angreifen
                 this.moveRight();
+                setTimeout(() => {
+                    this.lastAction = new Date().getTime() - this.attackCooldown + 500; // Sofort wieder angreifen
+                }, 800);  
             } else if (this.isAttacking) {
+                // Aggressiver angreifen - schneller zum Spieler
                 this.moveLeft();
+                this.speed += 5; // Noch schneller während des Angriffs
                 
                 if (timePassed > this.attackDuration) {
                     this.isAttacking = false;
@@ -150,32 +161,63 @@ class Endboss extends MovableObject {
     performAttack() {
         switch(this.currentAttack) {
             case 'jumpAttack':
-                this.speedY = 30;
+                this.speedY = 40;  // War 30 - höherer Sprung
                 // Speichere die ursprüngliche Y-Position vor dem Sprung
                 this.groundPosition = this.y;
                 
-                // Modifizierte Gravitationslogik mit Ground-Check
+                // Schnellerer und aggressiverer Sprung
                 let jumpInterval = setInterval(() => {
-                    // Anwendung der Gravitation
+                    // Aggressivere Gravitation
                     this.y -= this.speedY;
-                    this.speedY -= this.acceleration;
+                    this.speedY -= this.acceleration * 1.2;  // Schnelleres Fallen
+                    
+                    // Beim Sprung auch horizontal bewegen - folge dem Spieler
+                    if (world && world.character) {
+                        if (this.x > world.character.x) {
+                            this.x -= this.speed * 1.2; // Aggressiver in Richtung Spieler
+                        }
+                    }
                     
                     // Überprüfung, ob der Boss zurück am Boden ist
                     if (this.y > this.groundPosition) {
-                        // Boss ist unter die Startposition gefallen, korrigiere Position
                         this.y = this.groundPosition;
                         this.speedY = 0;
                         clearInterval(jumpInterval);
+                        
+                        // Nach der Landung sofort einen Folgeangriff starten
+                        this.isAttacking = true;
+                        this.lastAction = new Date().getTime();
                     }
                 }, 1000/60);
                 break;
             case 'chargeAttack':
-                this.speed = 20;
-                setTimeout(() => this.speed = 10, 1000);
+                this.speed = 30;  // War 20 - viel schnellerer Ansturm
+                
+                // Wütender Sound abspielen
+                if (this.bossSound) {
+                    this.bossSound.play();
+                }
+                
+                // Nach dem Ansturm nicht sofort verlangsamen
+                setTimeout(() => {
+                    this.speed = 15;  // War 10
+                    
+                    // Chance für einen sofortigen zweiten Angriff
+                    if (Math.random() < 0.4) { // 40% Chance für Folgeangriff
+                        this.isAttacking = true;
+                        this.lastAction = new Date().getTime();
+                        this.selectAttackType();
+                        this.performAttack();
+                    }
+                }, 1200);  // War 1000 - längerer Ansturm
                 break;
             case 'normalAttack':
             default:
-                // Standard-Angriff
+                // Auch normaler Angriff aggressiver
+                this.speed += 8;  // Geschwindigkeitsschub
+                setTimeout(() => {
+                    this.speed = Math.max(10, this.speed - 8);
+                }, 1000);
                 break;
         }
     }
