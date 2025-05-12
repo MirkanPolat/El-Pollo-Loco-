@@ -1,13 +1,20 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let gameStarted = false;
 
-function init(){
+function initStartScreen() {
     canvas = document.getElementById("canvas");
+    console.log('Start screen initialized, waiting for button click...');
+}
+
+function startGame() {
+    document.getElementById('start-screen').style.display = 'none';
     world = new World(canvas, keyboard);
     AudioHub.playBackgroundMusic();
     
-    console.log('MyCharacter', world.character);
+    console.log('Game started!', world.character);
+    gameStarted = true;
 }
 
 window.addEventListener('keydown', (event) => {

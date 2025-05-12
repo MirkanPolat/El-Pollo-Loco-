@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <link rel="shortcut icon" href="./img/favicon/favicon.png" type="image/x-icon">
-    <title>Document</title>
+    <title>El Pollo Loco</title>
     <script src="models/drawable-object.class.js"></script>
     <script src="models/movable-object.class.js"></script>
     <script src="js/audio-hub.class.js"></script>
@@ -26,19 +26,31 @@
     <script src="models/boss-status-bar.class.js"></script>
     <script src="levels/level1.js"></script>
     <script src="js/game.js"></script>
-  </head>
-  <body onload="initStartScreen()">
+</head>
+<body>
     <h1>El Pollo Loco</h1>
     
-    <div id="game-container">
-      <canvas id="canvas" width="720px" height="480px"></canvas>
-      
-      <div id="start-screen">
-        <img src="./img/9_intro_outro_screens/start/startscreen_1.png" class="start-img">
-      </div>
+    <canvas id="canvas" width="720px" height="480px"></canvas>
+
+    <!-- Start Screen Overlay -->
+    <div id="start-screen" class="overlay">
+        <img src="./img/start-screen-image.png" alt="Start Screen" class="start-image" />
+        <button id="start-button">Start Game</button>
     </div>
 
-    <!-- Button außerhalb des game-containers -->
-    <button id="start-button" onclick="startGame()">START GAME</button>
-  </body>
+    <script>
+        // Hide the canvas initially
+        document.getElementById('canvas').style.display = 'none';
+
+        // Start game function
+        function startGame() {
+            document.getElementById('start-screen').style.display = 'none'; // Hide start screen
+            document.getElementById('canvas').style.display = 'block'; // Show canvas
+            init(); // Call the init function to start the game
+        }
+
+        // Add event listener to the start button
+        document.getElementById('start-button').addEventListener('click', startGame);
+    </script>
+</body>
 </html>
