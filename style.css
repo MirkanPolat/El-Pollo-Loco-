@@ -16,14 +16,17 @@ body {
 
 #game-container {
   position: relative;
-  width: 720px;
-  height: 480px;
+  width: 100%;      /* Statt fester Breite */
+  max-width: 720px; /* Maximale Breite */
+  height: auto;     /* Automatische Höhe basierend auf Inhalt */
   margin: 0 auto;
 }
 
 canvas {
     background-color: black;
     display: block;
+    width: 100%;      /* Canvas nimmt volle Breite des Containers ein */
+    height: auto;     /* Behält Seitenverhältnis bei */
 }
 
 #start-screen {
@@ -33,21 +36,26 @@ canvas {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start; /* Button unten ausrichten */
   align-items: center;
   z-index: 10;
+  padding-bottom: 5%; /* Relativer Abstand statt fester Pixel */
 }
 
 .start-img {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  z-index: -1; 
 }
 
 #start-button {
-  margin-top: 20px;
-  position: relative;
+  position: relative; 
+  z-index: 20;
+  margin-top: 33px;
   padding: 15px 40px;
   font-family: 'Satisfy', 'Brush Script MT', cursive;
   font-size: 28px;
@@ -64,7 +72,6 @@ canvas {
   border-radius: 2px;
   cursor: pointer;
   transition: all 0.3s ease;
-  z-index: 20;
   letter-spacing: 1px;
   box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
 }

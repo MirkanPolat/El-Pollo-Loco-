@@ -5,7 +5,6 @@ let gameStarted = false;
 
 function initStartScreen() {
     canvas = document.getElementById("canvas");
-    console.log('Start screen initialized, waiting for button click...');
 }
 
 function startGame() {
