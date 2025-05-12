@@ -1,6 +1,6 @@
 class AudioHub {
     static VOLUME = {
-        BACKGROUND: 0.3,   
+        BACKGROUND: 0.1,   
         EFFECTS: 0.4,      
         CHARACTER: 0.6,   
         BOSS: 0.7      

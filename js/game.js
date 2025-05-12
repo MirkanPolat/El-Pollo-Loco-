@@ -2,15 +2,33 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let gameStarted = false;
+let isMuted = false;
 
 function initStartScreen() {
     canvas = document.getElementById("canvas");
 }
 
+function toggleSound() {
+    isMuted = !isMuted;
+    
+    if (isMuted) {
+        AudioHub.stopAll();
+        document.getElementById('sound-icon').src = './img/sound_imgs/mute.png';
+    } else {
+        if (gameStarted) {
+            AudioHub.playBackgroundMusic();
+        }
+        document.getElementById('sound-icon').src = './img/sound_imgs/unmute.png';
+    }
+}
+
 function startGame() {
     document.getElementById('start-screen').style.display = 'none';
     world = new World(canvas, keyboard);
-    AudioHub.playBackgroundMusic();
+    
+    if (!isMuted) {
+        AudioHub.playBackgroundMusic();
+    }
     
     console.log('Game started!', world.character);
     gameStarted = true;
