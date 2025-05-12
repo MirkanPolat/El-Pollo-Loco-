@@ -11,10 +11,9 @@ class MovableObject extends DrawableObject {
       if (this.isAboveGround() || this.speedY > 0) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
-        
-        // Bodenprüfung nach der Bewegung hinzufügen
+
         if (this instanceof Character && !this.isAboveGround() && this.y > 150) {
-          this.y = 150; // Feste Bodenposition für Character
+          this.y = 150; 
           this.speedY = 0;
         }
 
@@ -57,8 +56,7 @@ class MovableObject extends DrawableObject {
       this.energy = 0;
     } else {
       this.lastHit = new Date().getTime();
-      
-      // Sound nur abspielen, wenn es der Character ist, der getroffen wird
+    
       if (this instanceof Character) {
         AudioHub.playOne(AudioHub.CHARACTER_HURT);
       }
@@ -107,7 +105,6 @@ class MovableObject extends DrawableObject {
     clearInterval(this.rotationInterval);
     this.PlayAnimation(this.bottleSplashImages);
     setTimeout(() => {
-      // Optional: Objekt entfernen oder Splash abschließen
     }, 500);
   }
 }

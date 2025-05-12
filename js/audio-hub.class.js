@@ -1,50 +1,43 @@
 class AudioHub {
-    // Lautstärke-Voreinstellungen
     static VOLUME = {
-        BACKGROUND: 0.3,   // Hintergrundmusik leiser
-        EFFECTS: 0.4,      // Effekte lauter
-        CHARACTER: 0.6,    // Charakter-Sounds mittel
-        BOSS: 0.7         // Boss-Sounds etwas lauter
+        BACKGROUND: 0.3,   
+        EFFECTS: 0.4,      
+        CHARACTER: 0.6,   
+        BOSS: 0.7      
     };
-    //
-    // Hintergrundmusik
     static BACKGROUND_MUSIC = AudioHub.createSound('./audio/latin-mexican-salsa-background-music.mp3', AudioHub.VOLUME.BACKGROUND);
     
-    // Endboss-Sounds
-    static BOSS_ALERT = AudioHub.createSound('./assets/sounds/boss_alert.mp3', AudioHub.VOLUME.BOSS);
+    // Boss sounds
     static BOSS_ATTACK = AudioHub.createSound('./audio/endboss-attack.mp3', AudioHub.VOLUME.BOSS);
-    static BOSS_JUMP = AudioHub.createSound('./assets/sounds/boss_jump.mp3', AudioHub.VOLUME.BOSS);
     static BOSS_HURT = AudioHub.createSound('./audio/endboss-hurt.mp3', AudioHub.VOLUME.BOSS);
     static BOSS_DEAD = AudioHub.createSound('./audio/endboss-dead.mp3', AudioHub.VOLUME.BOSS);
     
-    // Charakter-Sounds
+    // Character sounds
     static CHARACTER_JUMP = AudioHub.createSound('./audio/jump.mp3', AudioHub.VOLUME.CHARACTER);
     static CHARACTER_HURT = AudioHub.createSound('./audio/character-hurt.mp3', AudioHub.VOLUME.CHARACTER);
     static CHARACTER_WALKING = AudioHub.createSound('./audio/walking.mp3', AudioHub.VOLUME.CHARACTER * 0.7);
     static CHARACTER_SLEEPING = AudioHub.createSound('./audio/character-sleeping.mp3', AudioHub.VOLUME.CHARACTER * 0.5);
 
-    // Effekt-Sounds
+    // Effect sounds
     static COLLECT_COIN = AudioHub.createSound('./audio/coin.mp3', AudioHub.VOLUME.EFFECTS);
     static COLLECT_BOTTLE = AudioHub.createSound('./audio/collect-bottle.mp3', AudioHub.VOLUME.EFFECTS);
     static THROW_BOTTLE = AudioHub.createSound('./audio/throw-bottle.mp3', AudioHub.VOLUME.EFFECTS);
     static BOTTLE_SHATTER = AudioHub.createSound('./audio/bottle-shatter.mp3', AudioHub.VOLUME.EFFECTS);
     static HIT_ENEMY = AudioHub.createSound('./audio/hit-enemy.mp3', AudioHub.VOLUME.EFFECTS);
-    
-    // Sammlung aller Sounds (ohne Unterhaltungssounds)
+
     static allSounds = [
         AudioHub.BACKGROUND_MUSIC,
-        AudioHub.BOSS_ALERT, AudioHub.BOSS_ATTACK, AudioHub.BOSS_JUMP,
-        AudioHub.BOSS_HURT, AudioHub.BOSS_DEAD,
+        AudioHub.BOSS_ATTACK, AudioHub.BOSS_HURT, AudioHub.BOSS_DEAD,
         AudioHub.CHARACTER_JUMP, AudioHub.CHARACTER_HURT, AudioHub.CHARACTER_WALKING,AudioHub.CHARACTER_SLEEPING,
         AudioHub.COLLECT_COIN, AudioHub.COLLECT_BOTTLE, AudioHub.HIT_ENEMY,
         AudioHub.THROW_BOTTLE, AudioHub.BOTTLE_SHATTER
     ];
     
     /**
-     * Hilfsmethode zum Erstellen eines Audio-Objekts mit festgelegter Lautstärke
-     * @param {string} path - Pfad zur Audio-Datei
-     * @param {number} volume - Lautstärke (0.0 bis 1.0)
-     * @returns {Audio} - Audio-Objekt
+     * Helper method to create an audio object with specified volume
+     * @param {string} path - Path to the audio file
+     * @param {number} volume - Volume level (0.0 to 1.0)
+     * @returns {Audio} - Audio object
      */
     static createSound(path, volume) {
         const sound = new Audio(path);
@@ -53,16 +46,16 @@ class AudioHub {
     }
 
     /**
-     * Spielt eine Audiodatei ab mit Überprüfung des Ladezustands
-     * @param {Audio} sound - Das abzuspielende Audio-Objekt
+     * Plays an audio file with load state verification
+     * @param {Audio} sound - The audio object to play
      */
     static playOne(sound) {
-        // Zuerst den Sound stoppen, falls er bereits läuft
+        // First stop the sound if it's already playing
         this.stopOne(sound);
         
-        // Spezielle Anpassung nur für THROW_BOTTLE-Sound
+        // Special adjustment only for THROW_BOTTLE sound
         if (sound === AudioHub.THROW_BOTTLE) {
-            sound.currentTime = 0.3; // Überspringe die ersten 0.3 Sekunden
+            sound.currentTime = 0.3; // Skip the first 0.3 seconds
         }
         if (sound === AudioHub.BOTTLE_SHATTER) {
             sound.currentTime = 0.35;
@@ -71,99 +64,99 @@ class AudioHub {
             sound.currentTime = 14.5;
         }
         if (sound === AudioHub.BACKGROUND_MUSIC) {
-            sound.currentTime = 0.4; // Setzt die Wiedergabeposition auf den Anfang
+            sound.currentTime = 0.4; // Set the playback position to the beginning
             
-            // Event-Listener entfernen, falls bereits vorhanden (verhindert Dopplung)
+            // Remove event listener if already exists (prevents duplication)
             sound.removeEventListener('timeupdate', sound._timeUpdateHandler);
             
-            // Event-Handler zum Abschneiden der letzten 10 Sekunden
+            // Event handler to cut off the last 3 seconds
             sound._timeUpdateHandler = () => {
-                // Wenn wir die letzten 10 Sekunden erreicht haben, zurück zum Anfang springen
+                // When we reach the last 3 seconds, jump back to the beginning
                 if (sound.currentTime >= sound.duration - 3) {
-                    sound.currentTime = 0.4; // Zurück zum Anfang mit dem gleichen Offset
+                    sound.currentTime = 0.4; // Back to the beginning with the same offset
                 }
             };
             
-            // Event-Listener hinzufügen
+            // Add event listener
             sound.addEventListener('timeupdate', sound._timeUpdateHandler);
         }
         
         let checkInterval = setInterval(() => {
-            // Überprüft, ob die Audiodatei vollständig geladen ist
+            // Check if the audio file is fully loaded
             if (sound.readyState == 4) {
                 console.log("Sound ready");
-                sound.play(); // Spielt das übergebene Sound-Objekt ab
+                sound.play(); // Play the provided sound object
                 clearInterval(checkInterval);
             } else {
                 console.log("Sound not ready");
             }
         }, 200);
         
-        // Sicherheits-Timeout nach 1 Sekunde
+        // Safety timeout after 1 second
         setTimeout(() => {
             clearInterval(checkInterval);
         }, 1000);
     }
     
     /**
-     * Stoppt eine einzelne Audiodatei
-     * @param {Audio} sound - Das zu stoppende Audio-Objekt
+     * Stops a single audio file
+     * @param {Audio} sound - The audio object to stop
      */
     static stopOne(sound) {
-        sound.pause(); // Pausiert das übergebene Audio
-        sound.currentTime = 0; // Setzt Wiedergabeposition zurück
+        sound.pause(); // Pause the provided audio
+        sound.currentTime = 0; // Reset playback position
     }
     
     /**
-     * Stoppt das Abspielen aller Audiodateien
+     * Stops playback of all audio files
      */
     static stopAll() {
         AudioHub.allSounds.forEach(sound => {
-            sound.pause(); // Pausiert jedes Audio in der Liste
-            sound.currentTime = 0; // Setzt Wiedergabeposition zurück
+            sound.pause(); // Pause each audio in the list
+            sound.currentTime = 0; // Reset playback position
         });
     }
 
     /**
-     * Spielt einen Walking-Sound in einer Schleife, wenn der Charakter läuft
-     * @param {Audio} sound - Der abzuspielende Sound
-     * @param {boolean} isWalking - Ist der Charakter in Bewegung?
+     * Plays a walking sound in a loop when the character is walking
+     * @param {Audio} sound - The sound to play
+     * @param {boolean} isWalking - Is the character moving?
      */
     static playWalkingSound(sound, isWalking) {
         if (isWalking) {
-            // Wenn Sound nicht läuft oder fast zu Ende ist, neu starten
+            // If sound is not playing or almost finished, restart
             if (sound.paused || sound.currentTime > sound.duration - 0.1) {
                 sound.currentTime = 0;
                 sound.play();
             }
         } else {
-            // Wenn nicht läuft, Sound stoppen
+            // If not walking, stop the sound
             this.stopOne(sound);
         }
     }
 
-    // Aktuelle Hintergrundmusik
+    // Current background music
     static currentMusic;
 
     /**
-     * Startet die Hintergrundmusik
+     * Starts the background music
      */
     static playBackgroundMusic() {
-        // Vorherige Musik stoppen (falls vorhanden)
+        // Stop previous music (if exists)
         if (AudioHub.currentMusic) {
             AudioHub.stopOne(AudioHub.currentMusic);
         }
         
-        // Neue Musik starten
+        // Start new music
         AudioHub.currentMusic = AudioHub.BACKGROUND_MUSIC;
         AudioHub.currentMusic.loop = true;
         AudioHub.playOne(AudioHub.currentMusic);
     }
 
     /**
-     * Wechselt zu einem anderen Hintergrund-Sound
-     * @param {Audio} newSound - Der neue abzuspielende Sound
-     * @param {boolean} loop - Ob der Sound in Schleife gespielt werden soll
+     * Changes to a different background sound
+     * @param {Audio} newSound - The new sound to play
+     * @param {boolean} loop - Whether the sound should play in a loop
      */
     static changeGameMusic(newSound, loop = true) {
         if (AudioHub.currentMusic) {

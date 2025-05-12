@@ -7,7 +7,7 @@ class Endboss extends MovableObject {
     hadFirstContact = false;
     speed = 10;
     isAttacking = false;
-    lastAction = new Date().getTime(); // Wichtig: Initialisierung von lastAction
+    lastAction = new Date().getTime();
     
     offset = {
         top: 80,
@@ -16,7 +16,6 @@ class Endboss extends MovableObject {
         right: 50
     };
 
-    // Alert-Animation (wenn der Boss den Spieler bemerkt)
     IMAGES_ALERT = [
         "./img/4_enemie_boss_chicken/2_alert/G5.png",
         "./img/4_enemie_boss_chicken/2_alert/G6.png",
@@ -28,7 +27,6 @@ class Endboss extends MovableObject {
         "./img/4_enemie_boss_chicken/2_alert/G12.png"
     ];
 
-    // Lauf-Animation
     IMAGES_WALKING = [
         "./img/4_enemie_boss_chicken/1_walk/G1.png",
         "./img/4_enemie_boss_chicken/1_walk/G2.png",
@@ -36,7 +34,6 @@ class Endboss extends MovableObject {
         "./img/4_enemie_boss_chicken/1_walk/G4.png"
     ];
 
-    // Angriff-Animation
     IMAGES_ATTACK = [
         "./img/4_enemie_boss_chicken/3_attack/G13.png",
         "./img/4_enemie_boss_chicken/3_attack/G14.png",
@@ -48,14 +45,12 @@ class Endboss extends MovableObject {
         "./img/4_enemie_boss_chicken/3_attack/G20.png"
     ];
 
-    // Verletzt-Animation
     IMAGES_HURT = [
         "./img/4_enemie_boss_chicken/4_hurt/G21.png",
         "./img/4_enemie_boss_chicken/4_hurt/G22.png",
         "./img/4_enemie_boss_chicken/4_hurt/G23.png"
     ];
 
-    // Tod-Animation
     IMAGES_DEAD = [
         "./img/4_enemie_boss_chicken/5_dead/G24.png",
         "./img/4_enemie_boss_chicken/5_dead/G25.png",
@@ -75,7 +70,6 @@ class Endboss extends MovableObject {
         this.animate();
     }
 
-    // Neue Methode für die Endboss-Klasse
     determinePhase() {
         if (this.energy > 70) {
             return 'phase1'; // 100%-70% Gesundheit - leichte Angriffe
@@ -86,42 +80,40 @@ class Endboss extends MovableObject {
         }
     }
 
-    // Neues Bewegungsmuster für den Endboss
     updateBossActions() {
         try {
             const timePassed = new Date().getTime() - this.lastAction;
             const currentPhase = this.determinePhase();
             
-            // Phase-spezifische Werte - AGGRESSIVER!
+            // more agrresive attack and movement
             if (currentPhase === 'phase1') {
-                this.attackCooldown = 3000;    // War 4000 - schnellere Angriffe
-                this.attackDuration = 2500;    // War 2000 - längere Angriffszeit
-                this.speed = 15;               // War 10 - schnellere Bewegung
+                this.attackCooldown = 3000;    
+                this.attackDuration = 2500;    
+                this.speed = 15;              
             } else if (currentPhase === 'phase2') {
-                this.attackCooldown = 2000;    // War 3000 - noch schnellere Angriffe
-                this.attackDuration = 3000;    // War 2500 - längere Angriffszeit
-                this.speed = 20;               // War 12 - deutlich schnellere Bewegung
-            } else { // phase3
-                this.attackCooldown = 1500;    // War 2000 - sehr schnelle Angriffe
-                this.attackDuration = 3500;    // War 3000 - längere Angriffszeit
-                this.speed = 25;               // War 15 - extrem schnelle Bewegung
+                this.attackCooldown = 2000;    
+                this.attackDuration = 3000;    
+                this.speed = 20;              
+            } else {
+                this.attackCooldown = 1500;    
+                this.attackDuration = 3500;   
+                this.speed = 25;              
             }
             
-            // Spieler verfolgen (füge diese Referenz in der world.js hinzu: this.endboss.character = this.character)
+            // follow the player more aggressively
             if (world && world.character && this.x > world.character.x + 150) {
-                this.moveLeft();  // Folge dem Spieler aggressiver
+                this.moveLeft();
             }
             
             if (this.isHurt()) {
-                // Auch wenn verletzt, nur kurz zurückziehen, dann wieder angreifen
+                // short hurt animation
                 this.moveRight();
                 setTimeout(() => {
                     this.lastAction = new Date().getTime() - this.attackCooldown + 500; // Sofort wieder angreifen
                 }, 800);  
             } else if (this.isAttacking) {
-                // Aggressiver angreifen - schneller zum Spieler
                 this.moveLeft();
-                this.speed += 5; // Noch schneller während des Angriffs
+                this.speed += 5;
                 
                 if (timePassed > this.attackDuration) {
                     this.isAttacking = false;
@@ -138,20 +130,19 @@ class Endboss extends MovableObject {
         }
     }
 
-    // Zufälligen Angriffstyp wählen
     selectAttackType() {
         const phase = this.determinePhase();
         
         if (phase === 'phase3') {
-            // In Phase 3 alle Angriffe möglich
+            // In Phase 3 all attacks available
             const randomIndex = Math.floor(Math.random() * this.attacks.length);
             this.currentAttack = this.attacks[randomIndex];
         } else if (phase === 'phase2') {
-            // In Phase 2 nur normal und charge
+            // In Phase 2 only jump and charge attacks
             const randomIndex = Math.floor(Math.random() * 2);
             this.currentAttack = this.attacks[randomIndex];
         } else {
-            // In Phase 1 nur normale Angriffe
+            // In Phase 1 only normal attack
             this.currentAttack = 'normalAttack';
         }
         
@@ -161,60 +152,48 @@ class Endboss extends MovableObject {
     performAttack() {
         switch(this.currentAttack) {
             case 'jumpAttack':
-                this.speedY = 40;  // War 30 - höherer Sprung
-                // Speichere die ursprüngliche Y-Position vor dem Sprung
+                this.speedY = 40; 
+                // Save the ground position for jump
                 this.groundPosition = this.y;
-                
-                // Schnellerer und aggressiverer Sprung
                 let jumpInterval = setInterval(() => {
-                    // Aggressivere Gravitation
                     this.y -= this.speedY;
-                    this.speedY -= this.acceleration * 1.2;  // Schnelleres Fallen
+                    this.speedY -= this.acceleration * 1.2;  // fall fast
                     
-                    // Beim Sprung auch horizontal bewegen - folge dem Spieler
+                    // Aggressiv movement towards player
                     if (world && world.character) {
                         if (this.x > world.character.x) {
-                            this.x -= this.speed * 1.2; // Aggressiver in Richtung Spieler
+                            this.x -= this.speed * 1.2;
                         }
                     }
                     
-                    // Überprüfung, ob der Boss zurück am Boden ist
+                    // check if the boss is falling
                     if (this.y > this.groundPosition) {
                         this.y = this.groundPosition;
                         this.speedY = 0;
                         clearInterval(jumpInterval);
-                        
-                        // Nach der Landung sofort einen Folgeangriff starten
                         this.isAttacking = true;
                         this.lastAction = new Date().getTime();
                     }
                 }, 1000/60);
                 break;
             case 'chargeAttack':
-                this.speed = 30;  // War 20 - viel schnellerer Ansturm
-                
-                // Wütender Sound abspielen
+                this.speed = 30;
                 if (this.bossSound) {
                     this.bossSound.play();
                 }
-                
-                // Nach dem Ansturm nicht sofort verlangsamen
                 setTimeout(() => {
-                    this.speed = 15;  // War 10
-                    
-                    // Chance für einen sofortigen zweiten Angriff
-                    if (Math.random() < 0.4) { // 40% Chance für Folgeangriff
+                    this.speed = 15;  
+                    if (Math.random() < 0.4) { // 40% Chance for a charge attack
                         this.isAttacking = true;
                         this.lastAction = new Date().getTime();
                         this.selectAttackType();
                         this.performAttack();
                     }
-                }, 1200);  // War 1000 - längerer Ansturm
+                }, 1200);
                 break;
             case 'normalAttack':
             default:
-                // Auch normaler Angriff aggressiver
-                this.speed += 8;  // Geschwindigkeitsschub
+                this.speed += 8; 
                 setTimeout(() => {
                     this.speed = Math.max(10, this.speed - 8);
                 }, 1000);
@@ -223,27 +202,20 @@ class Endboss extends MovableObject {
     }
 
     hit() {
-        // Immer nur 20 Energiepunkte abziehen (wie beim Character)
         this.energy -= 20;
         
         if (this.energy <= 0) {
             this.energy = 0;
-            
-            // Boss-Death-Sound beim Tod abspielen (nur einmal)
             if (!this.deathSoundPlayed) {
                 AudioHub.playOne(AudioHub.BOSS_DEAD);
                 this.deathSoundPlayed = true;
             }
         } else {
             this.lastHit = new Date().getTime();
-            
-            // Beim ersten Treffer Status setzen
             if (!this.hadFirstContact) {
                 this.hadFirstContact = true;
                 this.lastAction = new Date().getTime();
             }
-            
-            // Boss-Hurt-Sound beim Treffer abspielen
             AudioHub.playOne(AudioHub.BOSS_HURT);
         }
     }
@@ -254,8 +226,6 @@ class Endboss extends MovableObject {
                 this.updateBossActions();
             }
         }, 50);
-        
-        // Animation-Intervall
         setInterval(() => {
             if (this.isDead()) {
                 this.PlayAnimation(this.IMAGES_DEAD);

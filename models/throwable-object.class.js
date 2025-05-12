@@ -8,14 +8,14 @@ class ThrowableObject extends MovableObject {
     this.height = 100;
     this.width = 100;
     this.hasSplashed = false;
-    this.hasCollided = false; // Neue Eigenschaft: Verhindert Mehrfachkollisionen
+    this.hasCollided = false; 
     
-    // Präzisere Kollisionsbox für die geworfene Flasche
+
     this.offset = {
-      top: 30,    // Verkleinert den Kollisionsbereich oben
-      bottom: 30, // Verkleinert den Kollisionsbereich unten
-      left: 30,   // Verkleinert den Kollisionsbereich links
-      right: 30   // Verkleinert den Kollisionsbereich rechts
+      top: 30,   
+      bottom: 30, 
+      left: 30,   
+      right: 30  
     };
     
     this.bottleRotationImages = [
@@ -44,7 +44,7 @@ class ThrowableObject extends MovableObject {
     this.throwInterval = setInterval(() => {
         this.x += 10;
 
-        if (this.y >= 340) {  // Wenn Flasche Boden berührt
+        if (this.y >= 340) {  
             clearInterval(this.throwInterval);
             AudioHub.playOne(AudioHub.BOTTLE_SHATTER);
             this.animateSplash();
@@ -67,7 +67,7 @@ class ThrowableObject extends MovableObject {
         splashIndex++;
       } else {
         clearInterval(splashAnim);
-        this.y = 9999; // Objekt verschwindet nach Splash
+        this.y = 9999; // remove the object from the screen
       }
     }, 100);
   }

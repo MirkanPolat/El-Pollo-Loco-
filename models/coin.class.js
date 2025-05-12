@@ -19,14 +19,13 @@ class Coin extends MovableObject {
     this.loadImages(this.IMAGES_COIN);
 
     this.x = 250 + Math.random() * 2000;
-    this.y = 80 + Math.random() * 120; // Zwischen y=80 und y=200
+    this.y = 80 + Math.random() * 120; 
 
     this.animate();
   }
 
   animate() {
     setInterval(() => {
-      // Einfache Animation zwischen den beiden Bildern
       this.PlayAnimation(this.IMAGES_COIN);
     }, 200);
   }

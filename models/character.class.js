@@ -1,10 +1,10 @@
 class Character extends MovableObject {
   width = 130;
   height = 280;
-  y = 80; // 155 ground
+  y = 80; 
   coins = 0;
   maxCoins = 5;
-  lastEnemyCollision = 0; // Neue Eigenschaft hinzufügen
+  lastEnemyCollision = 0; 
   IMAGES_WALKING = [
     "./img/2_character_pepe/2_walk/W-21.png",
     "./img/2_character_pepe/2_walk/W-22.png",
@@ -14,7 +14,6 @@ class Character extends MovableObject {
     "./img/2_character_pepe/2_walk/W-26.png",
   ];
 
-  // Idle-Animation Bilder
   IMAGES_IDLE = [
     "./img/2_character_pepe/1_idle/idle/I-1.png",
     "./img/2_character_pepe/1_idle/idle/I-2.png",
@@ -28,7 +27,6 @@ class Character extends MovableObject {
     "./img/2_character_pepe/1_idle/idle/I-10.png",
   ];
 
-  // Schlaf-Animation Bilder
   IMAGES_SLEEPING = [
     "./img/2_character_pepe/1_idle/long_idle/I-11.png",
     "./img/2_character_pepe/1_idle/long_idle/I-12.png",
@@ -42,9 +40,8 @@ class Character extends MovableObject {
     "./img/2_character_pepe/1_idle/long_idle/I-20.png",
   ];
 
-  // Inaktivitäts-Timer
   lastActivity = new Date().getTime();
-  SLEEP_TIMEOUT = 10000; // 15 Sekunden bis zur Schlaf-Animation
+  SLEEP_TIMEOUT = 10000; 
 
   IMAGES_JUMPING = [
     "./img/2_character_pepe/3_jump/J-31.png",
@@ -99,14 +96,12 @@ class Character extends MovableObject {
     this.animate();
   }
 
-  // Methode zum Zurücksetzen des Inaktivitätstimers
   resetIdleTimer() {
     this.lastActivity = new Date().getTime();
   }
 
   animate() {
     setInterval(() => {
-      // Walking sound direkt hier einfügen
       const isWalking = (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround();
       AudioHub.playWalkingSound(AudioHub.CHARACTER_WALKING, isWalking);
 
@@ -129,7 +124,6 @@ class Character extends MovableObject {
       this.world.camera_x = -this.x + 100;
     }, 1000 / 60);
 
-    // Animations-Steuerung
     setInterval(() => {
       if (this.isDead()) {
         this.PlayAnimation(this.IMAGES_DEAD);
@@ -138,27 +132,19 @@ class Character extends MovableObject {
       } else if (this.isAboveGround()) {
         this.PlayAnimation(this.IMAGES_JUMPING);
       } else {
-        // Prüfe Bewegung und Inaktivität
         if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-          // Lauf-Animation
           this.PlayAnimation(this.IMAGES_WALKING);
         } else {
-          // Character steht still
           let timeSinceLastActivity = new Date().getTime() - this.lastActivity;
 
           if (timeSinceLastActivity > this.SLEEP_TIMEOUT) {
-            // Nach 10 Sekunden Inaktivität: Schlaf-Animation
             this.PlayAnimation(this.IMAGES_SLEEPING);
 
-            // Schlaf-Sound abspielen, wenn er nicht bereits läuft
             if (AudioHub.CHARACTER_SLEEPING.paused) {
               AudioHub.playOne(AudioHub.CHARACTER_SLEEPING);
             }
           } else {
-            // Sofortige Idle-Animation, wenn keine Tasten gedrückt sind
             this.PlayAnimation(this.IMAGES_IDLE);
-
-            // Schlaf-Sound stoppen, wenn der Character aufwacht
             AudioHub.stopOne(AudioHub.CHARACTER_SLEEPING);
           }
         }

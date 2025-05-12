@@ -34,20 +34,13 @@ class Chicken extends MovableObject {
   }
 
   die() {
-    // Zuerst das Chicken stoppen
-   
-    // Totes Bild anzeigen
     this.loadImage(this.IMAGES_DEAD[0]);
-    
-    // Nach 0,5 Sekunden das Chicken zum Löschen markieren
     setTimeout(() => {
-      // Markieren, dass dieses Chicken gelöscht werden soll
       this.toDelete = true;
     }, 350);
   }
 
   isDead() {
-    // Ein Chicken gilt als tot, wenn es bereits zum Löschen markiert ist
     return this.toDelete === true;
   }
 }

@@ -9,7 +9,7 @@ class World {
   throwableObjects = [];
   bottleStatusbar = new BottleStatusBar();
   coinStatusbar = new CoinStatusBar();
-  bossStatusbar = new BossStatusBar(); // Neue Zeile
+  bossStatusbar = new BossStatusBar(); 
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -41,46 +41,35 @@ class World {
       this.character.bottles--;
       this.bottleStatusbar.setPercentage(this.character.bottles * 20);
       AudioHub.playOne(AudioHub.THROW_BOTTLE);
-      this.keyboard.D = false; // verhindert mehrfaches Auslösen pro Tastendruck
+      this.keyboard.D = false;
     }
   }
 
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy) && !enemy.isDead()) {
-        // Debug-Info
-        console.log('Kollision erkannt!', 
+        console.log('Collision erkannt!', 
                    'Character Y:', this.character.y, 
                    'Character Height:', this.character.height, 
                    'Enemy Y:', enemy.y, 
                    'Enemy Height:', enemy.height,
                    'SpeedY:', this.character.speedY);
-                   
-        // Verbesserte Bedingung für Aufsprung von oben
+
         const characterBottom = this.character.y + this.character.height;
         const enemyTop = enemy.y + enemy.offset.top;
         const jumpingDown = this.character.speedY <= 0;
         
         if (characterBottom < enemyTop + 30 && jumpingDown) {
           console.log('Chicken getötet durch Sprung!');
-          // VON OBEN: Chicken stirbt
           enemy.die();
           AudioHub.playOne(AudioHub.HIT_ENEMY);
-          
-          // Character springt nach dem Treffen des Chickens wieder leicht hoch
           this.character.speedY = 25;
-          
-          // Verhindere weitere Kollisionserkennung für kurze Zeit
           this.character.lastEnemyCollision = new Date().getTime();
         } else if (!this.character.isHurt() && 
                   (new Date().getTime() - this.character.lastEnemyCollision > 500)) {
-          // Spieler bekommt Schaden
-          // Nur Schaden nehmen, wenn nicht bereits verletzt und keine kürzliche Kollision
           console.log('Character bekommt Schaden!');
           this.character.hit();
           this.statusBar.setPercentage(this.character.energy);
-          
-          // NEUER CODE: Endboss-Attack-Sound abspielen
           if (enemy instanceof Endboss) {
             AudioHub.playOne(AudioHub.BOSS_ATTACK);
           }
@@ -92,16 +81,14 @@ class World {
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.ctx.translate(this.camera_x, 0); // Move the canvas to the left by camera_x
+    this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.backgroundObjects);
-    this.ctx.translate(-this.camera_x, 0); // Reset the canvas position
+    this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
     this.addToMap(this.bottleStatusbar);
     this.addToMap(this.coinStatusbar);
-    
-    // Boss-Statusleiste aktualisieren und anzeigen
+
     if (this.bossStatusVisible()) {
-      // HIER IST DIE ÄNDERUNG: Aktualisiere die Statusleiste in jedem Frame
       const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
       if (endboss) {
         const percentage = endboss.energy / endboss.maxEnergy * 100;
@@ -110,14 +97,14 @@ class World {
       this.addToMap(this.bossStatusbar);
     }
     
-    this.ctx.translate(this.camera_x, 0); // Move the canvas to the left by camera_x
+    this.ctx.translate(this.camera_x, 0); 
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.level.bottles);
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwableObjects);
-    this.ctx.translate(-this.camera_x, 0); // Reset the canvas position
+    this.ctx.translate(-this.camera_x, 0); 
 
     let self = this;
     requestAnimationFrame(function () {
@@ -127,16 +114,14 @@ class World {
 
   bossStatusVisible() {
     try {
-        // Endboss finden
         const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
         if (endboss) {
-            // Statusleiste anzeigen, wenn der Character nahe genug ist
             return this.character.x > 2000 || (endboss.hadFirstContact === true);
         }
         return false;
     } catch (error) {
         console.error("Fehler in bossStatusVisible:", error);
-        return false; // Im Fehlerfall lieber keine Statusleiste anzeigen
+        return false;
     }
   }
 
@@ -159,17 +144,11 @@ class World {
   }
 
   checkBottleCollisions() {
-    // Für jede geworfene Flasche prüfen
     this.throwableObjects.forEach((bottle, bottleIndex) => {
-        // Wenn die Flasche bereits kollidiert ist, nichts tun
         if (bottle.hasCollided) return;
-        
-        // Für jedes Chicken/Enemy prüfen
         this.level.enemies.forEach((enemy) => {
             try {
-                // Wenn die Flasche ein Chicken/Enemy trifft und es noch nicht tot ist
                 if (bottle && enemy && bottle.isColliding(enemy) && !enemy.isDead() && !bottle.hasCollided) {
-                    // Markiere die Flasche als kollidiert, damit sie nicht mehrmals Schaden verursacht
                     bottle.hasCollided = true;
                     console.log('Flasche trifft Gegner!');
                     
@@ -191,7 +170,6 @@ class World {
                         enemy.die();
                     }
                     
-                    // Stoppe die Flaschenbewegung und starte Splash-Animation
                     bottle.speed = 0;
                     setTimeout(() => {
                         if (bottle.animateSplash && typeof bottle.animateSplash === 'function') {
@@ -229,17 +207,17 @@ class World {
       let enemy = this.level.enemies[i];
       
       if (enemy.toDelete) {
-        this.level.enemies.splice(i, 1);  // Chicken aus dem Array entfernen
-        i--;  // Index anpassen, da ein Element entfernt wurde
+        this.level.enemies.splice(i, 1);
+        i--;
       }
     }
   }
 
   flipImage(movableObject) {
-    this.ctx.save(); // save the current state of the canvas
-    this.ctx.translate(movableObject.width, 0); // move the origin to the right
-    this.ctx.scale(-1, 1); // flip the canvas horizontally
-    movableObject.x = movableObject.x * -1; // flip the x position
+    this.ctx.save();
+    this.ctx.translate(movableObject.width, 0);
+    this.ctx.scale(-1, 1);
+    movableObject.x = movableObject.x * -1;
   }
 
   flipImageBack(movableObject) {
@@ -251,7 +229,6 @@ class World {
     for (let i = this.level.coins.length - 1; i >= 0; i--) {
       let coin = this.level.coins[i];
       if (this.character.isColliding(coin)) {
-        // Hier eine Prüfung hinzufügen
         if (this.character.coins < this.character.maxCoins) {
           this.character.coins++;
           this.coinStatusbar.setPercentage(this.character.coins * 20);

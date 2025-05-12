@@ -18,14 +18,12 @@ class DrawableObject {
 
   drawFrame(ctx) {
     if (this instanceof Chicken || this instanceof Character || this instanceof Coin || this instanceof BottleObject || this instanceof ThrowableObject || this instanceof Endboss) {
-      // Blauer Rahmen (zeigt Bildgröße)
       ctx.beginPath();
       ctx.lineWidth = 2;
       ctx.strokeStyle = "blue";
       ctx.rect(this.x, this.y, this.width, this.height);
       ctx.stroke();
   
-      // Roter Rahmen (zeigt echten Collision-Bereich)
       ctx.beginPath();
       ctx.lineWidth = 2;
       ctx.strokeStyle = "red";
@@ -42,8 +40,8 @@ class DrawableObject {
   
   loadImages(arr) {
     arr.forEach((path) => {
-      let img = new Image(); // create a empty image
-      img.src = path; // set one image path
+      let img = new Image(); 
+      img.src = path;
       this.imageCache[path] = img;
     });
   }
@@ -54,6 +52,4 @@ class DrawableObject {
     left: 0,
     right: 0
   };
-  
-
 }

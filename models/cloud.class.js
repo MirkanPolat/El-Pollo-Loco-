@@ -13,11 +13,9 @@ class Cloud extends MovableObject {
 animate() {
     setInterval(() => {
         this.moveLeft();
-
-        // Wenn Wolke komplett aus dem Bild verschwunden ist:
         if (this.x < -this.width) {
-            this.x = 1500 + Math.random() * 500; // neu erscheinen rechts
+            this.x = 1500 + Math.random() * 500; 
         }
-    }, 40); // 25 FPS (kannst auch 1000 / 60 nehmen)
+    }, 40);
 }
 }
