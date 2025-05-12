@@ -176,7 +176,6 @@ canvas {
   padding-right: 10px;
 }
 
-/* Für den "or" Text zwischen den Tasten */
 .control-item span:nth-of-type(1) {
   align-self: center;
   font-size: 19px;
@@ -185,7 +184,6 @@ canvas {
   margin-bottom: 2px;
 }
 
-/* Neue Regeln */
 .key-group {
   display: flex;
   align-items: center;

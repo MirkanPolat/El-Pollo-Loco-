@@ -1,6 +1,10 @@
+let level1;
+
 const bottleMinX = 500;
 const bottleMaxX = 1200;
-const level1 = new Level([
+
+function initLevel(){
+    level1 = new Level([
     new Chicken(),
     new Chicken(),
     new Chicken(),
@@ -75,3 +79,4 @@ const level1 = new Level([
     new Coin(),
 ]
 );
+}

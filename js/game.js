@@ -24,6 +24,11 @@ function toggleSound() {
 
 function startGame() {
     document.getElementById('start-screen').style.display = 'none';
+    
+    // Level initialisieren
+    initLevel();
+    
+    // Welt mit dem initialisierten Level erstellen
     world = new World(canvas, keyboard);
     
     if (!isMuted) {
