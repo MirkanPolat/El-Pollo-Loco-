@@ -1,9 +1,12 @@
 class AudioHub {
+    static isMuted = false;
+
     static VOLUME = {
         BACKGROUND: 0.1,   
         EFFECTS: 0.4,      
         CHARACTER: 0.6,   
         BOSS: 0.7      
+        
     };
     static BACKGROUND_MUSIC = AudioHub.createSound('./audio/latin-mexican-salsa-background-music.mp3', AudioHub.VOLUME.BACKGROUND);
     
@@ -50,6 +53,10 @@ class AudioHub {
      * @param {Audio} sound - The audio object to play
      */
     static playOne(sound) {
+        if (AudioHub.isMuted) {
+            return;
+        }
+
         // First stop the sound if it's already playing
         this.stopOne(sound);
         

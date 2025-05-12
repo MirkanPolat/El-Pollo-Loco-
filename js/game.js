@@ -10,6 +10,7 @@ function initStartScreen() {
 
 function toggleSound() {
     isMuted = !isMuted;
+    AudioHub.isMuted = isMuted;
     
     if (isMuted) {
         AudioHub.stopAll();
