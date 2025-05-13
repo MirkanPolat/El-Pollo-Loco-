@@ -103,6 +103,71 @@ document.addEventListener('click', function(event) {
     }
 });
 
+function toggleFullscreen() {
+    const gameContainer = document.getElementById('game-container');
+    const fullscreenIcon = document.getElementById('fullscreen-icon');
+    
+    if (!document.fullscreenEnabled && 
+        !document.webkitFullscreenEnabled && 
+        !document.mozFullScreenEnabled && 
+        !document.msFullscreenEnabled) {
+        console.log('Fullscreen nicht unterstützt');
+        return;
+    }
+    
+    const isFullScreen = document.fullscreenElement || 
+                         document.webkitFullscreenElement || 
+                         document.mozFullScreenElement || 
+                         document.msFullscreenElement;
+    
+    if (!isFullScreen) {
+        if (gameContainer.requestFullscreen) {
+            gameContainer.requestFullscreen();
+        } else if (gameContainer.webkitRequestFullscreen) {
+            gameContainer.webkitRequestFullscreen();
+        } else if (gameContainer.msRequestFullscreen) {
+            gameContainer.msRequestFullscreen();
+        } else if (gameContainer.mozRequestFullScreen) {
+            gameContainer.mozRequestFullScreen();
+        }
+        
+        gameContainer.classList.add('fullscreen-container');
+        fullscreenIcon.src = './img/fullscreen/exit_fullscreen_icon_transparent.png';
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        }
+        
+        gameContainer.classList.remove('fullscreen-container');
+        fullscreenIcon.src = './img/fullscreen/fullscreen_icon_transparent.png';
+    }
+}
+
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+function handleFullscreenChange() {
+    const gameContainer = document.getElementById('game-container');
+    const fullscreenIcon = document.getElementById('fullscreen-icon');
+    const isFullScreen = document.fullscreenElement || 
+                         document.webkitFullscreenElement || 
+                         document.mozFullScreenElement || 
+                         document.msFullscreenElement;
+    
+    if (!isFullScreen) {
+        gameContainer.classList.remove('fullscreen-container');
+        fullscreenIcon.src = './img/fullscreen/fullscreen_icon_transparent.png';
+    }
+}
+
 window.addEventListener('keydown', (event) => {
     if (gameEnded) return; 
 
