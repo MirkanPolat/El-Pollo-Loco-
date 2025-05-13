@@ -1,7 +1,7 @@
-#impressum-link {
+#impressum-link,
+#credits-link {
   position: fixed;
   bottom: 10px;
-  right: 10px;
   color: #F8B631;
   font-family: "Satisfy", "Brush Script MT", cursive;
   font-size: 18px;
@@ -11,14 +11,22 @@
   transition: all 0.3s ease;
 }
 
-#impressum-link:hover {
+#impressum-link {
+  right: 10px;
+}
+
+#credits-link {
+  right: 106px;
+}
+
+#impressum-link:hover,
+#credits-link:hover {
   color: white;
   text-shadow: 0 0 10px #F8B631;
   transform: scale(1.05);
 }
 
-/* Impressum Overlay */
-#impressum-overlay {
+.legal-overlay {
   display: none;
   position: fixed;
   top: 0;

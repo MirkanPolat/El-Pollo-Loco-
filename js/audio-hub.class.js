@@ -3,25 +3,22 @@ class AudioHub {
 
     static VOLUME = {
         BACKGROUND: 0.1,   
-        EFFECTS: 0.4,      
+        EFFECTS: 0.3,      
         CHARACTER: 0.6,   
         BOSS: 0.7      
         
     };
     static BACKGROUND_MUSIC = AudioHub.createSound('./audio/latin-mexican-salsa-background-music.mp3', AudioHub.VOLUME.BACKGROUND);
     
-    // Boss sounds
     static BOSS_ATTACK = AudioHub.createSound('./audio/endboss-attack.mp3', AudioHub.VOLUME.BOSS);
     static BOSS_HURT = AudioHub.createSound('./audio/endboss-hurt.mp3', AudioHub.VOLUME.BOSS);
     static BOSS_DEAD = AudioHub.createSound('./audio/endboss-dead.mp3', AudioHub.VOLUME.BOSS);
     
-    // Character sounds
     static CHARACTER_JUMP = AudioHub.createSound('./audio/jump.mp3', AudioHub.VOLUME.CHARACTER);
     static CHARACTER_HURT = AudioHub.createSound('./audio/character-hurt.mp3', AudioHub.VOLUME.CHARACTER);
     static CHARACTER_WALKING = AudioHub.createSound('./audio/walking.mp3', AudioHub.VOLUME.CHARACTER * 0.7);
     static CHARACTER_SLEEPING = AudioHub.createSound('./audio/character-sleeping.mp3', AudioHub.VOLUME.CHARACTER * 0.5);
 
-    // Effect sounds
     static COLLECT_COIN = AudioHub.createSound('./audio/coin.mp3', AudioHub.VOLUME.EFFECTS);
     static COLLECT_BOTTLE = AudioHub.createSound('./audio/collect-bottle.mp3', AudioHub.VOLUME.EFFECTS);
     static THROW_BOTTLE = AudioHub.createSound('./audio/throw-bottle.mp3', AudioHub.VOLUME.EFFECTS);
@@ -57,12 +54,10 @@ class AudioHub {
             return;
         }
 
-        // First stop the sound if it's already playing
         this.stopOne(sound);
         
-        // Special adjustments for specific sounds
         if (sound === AudioHub.THROW_BOTTLE) {
-            sound.currentTime = 0.3; // Skip the first 0.3 seconds
+            sound.currentTime = 0.3;
         }
         if (sound === AudioHub.BOTTLE_SHATTER) {
             sound.currentTime = 0.35;
@@ -71,16 +66,13 @@ class AudioHub {
             sound.currentTime = 14.5;
         }
         if (sound === AudioHub.BACKGROUND_MUSIC) {
-            sound.currentTime = 0.4; // Set the playback position to the beginning
+            sound.currentTime = 0.4;
             
-            // Remove event listener if already exists (prevents duplication)
             sound.removeEventListener('timeupdate', sound._timeUpdateHandler);
             
-            // Event handler to cut off the last 3 seconds
             sound._timeUpdateHandler = () => {
-                // When we reach the last 3 seconds, jump back to the beginning
                 if (sound.currentTime >= sound.duration - 3) {
-                    sound.currentTime = 0.4; // Back to the beginning with the same offset
+                    sound.currentTime = 0.4;
                 }
             };
         
@@ -113,8 +105,8 @@ class AudioHub {
      * @param {Audio} sound - The audio object to stop
      */
     static stopOne(sound) {
-        sound.pause(); // Pause the provided audio
-        sound.currentTime = 0; // Reset playback position
+        sound.pause();
+        sound.currentTime = 0;
     }
     
     /**
@@ -136,30 +128,25 @@ class AudioHub {
      */
     static playWalkingSound(sound, isWalking) {
         if (isWalking) {
-            // If sound is not playing or almost finished, restart
             if (sound.paused || sound.currentTime > sound.duration - 0.1) {
                 sound.currentTime = 0;
                 sound.play();
             }
         } else {
-            // If not walking, stop the sound
             this.stopOne(sound);
         }
     }
 
-    // Current background music
     static currentMusic;
 
     /**
      * Starts the background music
      */
     static playBackgroundMusic() {
-        // Stop previous music (if exists)
         if (AudioHub.currentMusic) {
             AudioHub.stopOne(AudioHub.currentMusic);
         }
         
-        // Start new music
         AudioHub.currentMusic = AudioHub.BACKGROUND_MUSIC;
         AudioHub.currentMusic.loop = true;
         AudioHub.playOne(AudioHub.currentMusic);
