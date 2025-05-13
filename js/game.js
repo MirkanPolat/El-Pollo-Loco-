@@ -3,6 +3,7 @@ let world;
 let keyboard = new Keyboard();
 let gameStarted = false;
 let isMuted = false;
+let gameEnded = false;
 
 function initStartScreen() {
     canvas = document.getElementById("canvas");
@@ -25,11 +26,11 @@ function toggleSound() {
 
 function startGame() {
     document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('game-over-screen').style.display = 'none';
+    document.getElementById('win-screen').style.display = 'none';
     
-    // Level initialisieren
+    gameEnded = false;
     initLevel();
-    
-    // Welt mit dem initialisierten Level erstellen
     world = new World(canvas, keyboard);
     
     if (!isMuted) {
@@ -40,21 +41,49 @@ function startGame() {
     gameStarted = true;
 }
 
+function restartGame() {
+    keyboard.RIGHT = false;
+    keyboard.LEFT = false;
+    keyboard.UP = false;
+    keyboard.DOWN = false;
+    keyboard.SPACE = false;
+    keyboard.D = false;
+    
+    startGame();
+}
+
+function backToStartScreen() {
+    document.getElementById('game-over-screen').style.display = 'none';
+    document.getElementById('win-screen').style.display = 'none';
+    document.getElementById('start-screen').style.display = 'flex';
+    
+    keyboard.RIGHT = false;
+    keyboard.LEFT = false;
+    keyboard.UP = false;
+    keyboard.DOWN = false;
+    keyboard.SPACE = false;
+    keyboard.D = false;
+    
+    gameStarted = false;
+    gameEnded = false;
+    
+    AudioHub.stopAll();
+}
+
 window.addEventListener('keydown', (event) => {
+    if (gameEnded) return; 
+
     if (event.keyCode == 39) {
         keyboard.RIGHT = true;
-        
     }
     if (event.keyCode == 37) {
         keyboard.LEFT = true;
-    
     }
     if (event.keyCode == 38) {
         keyboard.UP = true;
     }
     if (event.keyCode == 40) {
         keyboard.DOWN = true;
-    
     }
     if (event.keyCode == 32) {
         keyboard.SPACE = true;
@@ -65,6 +94,16 @@ window.addEventListener('keydown', (event) => {
 });
 
 window.addEventListener('keyup', (event) => {
+    if (gameEnded) {
+        keyboard.RIGHT = false;
+        keyboard.LEFT = false;
+        keyboard.UP = false;
+        keyboard.DOWN = false;
+        keyboard.SPACE = false;
+        keyboard.D = false;
+        return;
+    }
+    
     if (event.keyCode == 39) {
         keyboard.RIGHT = false;
     }

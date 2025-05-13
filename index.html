@@ -38,10 +38,9 @@
       <div id="start-screen">
         <img
           src="./img/9_intro_outro_screens/start/startscreen_1.png"
-          class="start-img">
+          class="start-img"
+        />
         <button id="start-button" onclick="startGame()">START GAME</button>
-        
-        <!-- Controls-Container hinzufügen -->
         <div id="controls-container">
           <div class="control-item">
             <div class="key-box">←</div>
@@ -65,11 +64,26 @@
           </div>
         </div>
       </div>
+      <div id="game-over-screen" class="end-screen" style="display: none">
+        <img src="./img/You won, you lost/Game Over.png" class="end-img" />
+        <div class="end-buttons">
+          <button onclick="restartGame()">Restart Game</button>
+          <button onclick="backToStartScreen()">Back to Menu</button>
+        </div>
+      </div>
+      <div id="win-screen" class="end-screen" style="display: none">
+        <img src="./img/You won, you lost/You Win A.png" class="end-img" />
+        <div class="end-buttons">
+          <button onclick="restartGame()">Restart Game</button>
+          <button onclick="backToStartScreen()">Back to Menu</button>
+        </div>
+      </div>
       <div id="sound-button" onclick="toggleSound()">
         <img
           id="sound-icon"
           src="./img/sound_imgs/unmute.png"
-          alt="Sound Toggle">
+          alt="Sound Toggle"
+        />
       </div>
     </div>
   </body>

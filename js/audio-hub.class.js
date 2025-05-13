@@ -60,7 +60,7 @@ class AudioHub {
         // First stop the sound if it's already playing
         this.stopOne(sound);
         
-        // Special adjustment only for THROW_BOTTLE sound
+        // Special adjustments for specific sounds
         if (sound === AudioHub.THROW_BOTTLE) {
             sound.currentTime = 0.3; // Skip the first 0.3 seconds
         }
@@ -83,23 +83,26 @@ class AudioHub {
                     sound.currentTime = 0.4; // Back to the beginning with the same offset
                 }
             };
-            
-            // Add event listener
+        
             sound.addEventListener('timeupdate', sound._timeUpdateHandler);
         }
         
         let checkInterval = setInterval(() => {
-            // Check if the audio file is fully loaded
             if (sound.readyState == 4) {
                 console.log("Sound ready");
-                sound.play(); // Play the provided sound object
+                sound.play().catch(error => {
+                    if (error.name === 'AbortError') {
+                        console.log('Play wurde abgebrochen:', error.message);
+                    } else {
+                        console.error('Sound-Fehler:', error);
+                    }
+                });
                 clearInterval(checkInterval);
             } else {
                 console.log("Sound not ready");
             }
         }, 200);
         
-        // Safety timeout after 1 second
         setTimeout(() => {
             clearInterval(checkInterval);
         }, 1000);
@@ -119,8 +122,10 @@ class AudioHub {
      */
     static stopAll() {
         AudioHub.allSounds.forEach(sound => {
-            sound.pause(); // Pause each audio in the list
-            sound.currentTime = 0; // Reset playback position
+            if (sound) {
+                sound.pause();
+                sound.currentTime = 0;
+            }
         });
     }
 

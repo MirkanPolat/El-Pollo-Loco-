@@ -10,6 +10,8 @@ class World {
   bottleStatusbar = new BottleStatusBar();
   coinStatusbar = new CoinStatusBar();
   bossStatusbar = new BossStatusBar(); 
+  gameInterval;
+  isGameActive = true;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -25,12 +27,15 @@ class World {
   }
   
   run() {
-    setInterval(() => {
-     this.checkCollisions();
-     this.checkThrowObjects();
-     this.checkBottleCollisions();
-     this.checkCoinCollisions();
-     this.checkForDeadChickens();
+    this.gameInterval = setInterval(() => {
+      if (!this.isGameActive) return;
+      
+      this.checkCollisions();
+      this.checkThrowObjects();
+      this.checkBottleCollisions();
+      this.checkCoinCollisions();
+      this.checkForDeadChickens();
+      this.checkGameState();
     }, 16);
   }
   
@@ -79,6 +84,8 @@ class World {
   }
 
   draw() {
+    if (!this.isGameActive) return;
+    
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.translate(this.camera_x, 0);
@@ -238,5 +245,48 @@ class World {
         break;
       }
     }
+  }
+
+  checkGameState() {
+    if (this.character.energy <= 0 && !gameEnded) {
+      this.endGame('game-over');
+    }
+    
+    const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
+    if (endboss && endboss.energy <= 0 && !gameEnded) {
+      this.endGame('win');
+    }
+  }
+
+  endGame(result) {
+    gameEnded = true;
+    this.isGameActive = false;
+    
+    if (this.character) {
+      this.character.speedY = 0;
+    }
+    
+    if (this.level && this.level.enemies) {
+      this.level.enemies.forEach(enemy => {
+        if (enemy.speed) enemy.speed = 0;
+      });
+    }
+    
+    if (result === 'game-over') {
+      document.getElementById('game-over-screen').style.display = 'flex';
+    } else if (result === 'win') {
+      document.getElementById('win-screen').style.display = 'flex';
+    }
+    
+    AudioHub.stopAll();
+    if (!AudioHub.isMuted) {
+      if (result === 'game-over') {
+        AudioHub.playOne(AudioHub.CHARACTER_HURT);
+      } else if (result === 'win') {
+        AudioHub.playOne(AudioHub.BOSS_DEAD);
+      }
+    }
+    
+    clearInterval(this.gameInterval);
   }
 }
