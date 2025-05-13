@@ -116,7 +116,7 @@ class Character extends MovableObject {
         this.resetIdleTimer();
       }
 
-      if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+      if ((this.world.keyboard.SPACE || this.world.keyboard.UP) && !this.isAboveGround()) {
         this.jump();
         this.resetIdleTimer();
       }

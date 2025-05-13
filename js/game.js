@@ -70,6 +70,39 @@ function backToStartScreen() {
     AudioHub.stopAll();
 }
 
+// Impressum Toggle Function
+function toggleImpressum() {
+    const overlay = document.getElementById('impressum-overlay');
+    const currentDisplay = window.getComputedStyle(overlay).display;
+    
+    if (currentDisplay === 'none') {
+        // Öffne das Impressum
+        overlay.style.display = 'flex';
+        
+        // Optional: Pausiere das Spiel
+        if (world && gameStarted && !gameEnded) {
+            world.isGameActive = false;
+        }
+    } else {
+        // Schließe das Impressum
+        overlay.style.display = 'none';
+        
+        // Optional: Setze das Spiel fort
+        if (world && gameStarted && !gameEnded) {
+            world.isGameActive = true;
+        }
+    }
+}
+
+// Schließe das Impressum auch beim Klick außerhalb
+document.addEventListener('click', function(event) {
+    const overlay = document.getElementById('impressum-overlay');
+    const content = document.querySelector('.impressum-content');
+    if (event.target === overlay && overlay.style.display === 'flex') {
+        toggleImpressum();
+    }
+});
+
 window.addEventListener('keydown', (event) => {
     if (gameEnded) return; 
 
