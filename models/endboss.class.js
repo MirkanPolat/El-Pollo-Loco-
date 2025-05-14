@@ -8,6 +8,7 @@ class Endboss extends MovableObject {
     speed = 10;
     isAttacking = false;
     lastAction = new Date().getTime();
+    detectionRange = 500;
     
     offset = {
         top: 80,
@@ -100,16 +101,14 @@ class Endboss extends MovableObject {
                 this.speed = 25;              
             }
             
-            // follow the player more aggressively
             if (world && world.character && this.x > world.character.x + 150) {
                 this.moveLeft();
             }
             
             if (this.isHurt()) {
-                // short hurt animation
                 this.moveRight();
                 setTimeout(() => {
-                    this.lastAction = new Date().getTime() - this.attackCooldown + 500; // Attack again immediately
+                    this.lastAction = new Date().getTime() - this.attackCooldown + 500;
                 }, 800);  
             } else if (this.isAttacking) {
                 this.moveLeft();
@@ -153,20 +152,15 @@ class Endboss extends MovableObject {
         switch(this.currentAttack) {
             case 'jumpAttack':
                 this.speedY = 40; 
-                // Save the ground position for jump
                 this.groundPosition = this.y;
                 let jumpInterval = setInterval(() => {
                     this.y -= this.speedY;
-                    this.speedY -= this.acceleration * 1.2;  // fall fast
-                    
-                    // Aggressive movement towards player
+                    this.speedY -= this.acceleration * 1.2;  
                     if (world && world.character) {
                         if (this.x > world.character.x) {
                             this.x -= this.speed * 1.2;
                         }
                     }
-                    
-                    // check if the boss is falling
                     if (this.y > this.groundPosition) {
                         this.y = this.groundPosition;
                         this.speedY = 0;
@@ -212,20 +206,35 @@ class Endboss extends MovableObject {
             }
         } else {
             this.lastHit = new Date().getTime();
-            if (!this.hadFirstContact) {
-                this.hadFirstContact = true;
-                this.lastAction = new Date().getTime();
-            }
             AudioHub.playOne(AudioHub.BOSS_HURT);
+        }
+    }
+
+    isPlayerNearby() {
+        return world && 
+               world.character && 
+               this.x - world.character.x < this.detectionRange;
+    }
+
+    activateBoss() {
+        if (!this.hadFirstContact) {
+            this.hadFirstContact = true;
+            this.lastAction = new Date().getTime();
+            console.log('Boss activated: Player detected!');
         }
     }
 
     animate() {
         setInterval(() => {
+            if (this.isPlayerNearby()) {
+                this.activateBoss();
+            }
+            
             if (this.hadFirstContact && !this.isDead()) {
                 this.updateBossActions();
             }
         }, 50);
+        
         setInterval(() => {
             if (this.isDead()) {
                 this.PlayAnimation(this.IMAGES_DEAD);
