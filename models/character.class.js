@@ -149,7 +149,7 @@ class Character extends MovableObject {
           }
         }
       }
-    }, 10);
+    }, 150);
   }
 
   collectBottle() {

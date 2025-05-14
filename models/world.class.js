@@ -213,7 +213,7 @@ class World {
     for (let i = 0; i < this.level.enemies.length; i++) {
       let enemy = this.level.enemies[i];
       
-      if (enemy.toDelete) {
+      if (enemy.deleteNow) {
         this.level.enemies.splice(i, 1);
         i--;
       }
