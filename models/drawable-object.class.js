@@ -7,6 +7,8 @@ class DrawableObject {
   height = 150;
   width = 100;
 
+  static debugMode = false; // Globale Einstellung für Debug-Anzeige
+
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
@@ -20,6 +22,8 @@ class DrawableObject {
   }
 
   drawFrame(ctx) {
+    if (!DrawableObject.debugMode) return; 
+    
     if (this instanceof Chicken || this instanceof Character || this instanceof Coin || this instanceof BottleObject || this instanceof ThrowableObject || this instanceof Endboss) {
       ctx.beginPath();
       ctx.lineWidth = 2;
@@ -39,7 +43,6 @@ class DrawableObject {
       ctx.stroke();
     }
   }
-  
   
   loadImages(arr) {
     arr.forEach((path) => {
