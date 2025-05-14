@@ -4,7 +4,7 @@
   bottom: 10px;
   color: #F8B631;
   font-family: "Satisfy", "Brush Script MT", cursive;
-  font-size: 18px;
+  font-size: 24px;
   cursor: pointer;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   z-index: 999;
@@ -16,7 +16,7 @@
 }
 
 #credits-link {
-  right: 106px;
+  right: 135px;
 }
 
 #impressum-link:hover,
