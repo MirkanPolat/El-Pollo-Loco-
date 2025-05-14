@@ -509,3 +509,110 @@ body.fullscreen #mobile-controls {
     pointer-events: none;
   }
 }
+
+/* Verbesserte Responsivität für Landscape-Modus */
+@media (orientation: landscape) and (max-height: 600px) {
+  body {
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 24px;
+  }
+  
+  #game-container {
+    height: 100vh;
+    max-height: 100vh;
+    margin: 0 auto;
+  }
+  
+  canvas {
+    height: calc(100vh - 10px);
+    max-height: 100vh;
+    object-fit: contain;
+    margin: 0 auto;
+  }
+  
+  #mobile-controls {
+    position: absolute;
+    bottom: 10px;
+    height: 70px;
+  }
+  
+  .mobile-btn {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .mobile-btn img {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .control-left {
+    left: 10px;
+    bottom: 5px;
+  }
+  
+  .control-right {
+    right: 10px;
+    bottom: 5px;
+  }
+  
+  #impressum-link,
+  #credits-link {
+    font-size: 14px;
+    bottom: 5px;
+  }
+  
+  #credits-link {
+    right: 80px;
+  }
+}
+
+/* Zusätzliche Anpassungen für sehr kleine Bildschirme im Landscape-Modus */
+@media (orientation: landscape) and (max-height: 400px) {
+  h1 {
+    font-size: 20px;
+    margin: 2px 0;
+  }
+  
+  .mobile-btn {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .mobile-btn img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  #mobile-controls {
+    bottom: 5px;
+    height: 50px;
+  }
+}
+
+/* Verbesserte Fullscreen-Anpassungen */
+body.fullscreen {
+  overflow: hidden;
+}
+
+body.fullscreen #mobile-controls {
+  position: fixed;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+  width: 100%;
+}
+
+body.fullscreen #game-container {
+  margin: 0;
+  padding: 0;
+}
