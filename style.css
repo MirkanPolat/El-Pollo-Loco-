@@ -319,6 +319,120 @@ canvas {
   box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
 }
 
+#mobile-controls {
+  display: none;
+  width: 720px;
+  height: 100px;
+  margin: 20px auto 0;
+  position: relative;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.control-left {
+  position: absolute;
+  left: 20px;
+  bottom: 10px;
+  display: flex;
+  gap: 15px;
+}
+
+.control-right {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+  display: flex;
+  gap: 15px;
+}
+
+.mobile-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: rgba(255, 184, 49, 0.4);
+  border: 2px solid #F8B631;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 0 15px rgba(248, 182, 49, 0.6);
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.mobile-btn img {
+  width: 30px;
+  height: 30px;
+  filter: invert(80%) sepia(43%) saturate(1187%) hue-rotate(334deg) brightness(101%) contrast(96%);
+}
+
+.mobile-btn:active, .btn-active {
+  background-color: rgba(255, 184, 49, 0.8);
+  transform: scale(0.95);
+}
+
+body.fullscreen #mobile-controls {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+}
+
+/* Show on mobile devices */
+@media (max-width: 1024px) {
+  #mobile-controls {
+    display: block;
+    width: 100%;
+    max-width: 720px;
+  }
+  
+  /* Make buttons bigger on mobile */
+  .mobile-btn {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+@media (max-width: 992px) {
+  #mobile-controls {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-btn {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .mobile-btn img {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .control-left {
+    left: 20px;
+  }
+  
+  .control-right {
+    right: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-btn {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .mobile-btn img {
+    width: 30px;
+    height: 30px;
+  }
+}
+
 /* Smartphones */
 @media only screen and (max-width: 720px) {
   canvas {

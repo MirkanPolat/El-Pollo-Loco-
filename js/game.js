@@ -125,36 +125,21 @@ document.addEventListener("click", function (event) {
 
 function toggleFullscreen() {
   const gameContainer = document.getElementById("game-container");
+  const canvas = document.getElementById("canvas");
   const fullscreenIcon = document.getElementById("fullscreen-icon");
 
-  if (
-    !document.fullscreenEnabled &&
-    !document.webkitFullscreenEnabled &&
-    !document.mozFullScreenEnabled &&
-    !document.msFullscreenEnabled
-  ) {
-    console.log("Fullscreen nicht unterstützt");
-    return;
-  }
-
-  const isFullScreen =
-    document.fullscreenElement ||
-    document.webkitFullscreenElement ||
-    document.mozFullScreenElement ||
-    document.msFullscreenElement;
-
-  if (!isFullScreen) {
+  if (!document.fullscreenElement) {
     if (gameContainer.requestFullscreen) {
       gameContainer.requestFullscreen();
     } else if (gameContainer.webkitRequestFullscreen) {
       gameContainer.webkitRequestFullscreen();
     } else if (gameContainer.msRequestFullscreen) {
       gameContainer.msRequestFullscreen();
-    } else if (gameContainer.mozRequestFullScreen) {
-      gameContainer.mozRequestFullScreen();
     }
 
     gameContainer.classList.add("fullscreen-container");
+    canvas.classList.add("fullscreen");
+    document.body.classList.add("fullscreen");
     fullscreenIcon.src =
       "./img/fullscreen/exit_fullscreen_icon_transparent.png";
   } else {
@@ -164,11 +149,11 @@ function toggleFullscreen() {
       document.webkitExitFullscreen();
     } else if (document.msExitFullscreen) {
       document.msExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
     }
 
     gameContainer.classList.remove("fullscreen-container");
+    canvas.classList.remove("fullscreen");
+    document.body.classList.remove("fullscreen");
     fullscreenIcon.src = "./img/fullscreen/fullscreen_icon_transparent.png";
   }
 }
@@ -181,14 +166,10 @@ document.addEventListener("MSFullscreenChange", handleFullscreenChange);
 function handleFullscreenChange() {
   const gameContainer = document.getElementById("game-container");
   const fullscreenIcon = document.getElementById("fullscreen-icon");
-  const isFullScreen =
-    document.fullscreenElement ||
-    document.webkitFullscreenElement ||
-    document.mozFullScreenElement ||
-    document.msFullscreenElement;
 
-  if (!isFullScreen) {
+  if (!document.fullscreenElement) {
     gameContainer.classList.remove("fullscreen-container");
+    document.body.classList.remove("fullscreen");
     fullscreenIcon.src = "./img/fullscreen/fullscreen_icon_transparent.png";
   }
 }

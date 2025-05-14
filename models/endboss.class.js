@@ -109,7 +109,7 @@ class Endboss extends MovableObject {
                 // short hurt animation
                 this.moveRight();
                 setTimeout(() => {
-                    this.lastAction = new Date().getTime() - this.attackCooldown + 500; // Sofort wieder angreifen
+                    this.lastAction = new Date().getTime() - this.attackCooldown + 500; // Attack again immediately
                 }, 800);  
             } else if (this.isAttacking) {
                 this.moveLeft();
@@ -146,7 +146,7 @@ class Endboss extends MovableObject {
             this.currentAttack = 'normalAttack';
         }
         
-        console.log('Boss führt aus: ' + this.currentAttack);
+        console.log('Boss executes: ' + this.currentAttack);
     }
 
     performAttack() {
@@ -159,7 +159,7 @@ class Endboss extends MovableObject {
                     this.y -= this.speedY;
                     this.speedY -= this.acceleration * 1.2;  // fall fast
                     
-                    // Aggressiv movement towards player
+                    // Aggressive movement towards player
                     if (world && world.character) {
                         if (this.x > world.character.x) {
                             this.x -= this.speed * 1.2;

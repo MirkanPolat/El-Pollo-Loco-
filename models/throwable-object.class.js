@@ -67,7 +67,7 @@ class ThrowableObject extends MovableObject {
         splashIndex++;
       } else {
         clearInterval(splashAnim);
-        this.y = 9999; // remove the object from the screen
+        this.y = 9999;
       }
     }, 100);
   }
