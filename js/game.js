@@ -174,6 +174,25 @@ function handleFullscreenChange() {
   }
 }
 
+function checkOrientation() {
+  const orientationOverlay = document.getElementById('orientation-overlay');
+  
+  if (window.innerHeight > window.innerWidth && window.innerWidth <= 768) {
+    orientationOverlay.style.display = 'flex';
+    if (world && gameStarted) {
+      world.isGameActive = false;
+    }
+  } else {
+    orientationOverlay.style.display = 'none';
+    if (world && gameStarted && !gameEnded) {
+      world.isGameActive = true;
+    }
+  }
+}
+window.addEventListener('load', checkOrientation);
+window.addEventListener('resize', checkOrientation);
+window.addEventListener('orientationchange', checkOrientation);
+
 window.addEventListener("keydown", (event) => {
   if (gameEnded) return;
 

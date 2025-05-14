@@ -380,6 +380,58 @@ body.fullscreen #mobile-controls {
   z-index: 2000;
 }
 
+#orientation-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.orientation-content {
+  text-align: center;
+  color: white;
+  animation: pulse 1.5s infinite alternate;
+}
+
+.orientation-content:before {
+  content: "↻";
+  font-size: 60px;
+  display: block;
+  margin-bottom: 20px;
+  animation: rotate 2s infinite linear;
+}
+
+.orientation-content p {
+  font-size: 28px;
+  font-family: "Satisfy", "Brush Script MT", cursive;
+  margin-top: 15px;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
 /* Show on mobile devices */
 @media (max-width: 1024px) {
   #mobile-controls {
@@ -444,5 +496,16 @@ body.fullscreen #mobile-controls {
 @media only screen and (max-height: 480px) {
   canvas {
     height: 100vh;
+  }
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+  #orientation-overlay {
+    display: flex;
+  }
+  
+  #mobile-controls {
+    opacity: 0.3;
+    pointer-events: none;
   }
 }

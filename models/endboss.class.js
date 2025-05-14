@@ -72,11 +72,11 @@ class Endboss extends MovableObject {
 
     determinePhase() {
         if (this.energy > 70) {
-            return 'phase1'; // 100%-70% Gesundheit - leichte Angriffe
+            return 'phase1'; // 100%-70% Health small Attacks
         } else if (this.energy > 30) {
-            return 'phase2'; // 70%-30% Gesundheit - schnellere Angriffe
+            return 'phase2'; // 70%-30% Health fast Attack
         } else {
-            return 'phase3'; // Unter 30% - wütender Boss, stärkere Angriffe
+            return 'phase3'; // Under 30% angry boss harder attacks
         }
     }
 
