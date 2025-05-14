@@ -164,12 +164,29 @@ document.addEventListener("mozfullscreenchange", handleFullscreenChange);
 document.addEventListener("MSFullscreenChange", handleFullscreenChange);
 
 function handleFullscreenChange() {
+  if (
+    !document.fullscreenElement &&
+    !document.webkitFullscreenElement &&
+    !document.mozFullscreenElement &&
+    !document.msFullscreenElement
+  ) {
+    exitFullscreenMode();
+  }
+}
+
+function exitFullscreenMode() {
+  const canvas = document.getElementById("canvas");
   const gameContainer = document.getElementById("game-container");
+  const body = document.body;
+
+  canvas.classList.remove("fullscreen");
+  gameContainer.classList.remove("fullscreen-container");
+  body.classList.remove("fullscreen");
+
+  const fullscreenButton = document.getElementById("fullscreen-button");
   const fullscreenIcon = document.getElementById("fullscreen-icon");
 
-  if (!document.fullscreenElement) {
-    gameContainer.classList.remove("fullscreen-container");
-    document.body.classList.remove("fullscreen");
+  if (fullscreenIcon) {
     fullscreenIcon.src = "./img/fullscreen/fullscreen_icon_transparent.png";
   }
 }

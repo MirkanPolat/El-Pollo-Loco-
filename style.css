@@ -432,7 +432,6 @@ body.fullscreen #mobile-controls {
   }
 }
 
-/* Show on mobile devices */
 @media (max-width: 1024px) {
   #mobile-controls {
     display: block;
@@ -440,7 +439,6 @@ body.fullscreen #mobile-controls {
     max-width: 720px;
   }
   
-  /* Make buttons bigger on mobile */
   .mobile-btn {
     width: 70px;
     height: 70px;
@@ -510,7 +508,6 @@ body.fullscreen #mobile-controls {
   }
 }
 
-/* Verbesserte Responsivität für Landscape-Modus */
 @media (orientation: landscape) and (max-height: 600px) {
   body {
     height: 100vh;
@@ -575,7 +572,6 @@ body.fullscreen #mobile-controls {
   }
 }
 
-/* Zusätzliche Anpassungen für sehr kleine Bildschirme im Landscape-Modus */
 @media (orientation: landscape) and (max-height: 400px) {
   h1 {
     font-size: 20px;
@@ -598,7 +594,6 @@ body.fullscreen #mobile-controls {
   }
 }
 
-/* Verbesserte Fullscreen-Anpassungen */
 body.fullscreen {
   overflow: hidden;
 }
