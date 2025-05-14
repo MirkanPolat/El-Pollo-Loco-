@@ -42,28 +42,6 @@
           class="start-img"
         />
         <button id="start-button" onclick="startGame()">START GAME</button>
-        <div id="controls-container">
-          <div class="control-item">
-            <div class="key-box">←</div>
-            <span>Move Left</span>
-          </div>
-          <div class="control-item">
-            <div class="key-box">→</div>
-            <span>Move Right</span>
-          </div>
-          <div class="control-item">
-            <div class="key-group">
-              <div class="key-box">↑</div>
-              <span>OR</span>
-              <div class="key-box">Space</div>
-            </div>
-            <span class="control-label">Jump</span>
-          </div>
-          <div class="control-item">
-            <div class="key-box">D</div>
-            <span>Throw</span>
-          </div>
-        </div>
       </div>
       <div id="game-over-screen" class="end-screen" style="display: none">
         <img src="./img/You won, you lost/Game Over.png" class="end-img" />
@@ -92,6 +70,9 @@
           src="./img/fullscreen/fullscreen_icon_transparent.png"
           alt="Fullscreen Toggle"
         />
+      </div>
+      <div id="controls-button" onclick="toggleControls()">
+        <img id="controls-icon" src="./img/controls-icon.png" alt="Controls">
       </div>
     </div>
     <div id="mobile-controls">
@@ -235,6 +216,36 @@
           Quelle: <a href="https://pixabay.com/music/world-latin-mexican-salsa-background-music-15363/" target="_blank">https://pixabay.com/music/world-latin-mexican-salsa-background-music-15363/</a><br>  
           Lizenz: Pixabay License – frei für kommerzielle & nicht-kommerzielle Nutzung, keine Namensnennung erforderlich<br>
           Status: Heruntergeladen und gespeichert im Ordner /</p>
+        </div>
+      </div>
+    </div>
+    <div id="controls-overlay" class="legal-overlay">
+      <div class="impressum-content">
+        <div class="impressum-header">
+          <h2>Controls</h2>
+          <div class="close-button" onclick="toggleControls()">×</div>
+        </div>
+        <div class="impressum-body">
+          <div class="overlay-controls">
+            <div class="control-item">
+              <span class="control-label">Move</span>
+              <div class="key-group">
+                <div class="key-box">←</div>
+                <div class="key-box">→</div>
+              </div>
+              <span>Walk</span>
+            </div>
+            <div class="control-item">
+              <span class="control-label">Jump</span>
+              <div class="key-box">Space</div>
+              <span>Jump</span>
+            </div>
+            <div class="control-item">
+              <span class="control-label">Attack</span>
+              <div class="key-box">D</div>
+              <span>Throw</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

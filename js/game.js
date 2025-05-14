@@ -23,7 +23,7 @@ function toggleSound() {
     document.getElementById("sound-icon").src = "./img/sound_imgs/unmute.png";
   }
 }
-
+     
 function startGame() {
   document.getElementById("start-screen").style.display = "none";
   document.getElementById("game-over-screen").style.display = "none";
@@ -120,6 +120,32 @@ document.addEventListener("click", function (event) {
   const overlay = document.getElementById("credits-overlay");
   if (event.target === overlay && overlay.style.display === "flex") {
     toggleCredits();
+  }
+});
+
+function toggleControls() {
+  const overlay = document.getElementById("controls-overlay");
+  const currentDisplay = window.getComputedStyle(overlay).display;
+
+  if (currentDisplay === "none") {
+    overlay.style.display = "flex";
+
+    if (world && gameStarted && !gameEnded) {
+      world.isGameActive = false;
+    }
+  } else {
+    overlay.style.display = "none";
+
+    if (world && gameStarted && !gameEnded) {
+      world.isGameActive = true;
+    }
+  }
+}
+
+document.addEventListener("click", function (event) {
+  const overlay = document.getElementById("controls-overlay");
+  if (event.target === overlay && overlay.style.display === "flex") {
+    toggleControls();
   }
 });
 
