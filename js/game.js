@@ -166,8 +166,7 @@ function toggleFullscreen() {
     gameContainer.classList.add("fullscreen-container");
     canvas.classList.add("fullscreen");
     document.body.classList.add("fullscreen");
-    fullscreenIcon.src =
-      "./img/fullscreen/exit_fullscreen_icon_transparent.png";
+    fullscreenIcon.src = "./img/fullscreen/exit_full.png";
   } else {
     if (document.exitFullscreen) {
       document.exitFullscreen();
@@ -180,7 +179,7 @@ function toggleFullscreen() {
     gameContainer.classList.remove("fullscreen-container");
     canvas.classList.remove("fullscreen");
     document.body.classList.remove("fullscreen");
-    fullscreenIcon.src = "./img/fullscreen/fullscreen_icon_transparent.png";
+    fullscreenIcon.src = "./img/fullscreen/fullscreen.png";
   }
 }
 
@@ -213,7 +212,7 @@ function exitFullscreenMode() {
   const fullscreenIcon = document.getElementById("fullscreen-icon");
 
   if (fullscreenIcon) {
-    fullscreenIcon.src = "./img/fullscreen/fullscreen_icon_transparent.png";
+    fullscreenIcon.src = "./img/fullscreen/fullscreen.png";
   }
 }
 
