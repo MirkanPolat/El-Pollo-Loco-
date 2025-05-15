@@ -258,8 +258,18 @@ class World {
     }
   }
 
-  endGame(result) {
-    gameEnded = true;
+endGame(result) {
+  gameEnded = true;
+
+  if (!AudioHub.isMuted) {
+    if (result === 'game-over') {
+      AudioHub.playOne(AudioHub.CHARACTER_HURT);
+    } else if (result === 'win') {
+      AudioHub.playOne(AudioHub.BOSS_DEAD);
+    }
+  }
+  
+  setTimeout(() => {
     this.isGameActive = false;
     
     if (this.character) {
@@ -272,21 +282,17 @@ class World {
       });
     }
     
-    if (result === 'game-over') {
-      document.getElementById('game-over-screen').style.display = 'flex';
-    } else if (result === 'win') {
-      document.getElementById('win-screen').style.display = 'flex';
-    }
-    
     AudioHub.stopAll();
-    if (!AudioHub.isMuted) {
+    
+    setTimeout(() => {
       if (result === 'game-over') {
-        AudioHub.playOne(AudioHub.CHARACTER_HURT);
+        document.getElementById('game-over-screen').style.display = 'flex';
       } else if (result === 'win') {
-        AudioHub.playOne(AudioHub.BOSS_DEAD);
+        document.getElementById('win-screen').style.display = 'flex';
       }
-    }
+    }, 1000);
     
     clearInterval(this.gameInterval);
-  }
+  }, 2000);
+}
 }
