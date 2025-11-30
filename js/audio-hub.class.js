@@ -50,7 +50,12 @@ class AudioHub {
         }
 
         this.stopOne(sound);
-        
+        this.setSoundStartTime(sound);
+        this.setupBackgroundLoop(sound);
+        this.playWhenReady(sound);
+    }
+
+    static setSoundStartTime(sound) {
         if (sound === AudioHub.THROW_BOTTLE) {
             sound.currentTime = 0.3;
         }
@@ -62,7 +67,11 @@ class AudioHub {
         }
         if (sound === AudioHub.BACKGROUND_MUSIC) {
             sound.currentTime = 0.4;
-            
+        }
+    }
+
+    static setupBackgroundLoop(sound) {
+        if (sound === AudioHub.BACKGROUND_MUSIC) {
             sound.removeEventListener('timeupdate', sound._timeUpdateHandler);
             
             sound._timeUpdateHandler = () => {
@@ -73,7 +82,9 @@ class AudioHub {
         
             sound.addEventListener('timeupdate', sound._timeUpdateHandler);
         }
-        
+    }
+
+    static playWhenReady(sound) {
         let checkInterval = setInterval(() => {
             if (sound.readyState == 4) {
                 sound.play().catch(error => {
