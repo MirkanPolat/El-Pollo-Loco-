@@ -137,6 +137,7 @@ function toggleControls() {
 
     if (world && gameStarted && !gameEnded) {
       world.isGameActive = true;
+      world.draw();
     }
   }
 }
