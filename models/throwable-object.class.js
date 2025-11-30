@@ -3,6 +3,12 @@ class ThrowableObject extends MovableObject {
     super().loadImage(
       "./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png"
     );
+    this.initializeProperties(x, y, throwLeft, isMoving);
+    this.initializeImages();
+    this.throw();
+  }
+
+  initializeProperties(x, y, throwLeft, isMoving) {
     this.x = x;
     this.y = y;
     this.height = 100;
@@ -11,34 +17,39 @@ class ThrowableObject extends MovableObject {
     this.hasCollided = false;
     this.throwLeft = throwLeft;
     let baseSpeed = isMoving ? 15 : 10;
-    this.speedX = throwLeft ? -baseSpeed : baseSpeed; 
-    
-
+    this.speedX = throwLeft ? -baseSpeed : baseSpeed;
     this.offset = {
-      top: 30,   
-      bottom: 30, 
-      left: 30,   
-      right: 30  
+      top: 30,
+      bottom: 30,
+      left: 30,
+      right: 30
     };
-    
-    this.bottleRotationImages = [
+  }
+
+  initializeImages() {
+    this.bottleRotationImages = this.getRotationImages();
+    this.bottleSplashImages = this.getSplashImages();
+    this.loadImages(this.bottleRotationImages);
+  }
+
+  getRotationImages() {
+    return [
       "./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
       "./img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png",
       "./img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png",
-      "./img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png",
+      "./img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png"
     ];
+  }
 
-    this.bottleSplashImages = [
+  getSplashImages() {
+    return [
       "./img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png",
       "./img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png",
       "./img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png",
       "./img/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png",
       "./img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png",
-      "./img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
+      "./img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png"
     ];
-
-    this.loadImages(this.bottleRotationImages);
-    this.throw();
   }
 
   throw() {

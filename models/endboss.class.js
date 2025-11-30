@@ -92,20 +92,15 @@ class Endboss extends MovableObject {
     }
 
     setPhaseProperties() {
-        const currentPhase = this.determinePhase();
-        if (currentPhase === 'phase1') {
-            this.attackCooldown = 3000;
-            this.attackDuration = 2500;
-            this.speed = 15;
-        } else if (currentPhase === 'phase2') {
-            this.attackCooldown = 2000;
-            this.attackDuration = 3000;
-            this.speed = 20;
-        } else {
-            this.attackCooldown = 1500;
-            this.attackDuration = 3500;
-            this.speed = 25;
-        }
+        const phases = {
+            'phase1': { cooldown: 3000, duration: 2500, speed: 15 },
+            'phase2': { cooldown: 2000, duration: 3000, speed: 20 },
+            'phase3': { cooldown: 1500, duration: 3500, speed: 25 }
+        };
+        const phase = phases[this.determinePhase()];
+        this.attackCooldown = phase.cooldown;
+        this.attackDuration = phase.duration;
+        this.speed = phase.speed;
     }
 
     faceCharacter() {
@@ -276,29 +271,44 @@ class Endboss extends MovableObject {
 
     animate() {
         this.behaviorInterval = setInterval(() => {
-            if (this.isPlayerNearby()) {
-                this.activateBoss();
-            }
-            
-            if (this.hadFirstContact && !this.isDead()) {
-                this.updateBossActions();
-            }
+            this.handleBehavior();
         }, 50);
         
         this.animationInterval = setInterval(() => {
-            if (this.isDead()) {
-                this.PlayAnimation(this.IMAGES_DEAD);
-                this.cleanup();
-            } else if (this.isHurt()) {
-                this.PlayAnimation(this.IMAGES_HURT);
-            } else if (this.isAttacking) {
-                this.PlayAnimation(this.IMAGES_ATTACK);
-            } else if (this.hadFirstContact) {
-                this.PlayAnimation(this.IMAGES_WALKING);
-            } else {
-                this.PlayAnimation(this.IMAGES_ALERT);
-            }
+            this.handleAnimation();
         }, 200);
+    }
+
+    handleBehavior() {
+        if (this.isPlayerNearby()) {
+            this.activateBoss();
+        }
+        if (this.hadFirstContact && !this.isDead()) {
+            this.updateBossActions();
+        }
+    }
+
+    handleAnimation() {
+        if (this.isDead()) {
+            this.handleDead();
+        } else if (this.isHurt()) {
+            this.PlayAnimation(this.IMAGES_HURT);
+        } else if (this.isAttacking) {
+            this.handleAttacking();
+        } else if (this.hadFirstContact) {
+            this.PlayAnimation(this.IMAGES_WALKING);
+        } else {
+            this.PlayAnimation(this.IMAGES_ALERT);
+        }
+    }
+
+    handleDead() {
+        this.PlayAnimation(this.IMAGES_DEAD);
+        this.cleanup();
+    }
+
+    handleAttacking() {
+        this.PlayAnimation(this.IMAGES_ATTACK);
     }
 
     cleanup() {

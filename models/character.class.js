@@ -102,32 +102,41 @@ class Character extends MovableObject {
 
   animate() {
     this.movementInterval = setInterval(() => {
-      const isWalking = (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround();
-      AudioHub.playWalkingSound(AudioHub.CHARACTER_WALKING, isWalking);
-
-      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-        this.moveRight();
-        this.otherDirection = false;
-        this.resetIdleTimer();
-      }
-      if (this.world.keyboard.LEFT && this.x > 0) {
-        this.moveLeft();
-        this.otherDirection = true;
-        this.resetIdleTimer();
-      }
-
-      if ((this.world.keyboard.SPACE || this.world.keyboard.UP) && !this.isAboveGround()) {
-        this.jump();
-        this.resetIdleTimer();
-      }
-
-      this.world.camera_x = -this.x + 100;
+      this.handleMovement();
     }, 1000 / 60);
 
     this.animationInterval = setInterval(() => {
       const state = this.determineAnimationState();
       this.playAnimationForState(state);
     }, 150);
+  }
+
+  handleMovement() {
+    const isWalking = (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround();
+    AudioHub.playWalkingSound(AudioHub.CHARACTER_WALKING, isWalking);
+    this.handleHorizontalMovement();
+    this.handleJump();
+    this.world.camera_x = -this.x + 100;
+  }
+
+  handleHorizontalMovement() {
+    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+      this.moveRight();
+      this.otherDirection = false;
+      this.resetIdleTimer();
+    }
+    if (this.world.keyboard.LEFT && this.x > 0) {
+      this.moveLeft();
+      this.otherDirection = true;
+      this.resetIdleTimer();
+    }
+  }
+
+  handleJump() {
+    if ((this.world.keyboard.SPACE || this.world.keyboard.UP) && !this.isAboveGround()) {
+      this.jump();
+      this.resetIdleTimer();
+    }
   }
 
   determineAnimationState() {
@@ -152,28 +161,21 @@ class Character extends MovableObject {
     if (state !== 'sleeping') {
       AudioHub.stopOne(AudioHub.CHARACTER_SLEEPING);
     }
+    this.playStateAnimation(state);
+  }
+
+  playStateAnimation(state) {
+    const animations = {
+      'dead': this.IMAGES_DEAD,
+      'hurt': this.IMAGES_HURT,
+      'jumping': this.IMAGES_JUMPING,
+      'walking': this.IMAGES_WALKING,
+      'sleeping': this.IMAGES_SLEEPING,
+      'idle': this.IMAGES_IDLE
+    };
     
-    switch(state) {
-      case 'dead':
-        this.PlayAnimation(this.IMAGES_DEAD);
-        break;
-      case 'hurt':
-        this.PlayAnimation(this.IMAGES_HURT);
-        break;
-      case 'jumping':
-        this.PlayAnimation(this.IMAGES_JUMPING);
-        break;
-      case 'walking':
-        this.PlayAnimation(this.IMAGES_WALKING);
-        break;
-      case 'sleeping':
-        this.PlayAnimation(this.IMAGES_SLEEPING);
-        this.handleSleepingSound();
-        break;
-      case 'idle':
-        this.PlayAnimation(this.IMAGES_IDLE);
-        break;
-    }
+    this.PlayAnimation(animations[state]);
+    if (state === 'sleeping') this.handleSleepingSound();
   }
 
   handleSleepingSound() {

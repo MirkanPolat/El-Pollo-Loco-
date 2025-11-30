@@ -9,21 +9,31 @@ class MovableObject extends DrawableObject {
   applyGravity() {
     this.gravityInterval = setInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {
-        this.y -= this.speedY;
-        this.speedY -= this.acceleration;
-
-        if (this instanceof Character && !this.isAboveGround() && this.y > 150) {
-          this.y = 150; 
-          this.speedY = 0;
-        }
-
-        if (this instanceof ThrowableObject && this.y >= 340) {
-          this.speed = 0;
-          this.animateSplash();
-          clearInterval(this.gravityInterval);
-        }
+        this.updateGravity();
+        this.handleCharacterLanding();
+        this.handleBottleLanding();
       }
     }, 1000 / 60);
+  }
+
+  updateGravity() {
+    this.y -= this.speedY;
+    this.speedY -= this.acceleration;
+  }
+
+  handleCharacterLanding() {
+    if (this instanceof Character && !this.isAboveGround() && this.y > 150) {
+      this.y = 150; 
+      this.speedY = 0;
+    }
+  }
+
+  handleBottleLanding() {
+    if (this instanceof ThrowableObject && this.y >= 340) {
+      this.speed = 0;
+      this.animateSplash();
+      clearInterval(this.gravityInterval);
+    }
   }
 
   isAboveGround() {

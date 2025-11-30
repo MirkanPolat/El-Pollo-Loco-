@@ -38,22 +38,12 @@ class AudioHub {
         AudioHub.GAME_WIN, AudioHub.GAME_LOSE, AudioHub.GAME_LOSE_EFFECT
     ];
     
-    /**
-     * Helper method to create an audio object with specified volume
-     * @param {string} path - Path to the audio file
-     * @param {number} volume - Volume level (0.0 to 1.0)
-     * @returns {Audio} - Audio object
-     */
     static createSound(path, volume) {
         const sound = new Audio(path);
         sound.volume = volume;
         return sound;
     }
 
-    /**
-     * Plays an audio file with load state verification
-     * @param {Audio} sound - The audio object to play
-     */
     static playOne(sound) {
         if (AudioHub.isMuted) {
             return;
@@ -97,18 +87,11 @@ class AudioHub {
         }, 1000);
     }
     
-    /**
-     * Stops a single audio file
-     * @param {Audio} sound - The audio object to stop
-     */
     static stopOne(sound) {
         sound.pause();
         sound.currentTime = 0;
     }
     
-    /**
-     * Stops playback of all audio files
-     */
     static stopAll() {
         AudioHub.allSounds.forEach(sound => {
             if (sound) {
@@ -118,12 +101,12 @@ class AudioHub {
         });
     }
 
-    /**
-     * Plays a walking sound in a loop when the character is walking
-     * @param {Audio} sound - The sound to play
-     * @param {boolean} isWalking - Is the character moving?
-     */
     static playWalkingSound(sound, isWalking) {
+        if (AudioHub.isMuted) {
+            this.stopOne(sound);
+            return;
+        }
+        
         if (isWalking) {
             if (sound.paused || sound.currentTime > sound.duration - 0.1) {
                 sound.currentTime = 0;
@@ -136,9 +119,6 @@ class AudioHub {
 
     static currentMusic;
 
-    /**
-     * Starts the background music
-     */
     static playBackgroundMusic() {
         if (AudioHub.currentMusic) {
             AudioHub.stopOne(AudioHub.currentMusic);
@@ -149,11 +129,6 @@ class AudioHub {
         AudioHub.playOne(AudioHub.currentMusic);
     }
 
-    /**
-     * Changes to a different background sound
-     * @param {Audio} newSound - The new sound to play
-     * @param {boolean} loop - Whether the sound should play in a loop
-     */
     static changeGameMusic(newSound, loop = true) {
         if (AudioHub.currentMusic) {
             AudioHub.stopOne(AudioHub.currentMusic);

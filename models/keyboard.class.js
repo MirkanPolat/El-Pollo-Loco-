@@ -12,45 +12,22 @@ class Keyboard {
 
     bindBtsPressEvents() {
         document.addEventListener("DOMContentLoaded", () => {
-            document.getElementById('btnLeft')?.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                this.LEFT = true;
-            });
+            this.bindButton('btnLeft', 'LEFT');
+            this.bindButton('btnRight', 'RIGHT');
+            this.bindButton('btnJump', 'SPACE');
+            this.bindButton('btnThrow', 'D');
+        });
+    }
 
-            document.getElementById('btnLeft')?.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                this.LEFT = false;
-            });
+    bindButton(btnId, keyProperty) {
+        document.getElementById(btnId)?.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            this[keyProperty] = true;
+        });
 
-            document.getElementById('btnRight')?.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                this.RIGHT = true;
-            });
-
-            document.getElementById('btnRight')?.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                this.RIGHT = false;
-            });
-
-            document.getElementById('btnJump')?.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                this.SPACE = true;
-            });
-
-            document.getElementById('btnJump')?.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                this.SPACE = false;
-            });
-
-            document.getElementById('btnThrow')?.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                this.D = true;
-            });
-
-            document.getElementById('btnThrow')?.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                this.D = false;
-            });
+        document.getElementById(btnId)?.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            this[keyProperty] = false;
         });
     }
 }

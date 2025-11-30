@@ -95,14 +95,26 @@ class World {
     if (!this.isGameActive) return;
     
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.drawBackground();
+    this.drawStatusBars();
+    this.drawGameObjects();
+    this.scheduleNextFrame();
+  }
 
+  drawBackground() {
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.backgroundObjects);
     this.ctx.translate(-this.camera_x, 0);
+  }
+
+  drawStatusBars() {
     this.addToMap(this.statusBar);
     this.addToMap(this.bottleStatusbar);
     this.addToMap(this.coinStatusbar);
+    this.drawBossStatusBar();
+  }
 
+  drawBossStatusBar() {
     if (this.bossStatusVisible()) {
       const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
       if (endboss) {
@@ -111,7 +123,9 @@ class World {
       }
       this.addToMap(this.bossStatusbar);
     }
-    
+  }
+
+  drawGameObjects() {
     this.ctx.translate(this.camera_x, 0); 
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.clouds);
@@ -119,8 +133,10 @@ class World {
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwableObjects);
-    this.ctx.translate(-this.camera_x, 0); 
+    this.ctx.translate(-this.camera_x, 0);
+  }
 
+  scheduleNextFrame() {
     let self = this;
     requestAnimationFrame(function () {
       self.draw();
@@ -131,7 +147,7 @@ class World {
     try {
         const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
         if (endboss) {
-            return this.character.x > 2000 || (endboss.hadFirstContact === true);
+            return endboss.hadFirstContact === true;
         }
         return false;
     } catch (error) {
@@ -158,47 +174,72 @@ class World {
   }
 
   checkBottleCollisions() {
-    this.throwableObjects.forEach((bottle, bottleIndex) => {
-        if (bottle.hasCollided) return;
-        this.level.enemies.forEach((enemy) => {
-            try {
-                if (bottle && enemy && bottle.isColliding(enemy) && !enemy.isDead() && !bottle.hasCollided) {
-                    bottle.hasCollided = true;
-                    
-                    if (!(enemy instanceof Endboss)) {
-                        AudioHub.playOne(AudioHub.HIT_ENEMY);
-                    }
-                    
-                    if (enemy instanceof Endboss && typeof enemy.hit === 'function') {
-                        enemy.hit();
+    this.checkThrownBottleCollisions();
+    this.checkBottleCollection();
+  }
 
-                        if (this.bossStatusbar) {
-                            const percentage = enemy.energy / enemy.maxEnergy * 100;
-                            this.bossStatusbar.setPercentage(percentage);
-                        }
-                    } else if (enemy.die && typeof enemy.die === 'function') {
-                        enemy.die();
-                    }
-                    
-                    bottle.speed = 0;
-                    setTimeout(() => {
-                        if (bottle.animateSplash && typeof bottle.animateSplash === 'function') {
-                            bottle.animateSplash();
-                        }
-                        
-                        setTimeout(() => {
-                            const index = this.throwableObjects.indexOf(bottle);
-                            if (index > -1) {
-                                this.throwableObjects.splice(index, 1);
-                            }
-                        }, 300);
-                    }, 100);
-                }
-            } catch (error) {
-            }
-        });
+  checkThrownBottleCollisions() {
+    this.throwableObjects.forEach((bottle) => {
+      if (bottle.hasCollided) return;
+      this.level.enemies.forEach((enemy) => {
+        this.handleBottleEnemyCollision(bottle, enemy);
+      });
     });
-    
+  }
+
+  handleBottleEnemyCollision(bottle, enemy) {
+    try {
+      if (bottle && enemy && bottle.isColliding(enemy) && !enemy.isDead() && !bottle.hasCollided) {
+        bottle.hasCollided = true;
+        this.processBottleHit(bottle, enemy);
+      }
+    } catch (error) {}
+  }
+
+  processBottleHit(bottle, enemy) {
+    if (!(enemy instanceof Endboss)) {
+      AudioHub.playOne(AudioHub.HIT_ENEMY);
+    }
+    this.damageEnemy(enemy);
+    this.animateBottleSplash(bottle);
+  }
+
+  damageEnemy(enemy) {
+    if (enemy instanceof Endboss && typeof enemy.hit === 'function') {
+      enemy.hit();
+      this.updateBossStatusBar(enemy);
+    } else if (enemy.die && typeof enemy.die === 'function') {
+      enemy.die();
+    }
+  }
+
+  updateBossStatusBar(enemy) {
+    if (this.bossStatusbar) {
+      const percentage = enemy.energy / enemy.maxEnergy * 100;
+      this.bossStatusbar.setPercentage(percentage);
+    }
+  }
+
+  animateBottleSplash(bottle) {
+    bottle.speed = 0;
+    setTimeout(() => {
+      if (bottle.animateSplash && typeof bottle.animateSplash === 'function') {
+        bottle.animateSplash();
+      }
+      this.removeBottleAfterSplash(bottle);
+    }, 100);
+  }
+
+  removeBottleAfterSplash(bottle) {
+    setTimeout(() => {
+      const index = this.throwableObjects.indexOf(bottle);
+      if (index > -1) {
+        this.throwableObjects.splice(index, 1);
+      }
+    }, 300);
+  }
+
+  checkBottleCollection() {
     for (let i = this.level.bottles.length - 1; i >= 0; i--) {
       let bottle = this.level.bottles[i];
       if (this.character.isColliding(bottle) && this.character.bottles < 5) {
@@ -262,48 +303,63 @@ class World {
 
 endGame(result) {
   gameEnded = true;
-  
   setTimeout(() => {
-    this.isGameActive = false;
-    
-    if (this.character) {
-      this.character.speedY = 0;
-      this.character.cleanup();
-    }
-    
-    if (this.level && this.level.enemies) {
-      this.level.enemies.forEach(enemy => {
-        if (enemy.speed) enemy.speed = 0;
-        if (enemy.cleanup && typeof enemy.cleanup === 'function') {
-          enemy.cleanup();
-        }
-      });
-    }
-    
-    AudioHub.stopAll();
-    
-    setTimeout(() => {
-      if (!AudioHub.isMuted) {
-        if (result === 'game-over') {
-          AudioHub.playOne(AudioHub.GAME_LOSE_EFFECT);
-          setTimeout(() => {
-            AudioHub.playOne(AudioHub.GAME_LOSE);
-          }, 800);
-        } else if (result === 'win') {
-          AudioHub.playOne(AudioHub.GAME_WIN);
-        }
-      }
-      
-      setTimeout(() => {
-        if (result === 'game-over') {
-          document.getElementById('game-over-screen').style.display = 'flex';
-        } else if (result === 'win') {
-          document.getElementById('win-screen').style.display = 'flex';
-        }
-      }, 1300);
-    }, 500);
-    
-    clearInterval(this.gameInterval);
+    this.stopGame();
+    this.playEndGameSequence(result);
   }, 2000);
+}
+
+stopGame() {
+  this.isGameActive = false;
+  this.cleanupCharacter();
+  this.cleanupEnemies();
+  AudioHub.stopAll();
+  clearInterval(this.gameInterval);
+}
+
+cleanupCharacter() {
+  if (this.character) {
+    this.character.speedY = 0;
+    this.character.cleanup();
+  }
+}
+
+cleanupEnemies() {
+  if (this.level && this.level.enemies) {
+    this.level.enemies.forEach(enemy => {
+      if (enemy.speed) enemy.speed = 0;
+      if (enemy.cleanup && typeof enemy.cleanup === 'function') {
+        enemy.cleanup();
+      }
+    });
+  }
+}
+
+playEndGameSequence(result) {
+  setTimeout(() => {
+    this.playEndGameSound(result);
+    this.showEndGameScreen(result);
+  }, 500);
+}
+
+playEndGameSound(result) {
+  if (!AudioHub.isMuted) {
+    if (result === 'game-over') {
+      AudioHub.playOne(AudioHub.GAME_LOSE_EFFECT);
+      setTimeout(() => AudioHub.playOne(AudioHub.GAME_LOSE), 800);
+    } else if (result === 'win') {
+      AudioHub.playOne(AudioHub.GAME_WIN);
+    }
+  }
+}
+
+showEndGameScreen(result) {
+  setTimeout(() => {
+    if (result === 'game-over') {
+      document.getElementById('game-over-screen').style.display = 'flex';
+    } else if (result === 'win') {
+      document.getElementById('win-screen').style.display = 'flex';
+    }
+  }, 1300);
 }
 }
