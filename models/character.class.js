@@ -125,31 +125,61 @@ class Character extends MovableObject {
     }, 1000 / 60);
 
     this.animationInterval = setInterval(() => {
-      if (this.isDead()) {
-        this.PlayAnimation(this.IMAGES_DEAD);
-      } else if (this.isHurt()) {
-        this.PlayAnimation(this.IMAGES_HURT);
-      } else if (this.isAboveGround()) {
-        this.PlayAnimation(this.IMAGES_JUMPING);
-      } else {
-        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-          this.PlayAnimation(this.IMAGES_WALKING);
-        } else {
-          let timeSinceLastActivity = new Date().getTime() - this.lastActivity;
-
-          if (timeSinceLastActivity > this.SLEEP_TIMEOUT) {
-            this.PlayAnimation(this.IMAGES_SLEEPING);
-
-            if (AudioHub.CHARACTER_SLEEPING.paused) {
-              AudioHub.playOne(AudioHub.CHARACTER_SLEEPING);
-            }
-          } else {
-            this.PlayAnimation(this.IMAGES_IDLE);
-            AudioHub.stopOne(AudioHub.CHARACTER_SLEEPING);
-          }
-        }
-      }
+      const state = this.determineAnimationState();
+      this.playAnimationForState(state);
     }, 150);
+  }
+
+  determineAnimationState() {
+    if (this.isDead()) return 'dead';
+    if (this.isHurt()) return 'hurt';
+    if (this.isAboveGround()) return 'jumping';
+    if (this.isWalking()) return 'walking';
+    if (this.isSleeping()) return 'sleeping';
+    return 'idle';
+  }
+
+  isWalking() {
+    return this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
+  }
+
+  isSleeping() {
+    const timeSinceLastActivity = new Date().getTime() - this.lastActivity;
+    return timeSinceLastActivity > this.SLEEP_TIMEOUT;
+  }
+
+  playAnimationForState(state) {
+    if (state !== 'sleeping') {
+      AudioHub.stopOne(AudioHub.CHARACTER_SLEEPING);
+    }
+    
+    switch(state) {
+      case 'dead':
+        this.PlayAnimation(this.IMAGES_DEAD);
+        break;
+      case 'hurt':
+        this.PlayAnimation(this.IMAGES_HURT);
+        break;
+      case 'jumping':
+        this.PlayAnimation(this.IMAGES_JUMPING);
+        break;
+      case 'walking':
+        this.PlayAnimation(this.IMAGES_WALKING);
+        break;
+      case 'sleeping':
+        this.PlayAnimation(this.IMAGES_SLEEPING);
+        this.handleSleepingSound();
+        break;
+      case 'idle':
+        this.PlayAnimation(this.IMAGES_IDLE);
+        break;
+    }
+  }
+
+  handleSleepingSound() {
+    if (AudioHub.CHARACTER_SLEEPING.paused) {
+      AudioHub.playOne(AudioHub.CHARACTER_SLEEPING);
+    }
   }
 
   collectBottle() {

@@ -294,7 +294,6 @@ canvas {
 
 .end-img {
   width: 100%;
-  height: 100%;
   object-fit: cover;
 }
 
@@ -373,7 +372,6 @@ canvas {
 
 .mobile-btn img {
   width: 30px;
-  height: 30px;
   filter: invert(80%) sepia(43%) saturate(1187%) hue-rotate(334deg) brightness(101%) contrast(96%);
 }
 
