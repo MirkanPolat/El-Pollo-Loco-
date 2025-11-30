@@ -24,13 +24,17 @@ class AudioHub {
     static THROW_BOTTLE = AudioHub.createSound('./audio/throw-bottle.mp3', AudioHub.VOLUME.EFFECTS);
     static BOTTLE_SHATTER = AudioHub.createSound('./audio/bottle-shatter.mp3', AudioHub.VOLUME.EFFECTS);
     static HIT_ENEMY = AudioHub.createSound('./audio/hit-enemy.mp3', AudioHub.VOLUME.EFFECTS);
+    
+    static GAME_WIN = AudioHub.createSound('./audio/win.mp3', AudioHub.VOLUME.EFFECTS);
+    static GAME_LOSE = AudioHub.createSound('./audio/lose.mp3', AudioHub.VOLUME.EFFECTS);
 
     static allSounds = [
         AudioHub.BACKGROUND_MUSIC,
         AudioHub.BOSS_ATTACK, AudioHub.BOSS_HURT, AudioHub.BOSS_DEAD,
         AudioHub.CHARACTER_JUMP, AudioHub.CHARACTER_HURT, AudioHub.CHARACTER_WALKING,AudioHub.CHARACTER_SLEEPING,
         AudioHub.COLLECT_COIN, AudioHub.COLLECT_BOTTLE, AudioHub.HIT_ENEMY,
-        AudioHub.THROW_BOTTLE, AudioHub.BOTTLE_SHATTER
+        AudioHub.THROW_BOTTLE, AudioHub.BOTTLE_SHATTER,
+        AudioHub.GAME_WIN, AudioHub.GAME_LOSE
     ];
     
     /**

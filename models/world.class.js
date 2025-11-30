@@ -262,14 +262,6 @@ class World {
 
 endGame(result) {
   gameEnded = true;
-
-  if (!AudioHub.isMuted) {
-    if (result === 'game-over') {
-      AudioHub.playOne(AudioHub.CHARACTER_HURT);
-    } else if (result === 'win') {
-      AudioHub.playOne(AudioHub.BOSS_DEAD);
-    }
-  }
   
   setTimeout(() => {
     this.isGameActive = false;
@@ -291,12 +283,22 @@ endGame(result) {
     AudioHub.stopAll();
     
     setTimeout(() => {
-      if (result === 'game-over') {
-        document.getElementById('game-over-screen').style.display = 'flex';
-      } else if (result === 'win') {
-        document.getElementById('win-screen').style.display = 'flex';
+      if (!AudioHub.isMuted) {
+        if (result === 'game-over') {
+          AudioHub.playOne(AudioHub.GAME_LOSE);
+        } else if (result === 'win') {
+          AudioHub.playOne(AudioHub.GAME_WIN);
+        }
       }
-    }, 1000);
+      
+      setTimeout(() => {
+        if (result === 'game-over') {
+          document.getElementById('game-over-screen').style.display = 'flex';
+        } else if (result === 'win') {
+          document.getElementById('win-screen').style.display = 'flex';
+        }
+      }, 500);
+    }, 500);
     
     clearInterval(this.gameInterval);
   }, 2000);
