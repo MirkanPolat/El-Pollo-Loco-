@@ -81,17 +81,9 @@ class AudioHub {
         
         let checkInterval = setInterval(() => {
             if (sound.readyState == 4) {
-                console.log("Sound ready");
                 sound.play().catch(error => {
-                    if (error.name === 'AbortError') {
-                        console.log('Play wurde abgebrochen:', error.message);
-                    } else {
-                        console.error('Sound-Fehler:', error);
-                    }
                 });
                 clearInterval(checkInterval);
-            } else {
-                console.log("Sound not ready");
             }
         }, 200);
         

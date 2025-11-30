@@ -8,8 +8,7 @@ function init() {
     world = new World(canvas, keyboard);
     AudioHub.playBackgroundMusic();
     
-    console.log('MyCharacter', world.character);
-    drawStartScreen(); // Draw the start screen
+    drawStartScreen();
 }
 
 function drawStartScreen() {
