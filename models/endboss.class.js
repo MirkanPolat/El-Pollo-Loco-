@@ -101,17 +101,44 @@ class Endboss extends MovableObject {
                 this.speed = 25;              
             }
             
-            if (world && world.character && this.x > world.character.x + 150) {
-                this.moveLeft();
+            // Boss dreht sich in Richtung des Charakters
+            if (world && world.character) {
+                if (this.x > world.character.x + 150) {
+                    // Pepe ist links vom Boss
+                    this.otherDirection = false;
+                    this.moveLeft();
+                } else if (this.x < world.character.x - 150) {
+                    // Pepe ist rechts vom Boss - Boss dreht sich um
+                    this.otherDirection = true;
+                    this.moveRight();
+                }
             }
             
             if (this.isHurt()) {
-                this.moveRight();
+                // Bei Schaden weicht der Boss zurück
+                if (world && world.character) {
+                    if (this.x > world.character.x) {
+                        this.otherDirection = false;
+                        this.moveRight();
+                    } else {
+                        this.otherDirection = true;
+                        this.moveLeft();
+                    }
+                }
                 setTimeout(() => {
                     this.lastAction = new Date().getTime() - this.attackCooldown + 500;
                 }, 800);  
             } else if (this.isAttacking) {
-                this.moveLeft();
+                // Boss bewegt sich während des Angriffs auf den Charakter zu
+                if (world && world.character) {
+                    if (this.x > world.character.x) {
+                        this.otherDirection = false;
+                        this.moveLeft();
+                    } else {
+                        this.otherDirection = true;
+                        this.moveRight();
+                    }
+                }
                 this.speed += 5;
                 
                 if (timePassed > this.attackDuration) {
@@ -157,8 +184,13 @@ class Endboss extends MovableObject {
                     this.y -= this.speedY;
                     this.speedY -= this.acceleration * 1.2;  
                     if (world && world.character) {
+                        
                         if (this.x > world.character.x) {
+                            this.otherDirection = false;
                             this.x -= this.speed * 1.2;
+                        } else {
+                            this.otherDirection = true;
+                            this.x += this.speed * 1.2;
                         }
                     }
                     if (this.y > this.groundPosition) {
@@ -177,7 +209,7 @@ class Endboss extends MovableObject {
                 }
                 setTimeout(() => {
                     this.speed = 15;  
-                    if (Math.random() < 0.4) { // 40% Chance for a charge attack
+                    if (Math.random() < 0.4) {
                         this.isAttacking = true;
                         this.lastAction = new Date().getTime();
                         this.selectAttackType();
