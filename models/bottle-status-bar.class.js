@@ -1,3 +1,7 @@
+/**
+ * Creates a new BottleStatusBar.
+ * @class
+ */
 class BottleStatusBar extends DrawableObject {
     IMAGES = [
         "./img/7_statusbars/1_statusbar/3_statusbar_bottle/orange/0.png",
@@ -10,6 +14,12 @@ class BottleStatusBar extends DrawableObject {
 
     percentage = 0;
 
+    /**
+     * Function description
+     */
+    /**
+     * Creates a new BottleStatusBar instance
+     */
     constructor() {
         super();
         this.loadImages(this.IMAGES);
@@ -20,12 +30,25 @@ class BottleStatusBar extends DrawableObject {
         this.height = 60;
     }
 
+    /**
+     * Function description
+     */
+    /**
+     * Sets the value
+     * @param {number} percentage - percentage
+     */
     setPercentage(percentage) {
         this.percentage = percentage;
         let path = this.IMAGES[this.resolveImageIndex()];
         this.img = this.imageCache[path];
     }
 
+    /**
+     * Function description
+     */
+    /**
+     * resolveImageIndex
+     */
     resolveImageIndex() {
         if (this.percentage == 100) return 5;
         else if (this.percentage >= 80) return 4;

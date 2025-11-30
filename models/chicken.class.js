@@ -1,3 +1,7 @@
+/**
+ * Creates a new Chicken.
+ * @class
+ */
 class Chicken extends MovableObject {
   width = 80;
   height = 100;
@@ -13,6 +17,12 @@ class Chicken extends MovableObject {
     "./img/3_enemies_chicken/chicken_normal/2_dead/dead.png",
   ];
 
+  /**
+   * Function description
+   */
+  /**
+   * Creates a new Chicken instance
+   */
   constructor() {
     super().loadImage("./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
     this.loadImages(this.IMAGES_WALKING);
@@ -25,6 +35,12 @@ class Chicken extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Animates the object
+   */
   animate() {
     this.movementInterval = setInterval(() => {
       if (!this.isDead()) {
@@ -40,6 +56,12 @@ class Chicken extends MovableObject {
     }, 200);
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * die
+   */
   die() {
     this.loadImage(this.IMAGES_DEAD[0]); 
     this.toDelete = true;
@@ -50,7 +72,15 @@ class Chicken extends MovableObject {
     }, 500);
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Checks if condition is true
+   * @returns {boolean}
+   */
   isDead() {
     return this.toDelete === true;
   }
 }
+

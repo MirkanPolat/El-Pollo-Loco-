@@ -38,13 +38,27 @@ class AudioHub {
         AudioHub.GAME_WIN, AudioHub.GAME_LOSE, AudioHub.GAME_LOSE_EFFECT
     ];
     
+    /**
+     * Creates a new audio object with specified volume
+     * @param {string} path - Path to the audio file
+     * @param {number} volume - Volume level (0.0 to 1.0)
+     * @returns {Audio} The created audio object
+     */
     static createSound(path, volume) {
         const sound = new Audio(path);
         sound.volume = volume;
         return sound;
     }
 
+    /**
+     * Plays an audio file with load state verification
+     * @param {Audio} sound - The audio object to play
+     */
     static playOne(sound) {
+        /**
+         * if
+         * @param {*} AudioHub.isMuted - AudioHub.isMuted
+         */
         if (AudioHub.isMuted) {
             return;
         }
@@ -55,26 +69,58 @@ class AudioHub {
         this.playWhenReady(sound);
     }
 
+    /**
+     * Sets the start time for specific sounds
+     * @param {Audio} sound - The audio object to configure
+     */
     static setSoundStartTime(sound) {
+        /**
+         * if
+         * @param {Audio} sound - sound
+         */
         if (sound === AudioHub.THROW_BOTTLE) {
             sound.currentTime = 0.3;
         }
+        /**
+         * if
+         * @param {Audio} sound - sound
+         */
         if (sound === AudioHub.BOTTLE_SHATTER) {
             sound.currentTime = 0.35;
         }
+        /**
+         * if
+         * @param {Audio} sound - sound
+         */
         if (sound === AudioHub.HIT_ENEMY) {
             sound.currentTime = 14.5;
         }
+        /**
+         * if
+         * @param {Audio} sound - sound
+         */
         if (sound === AudioHub.BACKGROUND_MUSIC) {
             sound.currentTime = 0.4;
         }
     }
 
+    /**
+     * Sets up seamless looping for background music
+     * @param {Audio} sound - The audio object to configure
+     */
     static setupBackgroundLoop(sound) {
+        /**
+         * if
+         * @param {Audio} sound - sound
+         */
         if (sound === AudioHub.BACKGROUND_MUSIC) {
             sound.removeEventListener('timeupdate', sound._timeUpdateHandler);
             
             sound._timeUpdateHandler = () => {
+                /**
+                 * if
+                 * @param {*} sound.currentTime > - sound.currentTime >
+                 */
                 if (sound.currentTime >= sound.duration - 3) {
                     sound.currentTime = 0.4;
                 }
@@ -84,8 +130,16 @@ class AudioHub {
         }
     }
 
+    /**
+     * Waits for sound to be ready and then plays it
+     * @param {Audio} sound - The audio object to play
+     */
     static playWhenReady(sound) {
         let checkInterval = setInterval(() => {
+            /**
+             * if
+             * @param {*} sound.readyState - sound.readyState
+             */
             if (sound.readyState == 4) {
                 sound.play().catch(error => {
                 });
@@ -98,13 +152,24 @@ class AudioHub {
         }, 1000);
     }
     
+    /**
+     * Stops a single audio file and resets it
+     * @param {Audio} sound - The audio object to stop
+     */
     static stopOne(sound) {
         sound.pause();
         sound.currentTime = 0;
     }
     
+    /**
+     * Stops all audio files in the game
+     */
     static stopAll() {
         AudioHub.allSounds.forEach(sound => {
+            /**
+             * if
+             * @param {Audio} sound - sound
+             */
             if (sound) {
                 sound.pause();
                 sound.currentTime = 0;
@@ -112,13 +177,30 @@ class AudioHub {
         });
     }
 
+    /**
+     * Plays walking sound in a loop while character is moving
+     * @param {Audio} sound - The walking sound to play
+     * @param {boolean} isWalking - Whether the character is currently walking
+     */
     static playWalkingSound(sound, isWalking) {
+        /**
+         * if
+         * @param {*} AudioHub.isMuted - AudioHub.isMuted
+         */
         if (AudioHub.isMuted) {
             this.stopOne(sound);
             return;
         }
         
+        /**
+         * if
+         * @param {boolean} isWalking - isWalking
+         */
         if (isWalking) {
+            /**
+             * if
+             * @param {*} sound.paused || sound.currentTime > sound.duration - 0.1 - sound.paused || sound.currentTime > sound.duration - 0.1
+             */
             if (sound.paused || sound.currentTime > sound.duration - 0.1) {
                 sound.currentTime = 0;
                 sound.play();
@@ -130,7 +212,14 @@ class AudioHub {
 
     static currentMusic;
 
+    /**
+     * Starts playing the background music
+     */
     static playBackgroundMusic() {
+        /**
+         * if
+         * @param {*} AudioHub.currentMusic - AudioHub.currentMusic
+         */
         if (AudioHub.currentMusic) {
             AudioHub.stopOne(AudioHub.currentMusic);
         }
@@ -140,7 +229,16 @@ class AudioHub {
         AudioHub.playOne(AudioHub.currentMusic);
     }
 
+    /**
+     * Changes to a different background music
+     * @param {Audio} newSound - The new background music to play
+     * @param {boolean} loop - Whether the music should loop (default: true)
+     */
     static changeGameMusic(newSound, loop = true) {
+        /**
+         * if
+         * @param {*} AudioHub.currentMusic - AudioHub.currentMusic
+         */
         if (AudioHub.currentMusic) {
             AudioHub.stopOne(AudioHub.currentMusic);
         }

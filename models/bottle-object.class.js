@@ -1,3 +1,7 @@
+/**
+ * Creates a new BottleObject.
+ * @class
+ */
 class BottleObject extends MovableObject {
 
   offset = {
@@ -7,6 +11,14 @@ class BottleObject extends MovableObject {
     right: 8
   };
 
+    /**
+     * Function description
+     */
+    /**
+     * Creates a new BottleObject instance
+     * @param {number} x - x
+     * @param {number} y - y
+     */
     constructor(x, y) {
         super();
         const bottleImages = [

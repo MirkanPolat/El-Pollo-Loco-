@@ -1,3 +1,7 @@
+/**
+ * Creates a new BossStatusBar.
+ * @class
+ */
 class BossStatusBar extends DrawableObject {
     IMAGES = [
         './img/7_statusbars/2_statusbar_endboss/blue/blue0.png',
@@ -10,6 +14,12 @@ class BossStatusBar extends DrawableObject {
 
     percentage = 100;
 
+    /**
+     * Function description
+     */
+    /**
+     * Creates a new BossStatusBar instance
+     */
     constructor() {
         super();
         this.loadImages(this.IMAGES);
@@ -21,12 +31,25 @@ class BossStatusBar extends DrawableObject {
         this.visible = false;
     }
 
+    /**
+     * Function description
+     */
+    /**
+     * Sets the value
+     * @param {number} percentage - percentage
+     */
     setPercentage(percentage) {
         this.percentage = percentage;
         let imagePath = this.IMAGES[this.resolveImageIndex()];
         this.img = this.imageCache[imagePath];
     }
 
+    /**
+     * Function description
+     */
+    /**
+     * resolveImageIndex
+     */
     resolveImageIndex() {
         if (this.percentage == 100) return 5;
         else if (this.percentage >= 80) return 4;

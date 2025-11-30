@@ -3,6 +3,9 @@ let level1;
 const bottleMinX = 500;
 const bottleMaxX = 11000;
 
+/**
+ * Initializes the component
+ */
 function initLevel(){
     level1 = new Level(
         createEnemies(),
@@ -13,8 +16,19 @@ function initLevel(){
     );
 }
 
+/**
+ * Creates a new instance
+ * @returns {Object}
+ */
 function createEnemies() {
     const chickens = [];
+    /**
+     * Function description
+     */
+    /**
+     * for
+     * @param {*} let i - let i
+     */
     for (let i = 0; i < 50; i++) {
         chickens.push(new Chicken());
     }
@@ -22,6 +36,10 @@ function createEnemies() {
     return chickens;
 }
 
+/**
+ * Creates a new instance
+ * @returns {Object}
+ */
 function createClouds() {
     return [
         new Cloud(),
@@ -35,8 +53,19 @@ function createClouds() {
     ];
 }
 
+/**
+ * Creates a new instance
+ * @returns {Object}
+ */
 function createBackgrounds() {
     const backgrounds = [];
+    /**
+     * Function description
+     */
+    /**
+     * for
+     * @param {*} let i - let i
+     */
     for (let i = -1; i <= 18; i++) {
         const imageType = i % 2 === 0 ? '1' : '2';
         backgrounds.push(
@@ -49,18 +78,41 @@ function createBackgrounds() {
     return backgrounds;
 }
 
+/**
+ * Creates a new instance
+ * @returns {Object}
+ */
 function createBottles() {
     const bottles = [];
+    /**
+     * Function description
+     */
+    /**
+     * for
+     * @param {*} let i - let i
+     */
     for (let i = 0; i < 13; i++) {
         bottles.push(new BottleObject(Math.random() * (bottleMaxX - bottleMinX) + bottleMinX, 360));
     }
     return bottles;
 }
 
+/**
+ * Creates a new instance
+ * @returns {Object}
+ */
 function createCoins() {
     const coins = [];
+    /**
+     * Function description
+     */
+    /**
+     * for
+     * @param {*} let i - let i
+     */
     for (let i = 0; i < 9; i++) {
         coins.push(new Coin());
     }
     return coins;
 }
+

@@ -1,3 +1,7 @@
+/**
+ * Creates a new DrawableObject.
+ * @class
+ */
 class DrawableObject {
   img;
   imageCache = {};
@@ -9,11 +13,25 @@ class DrawableObject {
 
   static debugMode = false;
 
+  /**
+   * Function description
+   */
+  /**
+   * Loads the resource
+   * @param {string} path - path
+   */
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Draws the object on canvas
+   * @param {CanvasRenderingContext2D} ctx - ctx
+   */
   draw(ctx) {
     try {
       ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -21,12 +39,25 @@ class DrawableObject {
     }
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Draws the object on canvas
+   * @param {CanvasRenderingContext2D} ctx - ctx
+   */
   drawFrame(ctx) {
     if (!this.shouldDrawFrame()) return;
     this.drawOuterFrame(ctx);
     this.drawCollisionFrame(ctx);
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * shouldDrawFrame
+   */
   shouldDrawFrame() {
     return DrawableObject.debugMode && 
       (this instanceof Chicken || this instanceof Character || 
@@ -34,6 +65,13 @@ class DrawableObject {
        this instanceof ThrowableObject || this instanceof Endboss);
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Draws the object on canvas
+   * @param {CanvasRenderingContext2D} ctx - ctx
+   */
   drawOuterFrame(ctx) {
     ctx.beginPath();
     ctx.lineWidth = 2;
@@ -42,6 +80,13 @@ class DrawableObject {
     ctx.stroke();
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Draws the object on canvas
+   * @param {CanvasRenderingContext2D} ctx - ctx
+   */
   drawCollisionFrame(ctx) {
     ctx.beginPath();
     ctx.lineWidth = 2;
@@ -55,6 +100,13 @@ class DrawableObject {
     ctx.stroke();
   }
   
+  /**
+   * Function description
+   */
+  /**
+   * Loads the resource
+   * @param {*} arr - arr
+   */
   loadImages(arr) {
     arr.forEach((path) => {
       let img = new Image(); 
@@ -70,3 +122,4 @@ class DrawableObject {
     right: 0
   };
 }
+

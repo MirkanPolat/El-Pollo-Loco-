@@ -1,3 +1,7 @@
+/**
+ * Creates a new CoinStatusBar.
+ * @class
+ */
 class CoinStatusBar extends DrawableObject {
     IMAGES_COIN_STATUS_BAR = [
         "./img/7_statusbars/1_statusbar/1_statusbar_coin/green/0.png",
@@ -10,6 +14,12 @@ class CoinStatusBar extends DrawableObject {
 
     percentage = 0;
 
+    /**
+     * Function description
+     */
+    /**
+     * Creates a new CoinStatusBar instance
+     */
     constructor() {
         super();
         this.loadImages(this.IMAGES_COIN_STATUS_BAR);
@@ -20,12 +30,25 @@ class CoinStatusBar extends DrawableObject {
         this.setPercentage(0);
     }
 
+    /**
+     * Function description
+     */
+    /**
+     * Sets the value
+     * @param {number} percentage - percentage
+     */
     setPercentage(percentage) {
         this.percentage = percentage;
         let path = this.IMAGES_COIN_STATUS_BAR[this.resolveImageIndex()];
         this.img = this.imageCache[path];
     }
 
+    /**
+     * Function description
+     */
+    /**
+     * resolveImageIndex
+     */
     resolveImageIndex() {
         if (this.percentage == 100) return 5;
         else if (this.percentage >= 80) return 4;

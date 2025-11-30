@@ -161,5 +161,5 @@ function createClouds() {
     new Coin(),
     new Coin(),
 ]
-);
+];
 }

@@ -1,0 +1,15 @@
+{
+  "source": {
+    "include": [
+      "./js",
+      "./models",
+      "./levels"
+    ],
+    "exclude": [
+      "./levels/level1_old.js"
+    ]
+  },
+  "opts": {
+    "destination": "./out"
+  }
+}

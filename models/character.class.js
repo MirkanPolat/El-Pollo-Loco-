@@ -1,3 +1,7 @@
+/**
+ * Creates a new Character.
+ * @class
+ */
 class Character extends MovableObject {
   width = 130;
   height = 280;
@@ -80,6 +84,12 @@ class Character extends MovableObject {
     right: 30,
   };
 
+  /**
+   * Function description
+   */
+  /**
+   * Creates a new Character instance
+   */
   constructor() {
     super().loadImage("./img/2_character_pepe/2_walk/W-21.png");
     this.loadImages(this.IMAGES_WALKING);
@@ -96,10 +106,22 @@ class Character extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * resetIdleTimer
+   */
   resetIdleTimer() {
     this.lastActivity = new Date().getTime();
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Animates the object
+   */
   animate() {
     this.movementInterval = setInterval(() => {
       this.handleMovement();
@@ -111,6 +133,12 @@ class Character extends MovableObject {
     }, 150);
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Handles the event
+   */
   handleMovement() {
     const isWalking = (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround();
     AudioHub.playWalkingSound(AudioHub.CHARACTER_WALKING, isWalking);
@@ -119,12 +147,32 @@ class Character extends MovableObject {
     this.world.camera_x = -this.x + 100;
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Handles the event
+   */
   handleHorizontalMovement() {
+    /**
+     * Function description
+     */
+    /**
+     * if
+     * @param {*} this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x - this.world.keyboard.RIGHT && this.x < this.world.level.level end x
+     */
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
       this.moveRight();
       this.otherDirection = false;
       this.resetIdleTimer();
     }
+    /**
+     * Function description
+     */
+    /**
+     * if
+     * @param {*} this.world.keyboard.LEFT && this.x > 0 - this.world.keyboard.LEFT && this.x > 0
+     */
     if (this.world.keyboard.LEFT && this.x > 0) {
       this.moveLeft();
       this.otherDirection = true;
@@ -132,6 +180,12 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Handles the event
+   */
   handleJump() {
     if ((this.world.keyboard.SPACE || this.world.keyboard.UP) && !this.isAboveGround()) {
       this.jump();
@@ -139,6 +193,12 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * determineAnimationState
+   */
   determineAnimationState() {
     if (this.isDead()) return 'dead';
     if (this.isHurt()) return 'hurt';
@@ -148,22 +208,57 @@ class Character extends MovableObject {
     return 'idle';
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Checks if condition is true
+   * @returns {boolean}
+   */
   isWalking() {
     return this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Checks if condition is true
+   * @returns {boolean}
+   */
   isSleeping() {
     const timeSinceLastActivity = new Date().getTime() - this.lastActivity;
     return timeSinceLastActivity > this.SLEEP_TIMEOUT;
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Plays the sound/animation
+   * @param {*} state - state
+   */
   playAnimationForState(state) {
+    /**
+     * Function description
+     */
+    /**
+     * if
+     * @param {*} state ! - state !
+     */
     if (state !== 'sleeping') {
       AudioHub.stopOne(AudioHub.CHARACTER_SLEEPING);
     }
     this.playStateAnimation(state);
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Plays the sound/animation
+   * @param {*} state - state
+   */
   playStateAnimation(state) {
     const animations = {
       'dead': this.IMAGES_DEAD,
@@ -178,28 +273,74 @@ class Character extends MovableObject {
     if (state === 'sleeping') this.handleSleepingSound();
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Handles the event
+   */
   handleSleepingSound() {
+    /**
+     * Function description
+     */
+    /**
+     * if
+     * @param {*} AudioHub.CHARACTER_SLEEPING.paused - AudioHub.CHARACTER SLEEPING.paused
+     */
     if (AudioHub.CHARACTER_SLEEPING.paused) {
       AudioHub.playOne(AudioHub.CHARACTER_SLEEPING);
     }
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Collects an item
+   */
   collectBottle() {
+    /**
+     * Function description
+     */
+    /**
+     * if
+     * @param {*} this.bottles < this.maxBottles - this.bottles < this.maxBottles
+     */
     if (this.bottles < this.maxBottles) {
       this.bottles++;
       this.world.bottleStatusBar.setPercentage(this.bottles * 20);
     }
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Collects an item
+   */
   collectCoin() {
+    /**
+     * Function description
+     */
+    /**
+     * if
+     * @param {*} this.coins < this.maxCoins - this.coins < this.maxCoins
+     */
     if (this.coins < this.maxCoins) {
       this.coins++;
       this.world.coinStatusbar.setPercentage(this.coins * 20);
     }
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * cleanup
+   */
   cleanup() {
     clearInterval(this.movementInterval);
     clearInterval(this.animationInterval);
   }
 }
+

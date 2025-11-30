@@ -1,3 +1,7 @@
+/**
+ * Creates a new Coin.
+ * @class
+ */
 class Coin extends MovableObject {
   height = 120;
   width = 120;
@@ -14,6 +18,12 @@ class Coin extends MovableObject {
     "./img/8_coin/coin_2.png"
   ];
 
+  /**
+   * Function description
+   */
+  /**
+   * Creates a new Coin instance
+   */
   constructor() {
     super().loadImage("./img/8_coin/coin_1.png");
     this.loadImages(this.IMAGES_COIN);
@@ -24,9 +34,16 @@ class Coin extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Function description
+   */
+  /**
+   * Animates the object
+   */
   animate() {
     setInterval(() => {
       this.PlayAnimation(this.IMAGES_COIN);
     }, 200);
   }
 }
+
