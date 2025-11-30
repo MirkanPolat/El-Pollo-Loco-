@@ -27,6 +27,7 @@ class AudioHub {
     
     static GAME_WIN = AudioHub.createSound('./audio/win.mp3', AudioHub.VOLUME.EFFECTS);
     static GAME_LOSE = AudioHub.createSound('./audio/lose.mp3', AudioHub.VOLUME.EFFECTS);
+    static GAME_LOSE_EFFECT = AudioHub.createSound('./audio/lose-effect.mp3', AudioHub.VOLUME.EFFECTS);
 
     static allSounds = [
         AudioHub.BACKGROUND_MUSIC,
@@ -34,7 +35,7 @@ class AudioHub {
         AudioHub.CHARACTER_JUMP, AudioHub.CHARACTER_HURT, AudioHub.CHARACTER_WALKING,AudioHub.CHARACTER_SLEEPING,
         AudioHub.COLLECT_COIN, AudioHub.COLLECT_BOTTLE, AudioHub.HIT_ENEMY,
         AudioHub.THROW_BOTTLE, AudioHub.BOTTLE_SHATTER,
-        AudioHub.GAME_WIN, AudioHub.GAME_LOSE
+        AudioHub.GAME_WIN, AudioHub.GAME_LOSE, AudioHub.GAME_LOSE_EFFECT
     ];
     
     /**

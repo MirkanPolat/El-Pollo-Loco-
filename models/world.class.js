@@ -285,7 +285,10 @@ endGame(result) {
     setTimeout(() => {
       if (!AudioHub.isMuted) {
         if (result === 'game-over') {
-          AudioHub.playOne(AudioHub.GAME_LOSE);
+          AudioHub.playOne(AudioHub.GAME_LOSE_EFFECT);
+          setTimeout(() => {
+            AudioHub.playOne(AudioHub.GAME_LOSE);
+          }, 800);
         } else if (result === 'win') {
           AudioHub.playOne(AudioHub.GAME_WIN);
         }
@@ -297,7 +300,7 @@ endGame(result) {
         } else if (result === 'win') {
           document.getElementById('win-screen').style.display = 'flex';
         }
-      }, 500);
+      }, 1300);
     }, 500);
     
     clearInterval(this.gameInterval);
