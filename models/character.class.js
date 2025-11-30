@@ -101,7 +101,7 @@ class Character extends MovableObject {
   }
 
   animate() {
-    setInterval(() => {
+    this.movementInterval = setInterval(() => {
       const isWalking = (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isAboveGround();
       AudioHub.playWalkingSound(AudioHub.CHARACTER_WALKING, isWalking);
 
@@ -124,7 +124,7 @@ class Character extends MovableObject {
       this.world.camera_x = -this.x + 100;
     }, 1000 / 60);
 
-    setInterval(() => {
+    this.animationInterval = setInterval(() => {
       if (this.isDead()) {
         this.PlayAnimation(this.IMAGES_DEAD);
       } else if (this.isHurt()) {
@@ -164,5 +164,10 @@ class Character extends MovableObject {
       this.coins++;
       this.world.coinStatusbar.setPercentage(this.coins * 20);
     }
+  }
+
+  cleanup() {
+    clearInterval(this.movementInterval);
+    clearInterval(this.animationInterval);
   }
 }

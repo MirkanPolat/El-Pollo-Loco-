@@ -67,7 +67,7 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_DEAD);
         this.attacks = ['normalAttack', 'jumpAttack', 'chargeAttack'];
         this.currentAttack = 'normalAttack';
-        this.x = 2500;
+        this.x = 12500;
         this.animate();
     }
 
@@ -275,7 +275,7 @@ class Endboss extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
+        this.behaviorInterval = setInterval(() => {
             if (this.isPlayerNearby()) {
                 this.activateBoss();
             }
@@ -285,9 +285,10 @@ class Endboss extends MovableObject {
             }
         }, 50);
         
-        setInterval(() => {
+        this.animationInterval = setInterval(() => {
             if (this.isDead()) {
                 this.PlayAnimation(this.IMAGES_DEAD);
+                this.cleanup();
             } else if (this.isHurt()) {
                 this.PlayAnimation(this.IMAGES_HURT);
             } else if (this.isAttacking) {
@@ -298,5 +299,10 @@ class Endboss extends MovableObject {
                 this.PlayAnimation(this.IMAGES_ALERT);
             }
         }, 200);
+    }
+
+    cleanup() {
+        clearInterval(this.behaviorInterval);
+        clearInterval(this.animationInterval);
     }
 }

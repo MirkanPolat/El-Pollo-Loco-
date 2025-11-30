@@ -276,11 +276,15 @@ endGame(result) {
     
     if (this.character) {
       this.character.speedY = 0;
+      this.character.cleanup();
     }
     
     if (this.level && this.level.enemies) {
       this.level.enemies.forEach(enemy => {
         if (enemy.speed) enemy.speed = 0;
+        if (enemy.cleanup && typeof enemy.cleanup === 'function') {
+          enemy.cleanup();
+        }
       });
     }
     
