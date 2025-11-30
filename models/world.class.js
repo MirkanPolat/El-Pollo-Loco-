@@ -55,25 +55,40 @@ class World {
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy) && !enemy.isDead()) {
-        const characterBottom = this.character.y + this.character.height;
-        const enemyTop = enemy.y + enemy.offset.top;
-        const jumpingDown = this.character.speedY <= 0;
-        
-        if (characterBottom < enemyTop + 30 && jumpingDown) {
-          enemy.die();
-          AudioHub.playOne(AudioHub.HIT_ENEMY);
-          this.character.speedY = 25;
-          this.character.lastEnemyCollision = new Date().getTime();
-        } else if (!this.character.isHurt() && 
-                  (new Date().getTime() - this.character.lastEnemyCollision > 500)) {
-          this.character.hit();
-          this.statusBar.setPercentage(this.character.energy);
-          if (enemy instanceof Endboss) {
-            AudioHub.playOne(AudioHub.BOSS_ATTACK);
-          }
+        if (this.isJumpKill(enemy)) {
+          this.handleJumpKill(enemy);
+        } else if (this.canTakeDamage()) {
+          this.handleCharacterDamage(enemy);
         }
       }
     });
+  }
+
+  isJumpKill(enemy) {
+    const characterBottom = this.character.y + this.character.height;
+    const enemyTop = enemy.y + enemy.offset.top;
+    const jumpingDown = this.character.speedY <= 0;
+    return characterBottom < enemyTop + 30 && jumpingDown;
+  }
+
+  handleJumpKill(enemy) {
+    enemy.die();
+    AudioHub.playOne(AudioHub.HIT_ENEMY);
+    this.character.speedY = 25;
+    this.character.lastEnemyCollision = new Date().getTime();
+  }
+
+  canTakeDamage() {
+    return !this.character.isHurt() && 
+           (new Date().getTime() - this.character.lastEnemyCollision > 500);
+  }
+
+  handleCharacterDamage(enemy) {
+    this.character.hit();
+    this.statusBar.setPercentage(this.character.energy);
+    if (enemy instanceof Endboss) {
+      AudioHub.playOne(AudioHub.BOSS_ATTACK);
+    }
   }
 
   draw() {
