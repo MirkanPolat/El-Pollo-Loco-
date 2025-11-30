@@ -37,7 +37,6 @@ function startGame() {
     AudioHub.playBackgroundMusic();
   }
 
-  console.log("Game started!", world.character);
   gameStarted = true;
 }
 

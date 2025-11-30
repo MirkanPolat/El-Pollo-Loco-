@@ -73,158 +73,177 @@ class Endboss extends MovableObject {
 
     determinePhase() {
         if (this.energy > 70) {
-            return 'phase1'; // 100%-70% Health small Attacks
+            return 'phase1';
         } else if (this.energy > 30) {
-            return 'phase2'; // 70%-30% Health fast Attack
+            return 'phase2';
         } else {
-            return 'phase3'; // Under 30% angry boss harder attacks
+            return 'phase3';
         }
     }
 
     updateBossActions() {
         try {
             const timePassed = new Date().getTime() - this.lastAction;
-            const currentPhase = this.determinePhase();
-            
-            // more agrresive attack and movement
-            if (currentPhase === 'phase1') {
-                this.attackCooldown = 3000;    
-                this.attackDuration = 2500;    
-                this.speed = 15;              
-            } else if (currentPhase === 'phase2') {
-                this.attackCooldown = 2000;    
-                this.attackDuration = 3000;    
-                this.speed = 20;              
-            } else {
-                this.attackCooldown = 1500;    
-                this.attackDuration = 3500;   
-                this.speed = 25;              
-            }
-            
-            // Boss dreht sich in Richtung des Charakters
-            if (world && world.character) {
-                if (this.x > world.character.x + 150) {
-                    // Pepe ist links vom Boss
-                    this.otherDirection = false;
-                    this.moveLeft();
-                } else if (this.x < world.character.x - 150) {
-                    // Pepe ist rechts vom Boss - Boss dreht sich um
-                    this.otherDirection = true;
-                    this.moveRight();
-                }
-            }
-            
-            if (this.isHurt()) {
-                // Bei Schaden weicht der Boss zurück
-                if (world && world.character) {
-                    if (this.x > world.character.x) {
-                        this.otherDirection = false;
-                        this.moveRight();
-                    } else {
-                        this.otherDirection = true;
-                        this.moveLeft();
-                    }
-                }
-                setTimeout(() => {
-                    this.lastAction = new Date().getTime() - this.attackCooldown + 500;
-                }, 800);  
-            } else if (this.isAttacking) {
-                // Boss bewegt sich während des Angriffs auf den Charakter zu
-                if (world && world.character) {
-                    if (this.x > world.character.x) {
-                        this.otherDirection = false;
-                        this.moveLeft();
-                    } else {
-                        this.otherDirection = true;
-                        this.moveRight();
-                    }
-                }
-                this.speed += 5;
-                
-                if (timePassed > this.attackDuration) {
-                    this.isAttacking = false;
-                    this.lastAction = new Date().getTime();
-                }
-            } else if (timePassed > this.attackCooldown) {
-                this.isAttacking = true;
-                this.lastAction = new Date().getTime();
-                this.selectAttackType();
-                this.performAttack();
-            }
+            this.setPhaseProperties();
+            this.faceCharacter();
+            this.handleBossState(timePassed);
         } catch (error) {
-            console.error('Fehler in updateBossActions:', error);
         }
+    }
+
+    setPhaseProperties() {
+        const currentPhase = this.determinePhase();
+        if (currentPhase === 'phase1') {
+            this.attackCooldown = 3000;
+            this.attackDuration = 2500;
+            this.speed = 15;
+        } else if (currentPhase === 'phase2') {
+            this.attackCooldown = 2000;
+            this.attackDuration = 3000;
+            this.speed = 20;
+        } else {
+            this.attackCooldown = 1500;
+            this.attackDuration = 3500;
+            this.speed = 25;
+        }
+    }
+
+    faceCharacter() {
+        if (world && world.character) {
+            if (this.x > world.character.x + 150) {
+                this.otherDirection = false;
+                this.moveLeft();
+            } else if (this.x < world.character.x - 150) {
+                this.otherDirection = true;
+                this.moveRight();
+            }
+        }
+    }
+
+    handleBossState(timePassed) {
+        if (this.isHurt()) {
+            this.retreatFromCharacter();
+        } else if (this.isAttacking) {
+            this.attackCharacter(timePassed);
+        } else if (timePassed > this.attackCooldown) {
+            this.startNewAttack();
+        }
+    }
+
+    retreatFromCharacter() {
+        if (world && world.character) {
+            if (this.x > world.character.x) {
+                this.otherDirection = false;
+                this.moveRight();
+            } else {
+                this.otherDirection = true;
+                this.moveLeft();
+            }
+        }
+        setTimeout(() => {
+            this.lastAction = new Date().getTime() - this.attackCooldown + 500;
+        }, 800);
+    }
+
+    attackCharacter(timePassed) {
+        if (world && world.character) {
+            if (this.x > world.character.x) {
+                this.otherDirection = false;
+                this.moveLeft();
+            } else {
+                this.otherDirection = true;
+                this.moveRight();
+            }
+        }
+        this.speed += 5;
+        if (timePassed > this.attackDuration) {
+            this.isAttacking = false;
+            this.lastAction = new Date().getTime();
+        }
+    }
+
+    startNewAttack() {
+        this.isAttacking = true;
+        this.lastAction = new Date().getTime();
+        this.selectAttackType();
+        this.performAttack();
     }
 
     selectAttackType() {
         const phase = this.determinePhase();
         
         if (phase === 'phase3') {
-            // In Phase 3 all attacks available
             const randomIndex = Math.floor(Math.random() * this.attacks.length);
             this.currentAttack = this.attacks[randomIndex];
         } else if (phase === 'phase2') {
-            // In Phase 2 only jump and charge attacks
             const randomIndex = Math.floor(Math.random() * 2);
             this.currentAttack = this.attacks[randomIndex];
         } else {
-            // In Phase 1 only normal attack
             this.currentAttack = 'normalAttack';
         }
-        
-        console.log('Boss executes: ' + this.currentAttack);
     }
 
     performAttack() {
-        switch(this.currentAttack) {
-            case 'jumpAttack':
-                this.speedY = 40; 
-                this.groundPosition = this.y;
-                let jumpInterval = setInterval(() => {
-                    this.y -= this.speedY;
-                    this.speedY -= this.acceleration * 1.2;  
-                    if (world && world.character) {
-                        
-                        if (this.x > world.character.x) {
-                            this.otherDirection = false;
-                            this.x -= this.speed * 1.2;
-                        } else {
-                            this.otherDirection = true;
-                            this.x += this.speed * 1.2;
-                        }
-                    }
-                    if (this.y > this.groundPosition) {
-                        this.y = this.groundPosition;
-                        this.speedY = 0;
-                        clearInterval(jumpInterval);
-                        this.isAttacking = true;
-                        this.lastAction = new Date().getTime();
-                    }
-                }, 1000/60);
-                break;
-            case 'chargeAttack':
-                this.speed = 30;
-                if (this.bossSound) {
-                    this.bossSound.play();
-                }
-                setTimeout(() => {
-                    this.speed = 15;  
-                    if (Math.random() < 0.4) {
-                        this.isAttacking = true;
-                        this.lastAction = new Date().getTime();
-                        this.selectAttackType();
-                        this.performAttack();
-                    }
-                }, 1200);
-                break;
-            case 'normalAttack':
-            default:
-                this.speed += 8; 
-                setTimeout(() => {
-                    this.speed = Math.max(10, this.speed - 8);
-                }, 1000);
-                break;
+        if (this.currentAttack === 'jumpAttack') {
+            this.executeJumpAttack();
+        } else if (this.currentAttack === 'chargeAttack') {
+            this.executeChargeAttack();
+        } else {
+            this.executeNormalAttack();
         }
+    }
+
+    executeJumpAttack() {
+        this.speedY = 40;
+        this.groundPosition = this.y;
+        let jumpInterval = setInterval(() => {
+            this.updateJumpPosition();
+            if (this.y > this.groundPosition) {
+                this.landFromJump(jumpInterval);
+            }
+        }, 1000 / 60);
+    }
+
+    updateJumpPosition() {
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration * 1.2;
+        if (world && world.character) {
+            if (this.x > world.character.x) {
+                this.otherDirection = false;
+                this.x -= this.speed * 1.2;
+            } else {
+                this.otherDirection = true;
+                this.x += this.speed * 1.2;
+            }
+        }
+    }
+
+    landFromJump(jumpInterval) {
+        this.y = this.groundPosition;
+        this.speedY = 0;
+        clearInterval(jumpInterval);
+        this.isAttacking = true;
+        this.lastAction = new Date().getTime();
+    }
+
+    executeChargeAttack() {
+        this.speed = 30;
+        if (this.bossSound) {
+            this.bossSound.play();
+        }
+        setTimeout(() => {
+            this.speed = 15;
+            if (Math.random() < 0.4) {
+                this.startNewAttack();
+            }
+        }, 1200);
+    }
+
+    executeNormalAttack() {
+        this.speed += 8;
+        setTimeout(() => {
+            this.speed = Math.max(10, this.speed - 8);
+        }, 1000);
     }
 
     hit() {
@@ -252,7 +271,6 @@ class Endboss extends MovableObject {
         if (!this.hadFirstContact) {
             this.hadFirstContact = true;
             this.lastAction = new Date().getTime();
-            console.log('Boss activated: Player detected!');
         }
     }
 

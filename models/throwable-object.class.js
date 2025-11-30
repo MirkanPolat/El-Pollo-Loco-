@@ -1,5 +1,5 @@
 class ThrowableObject extends MovableObject {
-  constructor(x, y) {
+  constructor(x, y, throwLeft = false, isMoving = false) {
     super().loadImage(
       "./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png"
     );
@@ -8,7 +8,10 @@ class ThrowableObject extends MovableObject {
     this.height = 100;
     this.width = 100;
     this.hasSplashed = false;
-    this.hasCollided = false; 
+    this.hasCollided = false;
+    this.throwLeft = throwLeft;
+    let baseSpeed = isMoving ? 15 : 10;
+    this.speedX = throwLeft ? -baseSpeed : baseSpeed; 
     
 
     this.offset = {
@@ -42,7 +45,7 @@ class ThrowableObject extends MovableObject {
     this.speedY = 30;
     this.applyGravity();
     this.throwInterval = setInterval(() => {
-        this.x += 10;
+        this.x += this.speedX;
 
         if (this.y >= 340) {  
             clearInterval(this.throwInterval);

@@ -40,8 +40,10 @@ class World {
   }
   
   checkThrowObjects() {
-    if (this.keyboard.D && this.character.bottles > 0 && !this.character.otherDirection) {
-      let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+    if (this.keyboard.D && this.character.bottles > 0) {
+      let startX = this.character.otherDirection ? this.character.x - 50 : this.character.x + 100;
+      let isMoving = this.keyboard.RIGHT || this.keyboard.LEFT;
+      let bottle = new ThrowableObject(startX, this.character.y + 100, this.character.otherDirection, isMoving);
       this.throwableObjects.push(bottle);
       this.character.bottles--;
       this.bottleStatusbar.setPercentage(this.character.bottles * 20);
@@ -53,26 +55,17 @@ class World {
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy) && !enemy.isDead()) {
-        console.log('Collision erkannt!', 
-                   'Character Y:', this.character.y, 
-                   'Character Height:', this.character.height, 
-                   'Enemy Y:', enemy.y, 
-                   'Enemy Height:', enemy.height,
-                   'SpeedY:', this.character.speedY);
-
         const characterBottom = this.character.y + this.character.height;
         const enemyTop = enemy.y + enemy.offset.top;
         const jumpingDown = this.character.speedY <= 0;
         
         if (characterBottom < enemyTop + 30 && jumpingDown) {
-          console.log('Chicken getötet durch Sprung!');
           enemy.die();
           AudioHub.playOne(AudioHub.HIT_ENEMY);
           this.character.speedY = 25;
           this.character.lastEnemyCollision = new Date().getTime();
         } else if (!this.character.isHurt() && 
                   (new Date().getTime() - this.character.lastEnemyCollision > 500)) {
-          console.log('Character bekommt Schaden!');
           this.character.hit();
           this.statusBar.setPercentage(this.character.energy);
           if (enemy instanceof Endboss) {
@@ -127,7 +120,6 @@ class World {
         }
         return false;
     } catch (error) {
-        console.error("Fehler in bossStatusVisible:", error);
         return false;
     }
   }
@@ -157,20 +149,16 @@ class World {
             try {
                 if (bottle && enemy && bottle.isColliding(enemy) && !enemy.isDead() && !bottle.hasCollided) {
                     bottle.hasCollided = true;
-                    console.log('Flasche trifft Gegner!');
                     
                     if (!(enemy instanceof Endboss)) {
                         AudioHub.playOne(AudioHub.HIT_ENEMY);
                     }
                     
                     if (enemy instanceof Endboss && typeof enemy.hit === 'function') {
-                        console.log('→ ENDBOSS HIT BEFORE:', enemy.energy);
                         enemy.hit();
-                        console.log('→ ENDBOSS HIT AFTER:', enemy.energy);
 
                         if (this.bossStatusbar) {
                             const percentage = enemy.energy / enemy.maxEnergy * 100;
-                            console.log('→ STATUSBAR SET TO:', percentage);
                             this.bossStatusbar.setPercentage(percentage);
                         }
                     } else if (enemy.die && typeof enemy.die === 'function') {
@@ -192,7 +180,6 @@ class World {
                     }, 100);
                 }
             } catch (error) {
-                console.error("Fehler bei Flaschen-Kollision:", error);
             }
         });
     });
