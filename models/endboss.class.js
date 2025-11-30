@@ -63,9 +63,6 @@ class Endboss extends MovableObject {
     ];
 
     /**
-     * Function description
-     */
-    /**
      * Creates a new Endboss instance
      */
     constructor() {
@@ -82,19 +79,9 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Function description
-     */
-    /**
      * determinePhase
      */
     determinePhase() {
-        /**
-         * Function description
-         */
-        /**
-         * if
-         * @param {*} this.energy > 70 - this.energy > 70
-         */
         if (this.energy > 70) {
             return 'phase1';
         } else if (this.energy > 30) {
@@ -104,9 +91,6 @@ class Endboss extends MovableObject {
         }
     }
 
-    /**
-     * Function description
-     */
     /**
      * Updates the state
      */
@@ -120,9 +104,6 @@ class Endboss extends MovableObject {
         }
     }
 
-    /**
-     * Function description
-     */
     /**
      * Sets the value
      */
@@ -139,27 +120,10 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Function description
-     */
-    /**
      * faceCharacter
      */
     faceCharacter() {
-        /**
-         * Function description
-         */
-        /**
-         * if
-         * @param {*} world && world.character - world && world.character
-         */
         if (world && world.character) {
-            /**
-             * Function description
-             */
-            /**
-             * if
-             * @param {*} this.x > world.character.x + 150 - this.x > world.character.x + 150
-             */
             if (this.x > world.character.x + 150) {
                 this.otherDirection = false;
                 this.moveLeft();
@@ -170,9 +134,6 @@ class Endboss extends MovableObject {
         }
     }
 
-    /**
-     * Function description
-     */
     /**
      * Handles the event
      * @param {number} timePassed - timePassed
@@ -188,27 +149,10 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Function description
-     */
-    /**
      * retreatFromCharacter
      */
     retreatFromCharacter() {
-        /**
-         * Function description
-         */
-        /**
-         * if
-         * @param {*} world && world.character - world && world.character
-         */
         if (world && world.character) {
-            /**
-             * Function description
-             */
-            /**
-             * if
-             * @param {*} this.x > world.character.x - this.x > world.character.x
-             */
             if (this.x > world.character.x) {
                 this.otherDirection = false;
                 this.moveRight();
@@ -223,28 +167,11 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Function description
-     */
-    /**
      * attackCharacter
      * @param {number} timePassed - timePassed
      */
     attackCharacter(timePassed) {
-        /**
-         * Function description
-         */
-        /**
-         * if
-         * @param {*} world && world.character - world && world.character
-         */
         if (world && world.character) {
-            /**
-             * Function description
-             */
-            /**
-             * if
-             * @param {*} this.x > world.character.x - this.x > world.character.x
-             */
             if (this.x > world.character.x) {
                 this.otherDirection = false;
                 this.moveLeft();
@@ -254,22 +181,12 @@ class Endboss extends MovableObject {
             }
         }
         this.speed += 5;
-        /**
-         * Function description
-         */
-        /**
-         * if
-         * @param {*} timePassed > this.attackDuration - timePassed > this.attackDuration
-         */
         if (timePassed > this.attackDuration) {
             this.isAttacking = false;
             this.lastAction = new Date().getTime();
         }
     }
 
-    /**
-     * Function description
-     */
     /**
      * Starts the process
      */
@@ -281,21 +198,11 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Function description
-     */
-    /**
      * selectAttackType
      */
     selectAttackType() {
         const phase = this.determinePhase();
         
-        /**
-         * Function description
-         */
-        /**
-         * if
-         * @param {*} phase - phase
-         */
         if (phase === 'phase3') {
             const randomIndex = Math.floor(Math.random() * this.attacks.length);
             this.currentAttack = this.attacks[randomIndex];
@@ -308,19 +215,9 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Function description
-     */
-    /**
      * performAttack
      */
     performAttack() {
-        /**
-         * Function description
-         */
-        /**
-         * if
-         * @param {*} this.currentAttack - this.currentAttack
-         */
         if (this.currentAttack === 'jumpAttack') {
             this.executeJumpAttack();
         } else if (this.currentAttack === 'chargeAttack') {
@@ -331,9 +228,6 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Function description
-     */
-    /**
      * executeJumpAttack
      */
     executeJumpAttack() {
@@ -341,13 +235,6 @@ class Endboss extends MovableObject {
         this.groundPosition = this.y;
         let jumpInterval = setInterval(() => {
             this.updateJumpPosition();
-            /**
-             * Function description
-             */
-            /**
-             * if
-             * @param {*} this.y > this.groundPosition - this.y > this.groundPosition
-             */
             if (this.y > this.groundPosition) {
                 this.landFromJump(jumpInterval);
             }
@@ -355,29 +242,12 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Function description
-     */
-    /**
      * Updates the state
      */
     updateJumpPosition() {
         this.y -= this.speedY;
         this.speedY -= this.acceleration * 1.2;
-        /**
-         * Function description
-         */
-        /**
-         * if
-         * @param {*} world && world.character - world && world.character
-         */
         if (world && world.character) {
-            /**
-             * Function description
-             */
-            /**
-             * if
-             * @param {*} this.x > world.character.x - this.x > world.character.x
-             */
             if (this.x > world.character.x) {
                 this.otherDirection = false;
                 this.x -= this.speed * 1.2;
@@ -388,9 +258,6 @@ class Endboss extends MovableObject {
         }
     }
 
-    /**
-     * Function description
-     */
     /**
      * landFromJump
      * @param {*} jumpInterval - jumpInterval
@@ -404,20 +271,10 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Function description
-     */
-    /**
      * executeChargeAttack
      */
     executeChargeAttack() {
         this.speed = 30;
-        /**
-         * Function description
-         */
-        /**
-         * if
-         * @param {*} this.bossSound - this.bossSound
-         */
         if (this.bossSound) {
             this.bossSound.play();
         }
@@ -430,9 +287,6 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Function description
-     */
-    /**
      * executeNormalAttack
      */
     executeNormalAttack() {
@@ -443,30 +297,13 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Function description
-     */
-    /**
      * Handles hit/damage
      */
     hit() {
         this.energy -= 20;
         
-        /**
-         * Function description
-         */
-        /**
-         * if
-         * @param {*} this.energy < - this.energy <
-         */
         if (this.energy <= 0) {
             this.energy = 0;
-            /**
-             * Function description
-             */
-            /**
-             * if
-             * @param {*} !this.deathSoundPlayed - !this.deathSoundPlayed
-             */
             if (!this.deathSoundPlayed) {
                 AudioHub.playOne(AudioHub.BOSS_DEAD);
                 this.deathSoundPlayed = true;
@@ -478,9 +315,6 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Function description
-     */
-    /**
      * Checks if condition is true
      * @returns {boolean}
      */
@@ -491,28 +325,15 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Function description
-     */
-    /**
      * activateBoss
      */
     activateBoss() {
-        /**
-         * Function description
-         */
-        /**
-         * if
-         * @param {*} !this.hadFirstContact - !this.hadFirstContact
-         */
         if (!this.hadFirstContact) {
             this.hadFirstContact = true;
             this.lastAction = new Date().getTime();
         }
     }
 
-    /**
-     * Function description
-     */
     /**
      * Animates the object
      */
@@ -527,9 +348,6 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Function description
-     */
-    /**
      * Handles the event
      */
     handleBehavior() {
@@ -541,9 +359,6 @@ class Endboss extends MovableObject {
         }
     }
 
-    /**
-     * Function description
-     */
     /**
      * Handles the event
      */
@@ -562,9 +377,6 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Function description
-     */
-    /**
      * Handles the event
      */
     handleDead() {
@@ -573,18 +385,12 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Function description
-     */
-    /**
      * Handles the event
      */
     handleAttacking() {
         this.PlayAnimation(this.IMAGES_ATTACK);
     }
 
-    /**
-     * Function description
-     */
     /**
      * cleanup
      */

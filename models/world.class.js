@@ -18,9 +18,6 @@ class World {
   isGameActive = true;
 
   /**
-   * Function description
-   */
-  /**
    * Creates a new World instance
    * @param {HTMLCanvasElement} canvas - canvas
    * @param {Keyboard} keyboard - keyboard
@@ -35,18 +32,12 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Sets the value
    */
   setWorld() {
     this.character.world = this;
   }
   
-  /**
-   * Function description
-   */
   /**
    * run
    */
@@ -64,19 +55,9 @@ class World {
   }
   
   /**
-   * Function description
-   */
-  /**
    * Checks the condition
    */
   checkThrowObjects() {
-    /**
-     * Function description
-     */
-    /**
-     * if
-     * @param {*} this.keyboard.D && this.character.bottles > 0 - this.keyboard.D && this.character.bottles > 0
-     */
     if (this.keyboard.D && this.character.bottles > 0) {
       let startX = this.character.otherDirection ? this.character.x - 50 : this.character.x + 100;
       let isMoving = this.keyboard.RIGHT || this.keyboard.LEFT;
@@ -89,9 +70,6 @@ class World {
     }
   }
 
-  /**
-   * Function description
-   */
   /**
    * Checks the condition
    */
@@ -108,9 +86,6 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Checks if condition is true
    * @param {MovableObject} enemy - enemy
    * @returns {boolean}
@@ -123,9 +98,6 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Handles the event
    * @param {MovableObject} enemy - enemy
    */
@@ -137,9 +109,6 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * canTakeDamage
    */
   canTakeDamage() {
@@ -148,30 +117,17 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Handles the event
    * @param {MovableObject} enemy - enemy
    */
   handleCharacterDamage(enemy) {
     this.character.hit();
     this.statusBar.setPercentage(this.character.energy);
-    /**
-     * Function description
-     */
-    /**
-     * if
-     * @param {*} enemy instanceof Endboss - enemy instanceof Endboss
-     */
     if (enemy instanceof Endboss) {
       AudioHub.playOne(AudioHub.BOSS_ATTACK);
     }
   }
 
-  /**
-   * Function description
-   */
   /**
    * Draws the object on canvas
    */
@@ -186,9 +142,6 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Draws the object on canvas
    */
   drawBackground() {
@@ -197,9 +150,6 @@ class World {
     this.ctx.translate(-this.camera_x, 0);
   }
 
-  /**
-   * Function description
-   */
   /**
    * Draws the object on canvas
    */
@@ -211,21 +161,11 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Draws the object on canvas
    */
   drawBossStatusBar() {
     if (this.bossStatusVisible()) {
       const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
-      /**
-       * Function description
-       */
-      /**
-       * if
-       * @param {*} endboss - endboss
-       */
       if (endboss) {
         const percentage = endboss.energy / endboss.maxEnergy * 100;
         this.bossStatusbar.setPercentage(percentage);
@@ -234,9 +174,6 @@ class World {
     }
   }
 
-  /**
-   * Function description
-   */
   /**
    * Draws the object on canvas
    */
@@ -252,16 +189,10 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * scheduleNextFrame
    */
   scheduleNextFrame() {
     let self = this;
-    /**
-     * Function description
-     */
     /**
      * requestAnimationFrame
      * @param {*} function ( - function (
@@ -272,21 +203,11 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * bossStatusVisible
    */
   bossStatusVisible() {
     try {
         const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
-        /**
-         * Function description
-         */
-        /**
-         * if
-         * @param {*} endboss - endboss
-         */
         if (endboss) {
             return endboss.hadFirstContact === true;
         }
@@ -296,9 +217,6 @@ class World {
     }
   }
 
-  /**
-   * Function description
-   */
   /**
    * Adds an element
    * @param {*} objects - objects
@@ -310,41 +228,21 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Adds an element
    * @param {*} movableObject - movableObject
    */
   addToMap(movableObject) {
-    /**
-     * Function description
-     */
-    /**
-     * if
-     * @param {*} movableObject.otherDirection - movableObject.otherDirection
-     */
     if (movableObject.otherDirection) {
       this.flipImage(movableObject);
     }
     movableObject.draw(this.ctx);
     movableObject.drawFrame(this.ctx);
 
-    /**
-     * Function description
-     */
-    /**
-     * if
-     * @param {*} movableObject.otherDirection - movableObject.otherDirection
-     */
     if (movableObject.otherDirection) {
       this.flipImageBack(movableObject);
     }
   }
 
-  /**
-   * Function description
-   */
   /**
    * Checks the condition
    */
@@ -353,9 +251,6 @@ class World {
     this.checkBottleCollection();
   }
 
-  /**
-   * Function description
-   */
   /**
    * Checks the condition
    */
@@ -368,9 +263,6 @@ class World {
     });
   }
 
-  /**
-   * Function description
-   */
   /**
    * Handles the event
    * @param {ThrowableObject} bottle - bottle
@@ -386,9 +278,6 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * processBottleHit
    * @param {ThrowableObject} bottle - bottle
    * @param {MovableObject} enemy - enemy
@@ -402,20 +291,10 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * damageEnemy
    * @param {MovableObject} enemy - enemy
    */
   damageEnemy(enemy) {
-    /**
-     * Function description
-     */
-    /**
-     * if
-     * @param {*} enemy instanceof Endboss && typeof enemy.hit - enemy instanceof Endboss && typeof enemy.hit
-     */
     if (enemy instanceof Endboss && typeof enemy.hit === 'function') {
       enemy.hit();
       this.updateBossStatusBar(enemy);
@@ -425,20 +304,10 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Updates the state
    * @param {MovableObject} enemy - enemy
    */
   updateBossStatusBar(enemy) {
-    /**
-     * Function description
-     */
-    /**
-     * if
-     * @param {*} this.bossStatusbar - this.bossStatusbar
-     */
     if (this.bossStatusbar) {
       const percentage = enemy.energy / enemy.maxEnergy * 100;
       this.bossStatusbar.setPercentage(percentage);
@@ -446,22 +315,12 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Animates the object
    * @param {ThrowableObject} bottle - bottle
    */
   animateBottleSplash(bottle) {
     bottle.speed = 0;
     setTimeout(() => {
-      /**
-       * Function description
-       */
-      /**
-       * if
-       * @param {*} bottle.animateSplash && typeof bottle.animateSplash - bottle.animateSplash && typeof bottle.animateSplash
-       */
       if (bottle.animateSplash && typeof bottle.animateSplash === 'function') {
         bottle.animateSplash();
       }
@@ -470,22 +329,12 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Removes an element
    * @param {ThrowableObject} bottle - bottle
    */
   removeBottleAfterSplash(bottle) {
     setTimeout(() => {
       const index = this.throwableObjects.indexOf(bottle);
-      /**
-       * Function description
-       */
-      /**
-       * if
-       * @param {*} index > -1 - index > -1
-       */
       if (index > -1) {
         this.throwableObjects.splice(index, 1);
       }
@@ -493,15 +342,9 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Checks the condition
    */
   checkBottleCollection() {
-    /**
-     * Function description
-     */
     /**
      * for
      * @param {*} let i - let i
@@ -519,15 +362,9 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Checks the condition
    */
   checkForDeadChickens() {
-    /**
-     * Function description
-     */
     /**
      * for
      * @param {*} let i - let i
@@ -535,13 +372,6 @@ class World {
     for (let i = 0; i < this.level.enemies.length; i++) {
       let enemy = this.level.enemies[i];
       
-      /**
-       * Function description
-       */
-      /**
-       * if
-       * @param {*} enemy.deleteNow - enemy.deleteNow
-       */
       if (enemy.deleteNow) {
         this.level.enemies.splice(i, 1);
         i--;
@@ -549,9 +379,6 @@ class World {
     }
   }
 
-  /**
-   * Function description
-   */
   /**
    * flipImage
    * @param {*} movableObject - movableObject
@@ -564,9 +391,6 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * flipImageBack
    * @param {*} movableObject - movableObject
    */
@@ -576,15 +400,9 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Checks the condition
    */
   checkCoinCollisions() {
-    /**
-     * Function description
-     */
     /**
      * for
      * @param {*} let i - let i
@@ -592,13 +410,6 @@ class World {
     for (let i = this.level.coins.length - 1; i >= 0; i--) {
       let coin = this.level.coins[i];
       if (this.character.isColliding(coin)) {
-        /**
-         * Function description
-         */
-        /**
-         * if
-         * @param {*} this.character.coins < this.character.maxCoins - this.character.coins < this.character.maxCoins
-         */
         if (this.character.coins < this.character.maxCoins) {
           this.character.coins++;
           this.coinStatusbar.setPercentage(this.character.coins * 20);
@@ -611,31 +422,14 @@ class World {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Checks the condition
    */
   checkGameState() {
-    /**
-     * Function description
-     */
-    /**
-     * if
-     * @param {*} this.character.energy < - this.character.energy <
-     */
     if (this.character.energy <= 0 && !gameEnded) {
       this.endGame('game-over');
     }
     
     const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
-    /**
-     * Function description
-     */
-    /**
-     * if
-     * @param {*} endboss && endboss.energy < - endboss && endboss.energy <
-     */
     if (endboss && endboss.energy <= 0 && !gameEnded) {
       this.endGame('win');
     }
@@ -668,13 +462,6 @@ stopGame() {
  * cleanupCharacter
  */
 cleanupCharacter() {
-  /**
-   * Function description
-   */
-  /**
-   * if
-   * @param {*} this.character - this.character
-   */
   if (this.character) {
     this.character.speedY = 0;
     this.character.cleanup();
@@ -685,23 +472,9 @@ cleanupCharacter() {
  * cleanupEnemies
  */
 cleanupEnemies() {
-  /**
-   * Function description
-   */
-  /**
-   * if
-   * @param {*} this.level && this.level.enemies - this.level && this.level.enemies
-   */
   if (this.level && this.level.enemies) {
     this.level.enemies.forEach(enemy => {
       if (enemy.speed) enemy.speed = 0;
-      /**
-       * Function description
-       */
-      /**
-       * if
-       * @param {*} enemy.cleanup && typeof enemy.cleanup - enemy.cleanup && typeof enemy.cleanup
-       */
       if (enemy.cleanup && typeof enemy.cleanup === 'function') {
         enemy.cleanup();
       }
@@ -725,21 +498,7 @@ playEndGameSequence(result) {
  * @param {string} result - result
  */
 playEndGameSound(result) {
-  /**
-   * Function description
-   */
-  /**
-   * if
-   * @param {*} !AudioHub.isMuted - !AudioHub.isMuted
-   */
   if (!AudioHub.isMuted) {
-    /**
-     * Function description
-     */
-    /**
-     * if
-     * @param {string} result - result
-     */
     if (result === 'game-over') {
       AudioHub.playOne(AudioHub.GAME_LOSE_EFFECT);
       setTimeout(() => AudioHub.playOne(AudioHub.GAME_LOSE), 800);
@@ -755,13 +514,6 @@ playEndGameSound(result) {
  */
 showEndGameScreen(result) {
   setTimeout(() => {
-    /**
-     * Function description
-     */
-    /**
-     * if
-     * @param {string} result - result
-     */
     if (result === 'game-over') {
       document.getElementById('game-over-screen').style.display = 'flex';
     } else if (result === 'win') {

@@ -85,9 +85,6 @@ class Character extends MovableObject {
   };
 
   /**
-   * Function description
-   */
-  /**
    * Creates a new Character instance
    */
   constructor() {
@@ -107,18 +104,12 @@ class Character extends MovableObject {
   }
 
   /**
-   * Function description
-   */
-  /**
    * resetIdleTimer
    */
   resetIdleTimer() {
     this.lastActivity = new Date().getTime();
   }
 
-  /**
-   * Function description
-   */
   /**
    * Animates the object
    */
@@ -134,9 +125,6 @@ class Character extends MovableObject {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Handles the event
    */
   handleMovement() {
@@ -148,15 +136,9 @@ class Character extends MovableObject {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Handles the event
    */
   handleHorizontalMovement() {
-    /**
-     * Function description
-     */
     /**
      * if
      * @param {*} this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x - this.world.keyboard.RIGHT && this.x < this.world.level.level end x
@@ -166,9 +148,6 @@ class Character extends MovableObject {
       this.otherDirection = false;
       this.resetIdleTimer();
     }
-    /**
-     * Function description
-     */
     /**
      * if
      * @param {*} this.world.keyboard.LEFT && this.x > 0 - this.world.keyboard.LEFT && this.x > 0
@@ -181,9 +160,6 @@ class Character extends MovableObject {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Handles the event
    */
   handleJump() {
@@ -193,9 +169,6 @@ class Character extends MovableObject {
     }
   }
 
-  /**
-   * Function description
-   */
   /**
    * determineAnimationState
    */
@@ -209,9 +182,6 @@ class Character extends MovableObject {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Checks if condition is true
    * @returns {boolean}
    */
@@ -219,9 +189,6 @@ class Character extends MovableObject {
     return this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
   }
 
-  /**
-   * Function description
-   */
   /**
    * Checks if condition is true
    * @returns {boolean}
@@ -232,16 +199,10 @@ class Character extends MovableObject {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Plays the sound/animation
    * @param {*} state - state
    */
   playAnimationForState(state) {
-    /**
-     * Function description
-     */
     /**
      * if
      * @param {*} state ! - state !
@@ -252,9 +213,6 @@ class Character extends MovableObject {
     this.playStateAnimation(state);
   }
 
-  /**
-   * Function description
-   */
   /**
    * Plays the sound/animation
    * @param {*} state - state
@@ -274,15 +232,9 @@ class Character extends MovableObject {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Handles the event
    */
   handleSleepingSound() {
-    /**
-     * Function description
-     */
     /**
      * if
      * @param {*} AudioHub.CHARACTER_SLEEPING.paused - AudioHub.CHARACTER SLEEPING.paused
@@ -293,15 +245,9 @@ class Character extends MovableObject {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Collects an item
    */
   collectBottle() {
-    /**
-     * Function description
-     */
     /**
      * if
      * @param {*} this.bottles < this.maxBottles - this.bottles < this.maxBottles
@@ -313,15 +259,9 @@ class Character extends MovableObject {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Collects an item
    */
   collectCoin() {
-    /**
-     * Function description
-     */
     /**
      * if
      * @param {*} this.coins < this.maxCoins - this.coins < this.maxCoins
@@ -332,9 +272,6 @@ class Character extends MovableObject {
     }
   }
 
-  /**
-   * Function description
-   */
   /**
    * cleanup
    */
