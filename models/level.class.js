@@ -6,7 +6,7 @@ class Level{
     enemies;
     clouds;
     backgroundObjects;
-    level_end_x = 13000;
+    level_end_x = 7000;
 
     /**
      * Function description

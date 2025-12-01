@@ -1,7 +1,7 @@
 let level1;
 
 const bottleMinX = 500;
-const bottleMaxX = 11000;
+const bottleMaxX = 6500;
 
 /**
  * Initializes the component
@@ -29,7 +29,7 @@ function createEnemies() {
      * for
      * @param {*} let i - let i
      */
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 25; i++) {
         chickens.push(new Chicken());
     }
     chickens.push(new Endboss());
@@ -66,7 +66,7 @@ function createBackgrounds() {
      * for
      * @param {*} let i - let i
      */
-    for (let i = -1; i <= 18; i++) {
+    for (let i = -1; i <= 10; i++) {
         const imageType = i % 2 === 0 ? '1' : '2';
         backgrounds.push(
             new BackgroundObject("./img/5_background/layers/air.png", 719 * i),
