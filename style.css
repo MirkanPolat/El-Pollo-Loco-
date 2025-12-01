@@ -293,8 +293,9 @@ canvas {
 }
 
 .end-img {
-  width: 100%;
+  width: calc(100% - 40px);
   object-fit: cover;
+  padding: 20px;
 }
 
 .end-buttons {

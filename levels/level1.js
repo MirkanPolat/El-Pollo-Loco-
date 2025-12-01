@@ -29,10 +29,10 @@ function createEnemies() {
      * for
      * @param {*} let i - let i
      */
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 20; i++) {
         chickens.push(new Chicken());
     }
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 15; i++) {
         chickens.push(new ChickenSmall());
     }
     chickens.push(new Endboss());
