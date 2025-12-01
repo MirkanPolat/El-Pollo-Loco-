@@ -10,6 +10,23 @@ let gameEnded = false;
  */
 function initStartScreen() {
   canvas = document.getElementById("canvas");
+  loadSoundSettings();
+}
+
+/**
+ * Loads sound settings from localStorage
+ */
+function loadSoundSettings() {
+  const savedMuteState = localStorage.getItem('isMuted');
+  if (savedMuteState === 'true') {
+    isMuted = true;
+    AudioHub.isMuted = true;
+    document.getElementById("sound-icon").src = "./img/sound_imgs/mute.png";
+  } else {
+    isMuted = false;
+    AudioHub.isMuted = false;
+    document.getElementById("sound-icon").src = "./img/sound_imgs/unmute.png";
+  }
 }
 
 /**
@@ -18,6 +35,7 @@ function initStartScreen() {
 function toggleSound() {
   isMuted = !isMuted;
   AudioHub.isMuted = isMuted;
+  localStorage.setItem('isMuted', isMuted);
 
   if (isMuted) {
     AudioHub.stopAll();
