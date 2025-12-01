@@ -221,14 +221,26 @@ class Character extends MovableObject {
     const animations = {
       'dead': this.IMAGES_DEAD,
       'hurt': this.IMAGES_HURT,
-      'jumping': this.IMAGES_JUMPING,
       'walking': this.IMAGES_WALKING,
       'sleeping': this.IMAGES_SLEEPING,
       'idle': this.IMAGES_IDLE
     };
     
-    this.PlayAnimation(animations[state]);
+    if (state === 'jumping') {
+      this.playJumpFrame();
+    } else {
+      this.PlayAnimation(animations[state]);
+    }
     if (state === 'sleeping') this.handleSleepingSound();
+  }
+
+  /**
+   * Shows correct jump frame based on speed
+   */
+  playJumpFrame() {
+    const index = this.speedY > 15 ? 1 : this.speedY > 5 ? 3 : 
+                  this.speedY > 0 ? 5 : this.speedY > -10 ? 6 : 8;
+    this.img = this.imageCache[this.IMAGES_JUMPING[index]];
   }
 
   /**
