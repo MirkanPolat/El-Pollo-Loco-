@@ -67,9 +67,10 @@ canvas {
 
 #game-container.fullscreen-container .start-img,
 #game-container.fullscreen-container .end-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 95%;
+  height: 95%;
+  object-fit: contain;
+  padding: 2.5%;
 }
 
 #game-container.fullscreen-container #start-button,
