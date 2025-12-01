@@ -1,36 +1,33 @@
 /**
- * Creates a new Chicken.
+ * Creates a new ChickenSmall.
  * @class
  */
-class Chicken extends MovableObject {
-  width = 80;
-  height = 100;
-  y = 330;
+class ChickenSmall extends MovableObject {
+  width = 60;
+  height = 60;
+  y = 360;
   damageTaken= 100;
   offset = {
-    top: 10,
-    bottom: 10,
-    left: 10,
-    right: 10
+    top: 5,
+    bottom: 5,
+    left: 5,
+    right: 5
   };
   IMAGES_WALKING = [
-    "./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
-    "./img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
-    "./img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
+    "./img/3_enemies_chicken/chicken_small/1_walk/1_w.png",
+    "./img/3_enemies_chicken/chicken_small/1_walk/2_w.png",
+    "./img/3_enemies_chicken/chicken_small/1_walk/3_w.png",
   ];
 
   IMAGES_DEAD = [
-    "./img/3_enemies_chicken/chicken_normal/2_dead/dead.png",
+    "./img/3_enemies_chicken/chicken_small/2_dead/dead.png",
   ];
 
   /**
-   * Function description
-   */
-  /**
-   * Creates a new Chicken instance
+   * Creates a new ChickenSmall instance
    */
   constructor() {
-    super().loadImage("./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
+    super().loadImage("./img/3_enemies_chicken/chicken_small/1_walk/1_w.png");
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_DEAD);
 
@@ -41,9 +38,6 @@ class Chicken extends MovableObject {
     this.animate();
   }
 
-  /**
-   * Function description
-   */
   /**
    * Animates the object
    */
@@ -59,12 +53,9 @@ class Chicken extends MovableObject {
       } else {
         this.PlayAnimation(this.IMAGES_WALKING);
       }
-    }, 200);
+    }, 150);
   }
 
-  /**
-   * Function description
-   */
   /**
    * die
    */
@@ -79,9 +70,6 @@ class Chicken extends MovableObject {
   }
 
   /**
-   * Function description
-   */
-  /**
    * Checks if condition is true
    * @returns {boolean}
    */
@@ -89,4 +77,3 @@ class Chicken extends MovableObject {
     return this.toDelete === true;
   }
 }
-

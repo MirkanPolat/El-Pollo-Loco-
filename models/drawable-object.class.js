@@ -60,7 +60,7 @@ class DrawableObject {
    */
   shouldDrawFrame() {
     return DrawableObject.debugMode && 
-      (this instanceof Chicken || this instanceof Character || 
+      (this instanceof Chicken || this instanceof ChickenSmall || this instanceof Character || 
        this instanceof Coin || this instanceof BottleObject || 
        this instanceof ThrowableObject || this instanceof Endboss);
   }

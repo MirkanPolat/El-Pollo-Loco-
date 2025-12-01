@@ -103,7 +103,8 @@ class World {
    */
   handleJumpKill(enemy) {
     enemy.die();
-    AudioHub.playOne(AudioHub.HIT_ENEMY);
+    const sound = enemy instanceof ChickenSmall ? AudioHub.HIT_SMALL_ENEMY : AudioHub.HIT_ENEMY;
+    AudioHub.playOne(sound);
     this.character.speedY = 25;
     this.character.lastEnemyCollision = new Date().getTime();
   }
