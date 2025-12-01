@@ -136,8 +136,8 @@ class World {
     
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawBackground();
-    this.drawStatusBars();
     this.drawGameObjects();
+    this.drawStatusBars();
     this.scheduleNextFrame();
   }
 
