@@ -231,6 +231,41 @@ canvas {
   height: 41px;
 }
 
+#mobile-toggle-button {
+  position: absolute;
+  top: 10px;
+  right: 160px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 30;
+  background-color: rgb(209 194 98 / 98%);
+  border-radius: 50%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+@media (max-width: 1024px) {
+  #mobile-toggle-button {
+    display: flex;
+  }
+}
+
+#mobile-toggle-button:hover {
+  transform: scale(1.1);
+}
+
+#mobile-toggle-button.active {
+  background-color: rgb(76 175 80 / 98%);
+}
+
+#mobile-toggle-icon {
+  width: 24px;
+  height: 24px;
+}
+
 .control-item {
   display: flex;
   flex-direction: column;

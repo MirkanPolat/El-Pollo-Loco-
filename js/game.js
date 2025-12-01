@@ -27,6 +27,37 @@ function loadSoundSettings() {
     AudioHub.isMuted = false;
     document.getElementById("sound-icon").src = "./img/sound_imgs/unmute.png";
   }
+  
+  // Load mobile controls visibility
+  const mobileControlsVisible = localStorage.getItem('mobileControlsVisible');
+  const mobileControls = document.getElementById('mobile-controls');
+  const toggleButton = document.getElementById('mobile-toggle-button');
+  
+  if (mobileControlsVisible === 'true') {
+    mobileControls.style.display = 'block';
+    toggleButton.classList.add('active');
+  } else {
+    mobileControls.style.display = 'none';
+    toggleButton.classList.remove('active');
+  }
+}
+
+/**
+ * Toggles mobile controls visibility
+ */
+function toggleMobileControls() {
+  const mobileControls = document.getElementById('mobile-controls');
+  const toggleButton = document.getElementById('mobile-toggle-button');
+  
+  if (mobileControls.style.display === 'none' || mobileControls.style.display === '') {
+    mobileControls.style.display = 'block';
+    toggleButton.classList.add('active');
+    localStorage.setItem('mobileControlsVisible', 'true');
+  } else {
+    mobileControls.style.display = 'none';
+    toggleButton.classList.remove('active');
+    localStorage.setItem('mobileControlsVisible', 'false');
+  }
 }
 
 /**
@@ -100,4 +131,22 @@ function backToStartScreen() {
   gameEnded = false;
 
   AudioHub.stopAll();
+}
+
+/**
+ * Toggles mobile controls visibility
+ */
+function toggleMobileControls() {
+  const mobileControls = document.getElementById('mobile-controls');
+  const toggleButton = document.getElementById('mobile-toggle-button');
+  
+  if (mobileControls.style.display === 'none' || mobileControls.style.display === '') {
+    mobileControls.style.display = 'block';
+    toggleButton.classList.add('active');
+    localStorage.setItem('mobileControlsVisible', 'true');
+  } else {
+    mobileControls.style.display = 'none';
+    toggleButton.classList.remove('active');
+    localStorage.setItem('mobileControlsVisible', 'false');
+  }
 }
