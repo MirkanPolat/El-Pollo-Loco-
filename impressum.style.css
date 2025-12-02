@@ -7,7 +7,7 @@
   font-size: 24px;
   cursor: pointer;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-  z-index: 999;
+  z-index: 1500;
   transition: all 0.3s ease;
 }
 
@@ -17,6 +17,18 @@
 
 #credits-link {
   right: 135px;
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  #impressum-link,
+  #credits-link {
+    font-size: 16px;
+    bottom: 8px;
+  }
+  
+  #credits-link {
+    right: 100px;
+  }
 }
 
 #impressum-link:hover,

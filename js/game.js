@@ -109,6 +109,14 @@ function startGame() {
   }
 
   gameStarted = true;
+  
+  // Auto-Fullscreen auf Mobile Landscape
+  const isMobileLandscape = window.matchMedia("(max-width: 900px) and (orientation: landscape)").matches;
+  if (isMobileLandscape && !document.fullscreenElement) {
+    setTimeout(() => {
+      toggleFullscreen();
+    }, 100);
+  }
 }
 
 /**
@@ -142,6 +150,16 @@ function backToStartScreen() {
 
   gameStarted = false;
   gameEnded = false;
+
+  // Stop world and clear canvas
+  if (world) {
+    world.isGameActive = false;
+    world = null;
+  }
+
+  // Clear canvas
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   AudioHub.stopAll();
 }

@@ -13,6 +13,7 @@ function toggleImpressum() {
     overlay.style.display = "none";
     if (world && gameStarted && !gameEnded) {
       world.isGameActive = true;
+      requestAnimationFrame(() => world.draw());
     }
   }
 }
@@ -39,6 +40,7 @@ function toggleCredits() {
     overlay.style.display = "none";
     if (world && gameStarted && !gameEnded) {
       world.isGameActive = true;
+      requestAnimationFrame(() => world.draw());
     }
   }
 }
