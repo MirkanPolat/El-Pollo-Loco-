@@ -445,7 +445,7 @@ endGame(result) {
   setTimeout(() => {
     this.stopGame();
     this.playEndGameSequence(result);
-  }, 2000);
+  }, 800);
 }
 
 /**
@@ -491,7 +491,7 @@ playEndGameSequence(result) {
   setTimeout(() => {
     this.playEndGameSound(result);
     this.showEndGameScreen(result);
-  }, 500);
+  }, 200);
 }
 
 /**
@@ -520,7 +520,7 @@ showEndGameScreen(result) {
     } else if (result === 'win') {
       document.getElementById('win-screen').style.display = 'flex';
     }
-  }, 1300);
+  }, 800);
 }
 }
 

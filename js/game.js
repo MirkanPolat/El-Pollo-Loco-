@@ -110,6 +110,13 @@ function startGame() {
 
   gameStarted = true;
   
+  // Hide Credits/Impressum on Mobile during game
+  const isMobile = window.matchMedia("(max-width: 900px)").matches;
+  if (isMobile) {
+    document.getElementById("impressum-link").style.display = "none";
+    document.getElementById("credits-link").style.display = "none";
+  }
+  
   // Auto-Fullscreen auf Mobile Landscape
   const isMobileLandscape = window.matchMedia("(max-width: 900px) and (orientation: landscape)").matches;
   if (isMobileLandscape && !document.fullscreenElement) {
@@ -160,6 +167,13 @@ function backToStartScreen() {
   // Clear canvas
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Show Credits/Impressum again on Mobile
+  const isMobile = window.matchMedia("(max-width: 900px)").matches;
+  if (isMobile) {
+    document.getElementById("impressum-link").style.display = "fixed";
+    document.getElementById("credits-link").style.display = "fixed";
+  }
 
   AudioHub.stopAll();
 }

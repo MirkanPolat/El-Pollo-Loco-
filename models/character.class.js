@@ -77,6 +77,7 @@ class Character extends MovableObject {
 
   world;
   speed = 10;
+  deathAnimationIndex = 0;
   offset = {
     top: 120,
     bottom: 10,
@@ -228,10 +229,26 @@ class Character extends MovableObject {
     
     if (state === 'jumping') {
       this.playJumpFrame();
+    } else if (state === 'dead') {
+      this.playDeathAnimation();
     } else {
       this.PlayAnimation(animations[state]);
     }
     if (state === 'sleeping') this.handleSleepingSound();
+  }
+
+  /**
+   * Plays death animation once and stops at last frame
+   */
+  playDeathAnimation() {
+    const maxIndex = this.IMAGES_DEAD.length - 1;
+    if (this.deathAnimationIndex <= maxIndex) {
+      let path = this.IMAGES_DEAD[this.deathAnimationIndex];
+      this.img = this.imageCache[path];
+      if (this.deathAnimationIndex < maxIndex) {
+        this.deathAnimationIndex++;
+      }
+    }
   }
 
   /**
