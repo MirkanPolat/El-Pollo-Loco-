@@ -29,16 +29,29 @@ function loadSoundSettings() {
   }
   
   // Load mobile controls visibility
-  const mobileControlsVisible = localStorage.getItem('mobileControlsVisible');
   const mobileControls = document.getElementById('mobile-controls');
   const toggleButton = document.getElementById('mobile-toggle-button');
+  const isTouchDevice = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  const mobileControlsVisible = localStorage.getItem('mobileControlsVisible');
   
-  if (mobileControlsVisible === 'true') {
-    mobileControls.style.display = 'block';
-    toggleButton.classList.add('active');
+  // On touch devices, show controls by default unless explicitly hidden
+  if (isTouchDevice) {
+    if (mobileControlsVisible === 'false') {
+      mobileControls.style.display = 'none';
+      toggleButton.classList.remove('active');
+    } else {
+      mobileControls.style.display = 'block';
+      toggleButton.classList.add('active');
+    }
   } else {
-    mobileControls.style.display = 'none';
-    toggleButton.classList.remove('active');
+    // On desktop, respect saved preference
+    if (mobileControlsVisible === 'true') {
+      mobileControls.style.display = 'block';
+      toggleButton.classList.add('active');
+    } else {
+      mobileControls.style.display = 'none';
+      toggleButton.classList.remove('active');
+    }
   }
 }
 

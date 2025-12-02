@@ -83,23 +83,48 @@
           <circle cx="12" cy="20.5" r="0.8" fill="white"/>
         </svg>
       </div>
-    </div>
-    <div id="mobile-controls">
-      <div class="control-left">
-        <button id="btnLeft" class="mobile-btn">
-          <img src="./img/mobile_tablet_imgs/left_1.png" alt="Left">
-        </button>
-        <button id="btnRight" class="mobile-btn">
-          <img src="./img/mobile_tablet_imgs/right_5.png" alt="Right">
-        </button>
-      </div>
-      <div class="control-right">
-        <button id="btnJump" class="mobile-btn">
-          <img src="./img/mobile_tablet_imgs/jump_2.png" alt="Jump">
-        </button>
-        <button id="btnThrow" class="mobile-btn">
-          <img src="./img/mobile_tablet_imgs/throw_bottle_3.png" alt="Throw">
-        </button>
+      <div id="mobile-controls">
+        <div class="control-left">
+          <button id="btnLeft" class="mobile-btn" aria-label="Move Left">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button id="btnRight" class="mobile-btn" aria-label="Move Right">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <div class="control-right">
+          <button id="btnJump" class="mobile-btn" aria-label="Jump">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button id="btnThrow" class="mobile-btn" aria-label="Throw Bottle">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Bottle shape tilted like flying -->
+              <g transform="rotate(-35 12 12)">
+                <!-- Bottle cap/neck -->
+                <rect x="10.5" y="2" width="3" height="2.5" fill="currentColor" rx="0.5"/>
+                <rect x="10" y="4" width="4" height="1.5" fill="currentColor"/>
+                <!-- Bottle body -->
+                <path d="M9.5 5.5H14.5C15 5.5 15.5 6 15.5 6.5V15.5C15.5 17.5 14 19 12 19C10 19 8.5 17.5 8.5 15.5V6.5C8.5 6 9 5.5 9.5 5.5Z" 
+                      fill="currentColor" opacity="0.8"/>
+                <!-- Bottle outline -->
+                <path d="M9.5 5.5H14.5C15 5.5 15.5 6 15.5 6.5V15.5C15.5 17.5 14 19 12 19C10 19 8.5 17.5 8.5 15.5V6.5C8.5 6 9 5.5 9.5 5.5Z" 
+                      stroke="currentColor" stroke-width="2" fill="none"/>
+                <!-- Liquid inside -->
+                <ellipse cx="12" cy="13" rx="2.5" ry="4" fill="currentColor" opacity="0.4"/>
+                <!-- Label line -->
+                <line x1="9" y1="10" x2="15" y2="10" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+              </g>
+              <!-- Motion lines -->
+              <path d="M3 5L5 7M2 8L4 10M3 11L5 13" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
     <div id="impressum-link" onclick="toggleImpressum()">Impressum</div>
