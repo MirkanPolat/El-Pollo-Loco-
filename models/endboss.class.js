@@ -13,6 +13,8 @@ class Endboss extends MovableObject {
     isAttacking = false;
     lastAction = new Date().getTime();
     detectionRange = 500;
+    deathAnimationIndex = 0;
+    deathAnimationLoops = 0;
     
     offset = {
         top: 80,
@@ -380,8 +382,30 @@ class Endboss extends MovableObject {
      * Handles the event
      */
     handleDead() {
-        this.PlayAnimation(this.IMAGES_DEAD);
-        this.cleanup();
+        this.playDeathAnimation();
+    }
+
+    /**
+     * Plays death animation twice before completing
+     */
+    playDeathAnimation() {
+        const maxIndex = this.IMAGES_DEAD.length - 1;
+        const maxLoops = 2;
+        
+        if (this.deathAnimationLoops < maxLoops) {
+            let path = this.IMAGES_DEAD[this.deathAnimationIndex];
+            this.img = this.imageCache[path];
+            
+            if (this.deathAnimationIndex < maxIndex) {
+                this.deathAnimationIndex++;
+            } else {
+                this.deathAnimationIndex = 0;
+                this.deathAnimationLoops++;
+            }
+        } else {
+            this.img = this.imageCache[this.IMAGES_DEAD[maxIndex]];
+            this.cleanup();
+        }
     }
 
     /**
@@ -389,6 +413,14 @@ class Endboss extends MovableObject {
      */
     handleAttacking() {
         this.PlayAnimation(this.IMAGES_ATTACK);
+    }
+
+    /**
+     * Checks if death animation is complete (after 2 loops)
+     * @returns {boolean}
+     */
+    isDeathAnimationComplete() {
+        return this.isDead() && this.deathAnimationLoops >= 2;
     }
 
     /**

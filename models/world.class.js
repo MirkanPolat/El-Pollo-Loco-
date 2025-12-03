@@ -385,7 +385,7 @@ class World {
     }
     
     const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
-    if (endboss && endboss.energy <= 0 && !gameEnded) {
+    if (endboss && endboss.isDeathAnimationComplete && endboss.isDeathAnimationComplete() && !gameEnded) {
       endGame(this, 'win');
     }
   }
