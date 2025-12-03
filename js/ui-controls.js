@@ -187,7 +187,7 @@ window.addEventListener("keydown", (event) => {
   if (event.keyCode == 32) {
     keyboard.SPACE = true;
   }
-  if (event.keyCode == 68) {
+  if (event.keyCode == 68 && !event.repeat) {
     keyboard.D = true;
   }
 });
