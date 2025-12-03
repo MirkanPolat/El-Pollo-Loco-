@@ -251,23 +251,28 @@ canvas {
   z-index: 30;
   background-color: rgb(209 194 98 / 98%);
   border-radius: 50%;
-  display: none;
+  display: none !important;
   justify-content: center;
   align-items: center;
   transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
-/* Show toggle button on hover-capable devices (desktop) at tablet size */
+/* Show toggle button only when game is active */
+#mobile-toggle-button.game-active {
+  display: flex !important;
+}
+
+/* Show toggle button on hover-capable devices (desktop) at tablet size when game active */
 @media (hover: hover) and (pointer: fine) and (max-width: 1024px) {
-  #mobile-toggle-button {
-    display: flex;
+  #mobile-toggle-button.game-active {
+    display: flex !important;
   }
 }
 
-/* Always show toggle button on touch devices */
+/* Always show toggle button on touch devices when game active */
 @media (hover: none) and (pointer: coarse) {
-  #mobile-toggle-button {
-    display: flex;
+  #mobile-toggle-button.game-active {
+    display: flex !important;
   }
 }
 
@@ -384,7 +389,7 @@ canvas {
 }
 
 #mobile-controls {
-  display: none;
+  display: none !important;
   width: 100%;
   max-width: 720px;
   height: 100px;
@@ -396,21 +401,20 @@ canvas {
   pointer-events: none;
 }
 
+/* Show mobile controls only when game is started on touch devices */
+#mobile-controls.game-active {
+  display: block !important;
+}
+
 /* Hide mobile controls on large screens (desktop/laptop) */
 @media (hover: hover) and (pointer: fine) and (min-width: 1025px) {
-  #mobile-controls {
+  #mobile-controls,
+  #mobile-controls.game-active {
     display: none !important;
   }
   
   #mobile-toggle-button {
     display: none !important;
-  }
-}
-
-/* Show mobile controls on touch devices (tablets/phones) */
-@media (hover: none) and (pointer: coarse) {
-  #mobile-controls {
-    display: block;
   }
 }
 

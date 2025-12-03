@@ -46,12 +46,16 @@ class Keyboard {
     bindButton(btnId, keyProperty) {
         document.getElementById(btnId)?.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            this[keyProperty] = true;
+            if (typeof gameStarted !== 'undefined' && gameStarted && !gameEnded) {
+                this[keyProperty] = true;
+            }
         });
 
         document.getElementById(btnId)?.addEventListener('touchend', (e) => {
             e.preventDefault();
-            this[keyProperty] = false;
+            if (typeof gameStarted !== 'undefined' && gameStarted && !gameEnded) {
+                this[keyProperty] = false;
+            }
         });
     }
 }

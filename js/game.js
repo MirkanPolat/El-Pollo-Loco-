@@ -41,32 +41,8 @@ function loadMuteSettings() {
  * Loads mobile controls visibility from localStorage
  */
 function loadMobileControlsSettings() {
-  const mobileControls = document.getElementById('mobile-controls');
-  const toggleButton = document.getElementById('mobile-toggle-button');
-  const isTouchDevice = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
-  const mobileControlsVisible = localStorage.getItem('mobileControlsVisible');
-  
-  if (isTouchDevice) {
-    setMobileControlsVisibility(mobileControls, toggleButton, mobileControlsVisible !== 'false');
-  } else {
-    setMobileControlsVisibility(mobileControls, toggleButton, mobileControlsVisible === 'true');
-  }
-}
-
-/**
- * Sets mobile controls visibility
- * @param {HTMLElement} controls - Mobile controls element
- * @param {HTMLElement} button - Toggle button element
- * @param {boolean} visible - Whether controls should be visible
- */
-function setMobileControlsVisibility(controls, button, visible) {
-  if (visible) {
-    controls.style.display = 'block';
-    button.classList.add('active');
-  } else {
-    controls.style.display = 'none';
-    button.classList.remove('active');
-  }
+  // Mobile controls visibility is now managed by game-active class
+  // which is added when game starts
 }
 
 /**
@@ -76,14 +52,14 @@ function toggleMobileControls() {
   const mobileControls = document.getElementById('mobile-controls');
   const toggleButton = document.getElementById('mobile-toggle-button');
   
-  if (mobileControls.style.display === 'none' || mobileControls.style.display === '') {
-    mobileControls.style.display = 'block';
-    toggleButton.classList.add('active');
-    localStorage.setItem('mobileControlsVisible', 'true');
-  } else {
-    mobileControls.style.display = 'none';
+  if (mobileControls.classList.contains('game-active')) {
+    mobileControls.classList.remove('game-active');
     toggleButton.classList.remove('active');
     localStorage.setItem('mobileControlsVisible', 'false');
+  } else {
+    mobileControls.classList.add('game-active');
+    toggleButton.classList.add('active');
+    localStorage.setItem('mobileControlsVisible', 'true');
   }
 }
 
@@ -114,6 +90,7 @@ function startGame() {
   initializeGame();
   startBackgroundMusic();
   hideLegalLinksOnMobile();
+  showMobileControlsOnTouch();
   autoFullscreenOnMobileLandscape();
 }
 
@@ -153,6 +130,19 @@ function hideLegalLinksOnMobile() {
   if (isMobile) {
     document.getElementById("impressum-link").style.display = "none";
     document.getElementById("credits-link").style.display = "none";
+  }
+}
+
+/**
+ * Shows mobile controls on touch devices when game starts
+ */
+function showMobileControlsOnTouch() {
+  const isTouchDevice = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  const isTablet = window.matchMedia("(max-width: 1024px)").matches;
+  
+  if (isTouchDevice || isTablet) {
+    document.getElementById("mobile-controls").classList.add("game-active");
+    document.getElementById("mobile-toggle-button").classList.add("game-active");
   }
 }
 
@@ -244,6 +234,8 @@ function showLegalLinksOnMobile() {
     document.getElementById("impressum-link").style.display = "fixed";
     document.getElementById("credits-link").style.display = "fixed";
   }
+  document.getElementById("mobile-controls").classList.remove("game-active");
+  document.getElementById("mobile-toggle-button").classList.remove("game-active");
 }
 
 /**
